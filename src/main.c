@@ -6,10 +6,13 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/07/28 16:45:51 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/07/28 17:41:59 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-
+int main(void)
+{
+	printf("hello\n");
+}

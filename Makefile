@@ -4,7 +4,7 @@ INC_DIR = includes
 MLX_DIR = minilibx-linux
 LIBFT_DIR = libft
 
-SRC = $(SRC_DIR)/main.c
+SRC = $(SRC_DIR)/main.c $(SRC_DIR)/utils.c 
 OBJ = $(SRC:.c=.o)
 
 CC = cc

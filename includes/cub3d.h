@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/07/31 17:21:33 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/08/02 16:33:04 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,32 @@
 # include "../libft/libft.h"
 # include "get_next_line.h"
 
-struct s_config
+# define VALID_CHARS "01NSEWD \n"
+
+typedef struct s_color
+{
+	int	r;
+	int	b;
+	int	g;
+}	t_color;
+
+typedef struct s_config
 {
 	char	*no_path;
 	char	*so_path;
 	char	*we_path;
 	char	*ea_path;
-	int		floor_color;
-	int		ceiling_color;
+	t_color	floor;
+	t_color	ceiling;
+	int		no;
+	int		so;
+	int		we;
+	int		ea;
+	int		f;
+	int		c;
 	char	**map;
 }	t_config;
 
-// utils
-void	exit_with_error(char *msg);
-void	free_split(char **split);
+
 
 #endif

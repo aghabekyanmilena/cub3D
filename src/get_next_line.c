@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 19:30:21 by atseruny          #+#    #+#             */
-/*   Updated: 2025/02/12 18:14:15 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/08/03 14:43:01 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ static char	*rd_frst_line(char *tmp, int fd)
 			break ;
 		}
 		buf[num_read] = '\0';
-		tmp = ft_strjoin(tmp, buf, ft_strlen(tmp), ft_strlen(buf));
+		tmp = ft_strjoinn(tmp, buf, ft_strlenn(tmp), ft_strlenn(buf));
 		if (ft_newline_instr(buf) == 1)
 			break ;
 	}

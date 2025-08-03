@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 19:27:26 by atseruny          #+#    #+#             */
-/*   Updated: 2025/07/28 17:36:12 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/08/03 14:42:32 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include "../libft/libft.h"
 
 char	*get_next_line(int fd);
 
-char	*ft_strjoin(char *s1, char *s2, size_t l1, size_t l2);
+char	*ft_strjoinn(char *s1, char *s2, size_t l1, size_t l2);
 
-size_t	ft_strlen(const char *str);
+size_t	ft_strlenn(const char *str);
 
 char	*ft_free_null(char *s);
 

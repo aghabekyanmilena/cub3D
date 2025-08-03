@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 19:26:50 by atseruny          #+#    #+#             */
-/*   Updated: 2025/02/07 21:18:59 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/08/03 14:42:41 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_newline_instr(char *s)
 	return (0);
 }
 
-size_t	ft_strlen(const char *str)
+size_t	ft_strlenn(const char *str)
 {
 	size_t	i;
 
@@ -46,7 +46,7 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-char	*ft_strjoin(char *s1, char *s2, size_t l1, size_t l2)
+char	*ft_strjoinn(char *s1, char *s2, size_t l1, size_t l2)
 {
 	char	*s;
 	size_t	i;

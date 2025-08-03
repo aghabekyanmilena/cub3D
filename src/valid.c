@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:06:44 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/02 20:32:00 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/08/03 16:48:01 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	check_filename(char *filename)
 	name = ft_strrchr(filename, '.');
 	if (!name || ft_strcmp(name, ".cub") != 0)
 	{
-		printf("Invalid file name");
+		printf("Invalid file name\n");
 		return (0);
 	}
 	return (1);
@@ -78,4 +78,72 @@ int	parse(t_config *data, char **lines, int *start_index)
 	return (1);
 }
 
-// parse color and texture grac chi
+int	parse_texture(char **dest, int *flag, char *path, char *type)
+{
+	(void)type;
+	if (*flag)
+	{
+		printf("Error: Duplicate\n");
+		return (0);
+	}
+	while (*path == ' ')
+		path++;
+	if (ft_strlen(path) < 5 || ft_strcmp(path + ft_strlen(path) - 4, ".xpm") != 0)
+	{
+		printf("error, must be .xpm\n");
+		return (0);
+	}
+	*dest = ft_strdup(path);
+	if (!*dest)
+		return (0);
+	*flag = 1;
+	return (1);
+}
+
+static int	guyni_stugum(char **str)
+{
+	int	val;
+
+	val = 0;
+	while (**str == ' ')
+		(*str)++;
+	if (!ft_isdigit(**str))
+		return (-1);
+	while (ft_isdigit(**str))
+		val = val * 10 + *((*str)++) - '0';
+	if (val < 0 || val > 255)
+		return (-1);
+	return (val);
+}
+
+int	parse_color(t_color *color, int *flag, char *line, char *type)
+{
+	(void)type;
+	char *tmp = line;
+	if (*flag)
+	{
+		printf("Error: Duplicate\n");
+		return (0);
+	}
+	color->r = guyni_stugum(&tmp);
+	if (*tmp++ != ',')
+	{
+		printf("Error: Invalid format.\n");
+		return (0);
+	}
+	color->g = guyni_stugum(&tmp);
+	if (*tmp++ != ',')
+	{
+		printf("Error: Invalid format.\n");
+		return (0);
+	}
+	color->b = guyni_stugum(&tmp);
+	while (*tmp == ' ') tmp++;
+	if (color->r == -1 || color->g == -1 || color->b == -1)
+	{
+		printf("Error:\n");
+		return (0);
+	}
+	*flag = 1;
+	return (1);
+}

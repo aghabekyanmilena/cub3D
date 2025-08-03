@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/03 16:59:55 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/08/03 17:01:17 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static char **add_line(char **lines, char *line, int count)
         new_lines[i] = lines[i];
         i++;
     }
-    new_lines[i++] = line;  // Use the line pointer directly (don't strdup again)
+    new_lines[i++] = line;
     new_lines[i] = NULL;
     free(lines);
     return (new_lines);
@@ -54,10 +54,8 @@ char **read_map(const char *filename)
         perror("open");
         return NULL;
     }
-
     while ((line = get_next_line(fd)) != NULL)
     {
-        // line includes the newline, you can trim it if needed
         lines = add_line(lines, line, count);
         if (!lines)
         {

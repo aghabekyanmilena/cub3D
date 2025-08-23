@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:06:44 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/03 16:48:01 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/08/23 14:58:50 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	check_filename(char *filename)
 	char	*name;
 
 	name = ft_strrchr(filename, '.');
-	if (!name || ft_strcmp(name, ".cub") != 0)
+	if (!name || ft_strcmp(name, ".cub") != 0 || (filename + 4))
 	{
 		printf("Invalid file name\n");
 		return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/03 17:01:17 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/08/23 14:53:32 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,49 +24,49 @@ static void	free_lines(char **lines)
 
 static char **add_line(char **lines, char *line, int count)
 {
-    char **new_lines;
-    int i;
+	char **new_lines;
+	int i;
 
-    new_lines = malloc(sizeof(char *) * (count + 2));
-    if (!new_lines)
-        return (NULL);
-    i = 0;
-    while (i < count)
-    {
-        new_lines[i] = lines[i];
-        i++;
-    }
-    new_lines[i++] = line;
-    new_lines[i] = NULL;
-    free(lines);
-    return (new_lines);
+	new_lines = malloc(sizeof(char *) * (count + 2));
+	if (!new_lines)
+		return (NULL);
+	i = 0;
+	while (i < count)
+	{
+		new_lines[i] = lines[i];
+		i++;
+	}
+	new_lines[i++] = line;
+	new_lines[i] = NULL;
+	free(lines);
+	return (new_lines);
 }
 
 char **read_map(const char *filename)
 {
-    int fd = open(filename, O_RDONLY);
-    char *line = NULL;
-    char **lines = NULL;
-    int count = 0;
+	int fd = open(filename, O_RDONLY);
+	char *line = NULL;
+	char **lines = NULL;
+	int count = 0;
 
-    if (fd < 0)
-    {
-        perror("open");
-        return NULL;
-    }
-    while ((line = get_next_line(fd)) != NULL)
-    {
-        lines = add_line(lines, line, count);
-        if (!lines)
-        {
-            free(line);
-            close(fd);
-            return NULL;
-        }
-        count++;
-    }
-    close(fd);
-    return lines;
+	if (fd < 0)
+	{
+	perror("open");
+	return NULL;
+	}
+	while ((line = get_next_line(fd)) != NULL)
+	{
+	lines = add_line(lines, line, count);
+	if (!lines)
+	{
+	free(line);
+	close(fd);
+	return NULL;
+	}
+	count++;
+	}
+	close(fd);
+	return lines;
 }
 
 int main(int argc, char **argv)
@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 
 	// if (!validate_closure(&config))
 	// 	return (free_lines(map_lines), 1);
-
+	
 	init_window_and_textures(&config);
 	render_map(&config);
 	mlx_loop(config.graphics.mlx);

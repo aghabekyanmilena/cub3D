@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:06:44 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/24 16:38:09 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/08/24 16:50:14 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static char *skip_ws(char *s)
 {
 	while (*s == ' ' || *s == '\t')
 		s++;
-	return s;
+	return (s);
 }
 
 int is_ws_only(char *s)
@@ -39,7 +39,7 @@ int is_ws_only(char *s)
 	i = 0;
 	while (s[i] == ' ' || s[i] == '\t' || s[i] == '\r' || s[i] == '\n')
 		i++;
-	return s[i] == '\0';
+	return (s[i] == '\0');
 }
 
 int	demi_6_toxy(char *line)
@@ -61,25 +61,25 @@ int	parse_et_6_toxy(t_config *data, char *line)
 	char *s = skip_ws(line);
 
 	if (s[0] == 'N' && s[1] == 'O' && (s[2] == ' ' || s[2] == '\t'))
-		return parse_texture(data, &data->no, s + 2, "NO");
+		return (parse_texture(data, &data->no, s + 2, "NO"));
 	if (s[0] == 'S' && s[1] == 'O' && (s[2] == ' ' || s[2] == '\t'))
-		return parse_texture(data, &data->so, s + 2, "SO");
+		return (parse_texture(data, &data->so, s + 2, "SO"));
 	if (s[0] == 'W' && s[1] == 'E' && (s[2] == ' ' || s[2] == '\t'))
-		return parse_texture(data, &data->we, s + 2, "WE");
+		return (parse_texture(data, &data->we, s + 2, "WE"));
 	if (s[0] == 'E' && s[1] == 'A' && (s[2] == ' ' || s[2] == '\t'))
-		return parse_texture(data, &data->ea, s + 2, "EA");
+		return (parse_texture(data, &data->ea, s + 2, "EA"));
 	if (s[0] == 'F' && (s[1] == ' ' || s[1] == '\t'))
-		return parse_color(data, &data->f, s + 1, "F");
+		return (parse_color(data, &data->f, s + 1, "F"));
 	if (s[0] == 'C' && (s[1] == ' ' || s[1] == '\t'))
-		return parse_color(data, &data->c, s + 1, "C");
-	return 0;
+		return (parse_color(data, &data->c, s + 1, "C"));
+	return (0);
 }
 
 int	parse_texture(t_config *data, int *flag, char *after_key, char *type)
 {
-	char   **dest;
-	char   *pos = skip_ws(after_key);
-	char   *trimmed;
+	char	**dest;
+	char	*pos = skip_ws(after_key);
+	char	*trimmed;
 
 	if (*flag)
 		return (printf("Error: Duplicate %s\n", type), 0);
@@ -120,7 +120,6 @@ static int	guyni_stugum(char **str)
 	return (val);
 }
 
-
 int	parse_color(t_config *data, int *flag, char *after_key, char *type)
 {
 	char	*tmp = skip_ws(after_key);
@@ -143,7 +142,7 @@ int	parse_color(t_config *data, int *flag, char *after_key, char *type)
 	// if (color->r == -1 || color->g == -1 || color->b == -1)
 	// 	return (printf("Error: %s values must be 0..255\n", type), 0);
 	*flag = 1;
-	return 1;
+	return (1);
 }
 
 int	parse(t_config *data, char **lines, int *start_index)
@@ -169,5 +168,5 @@ int	parse(t_config *data, char **lines, int *start_index)
 	while (lines[i] && is_ws_only(lines[i]))
 		i++;
 	*start_index = i;
-	return 1;
+	return (1);
 }

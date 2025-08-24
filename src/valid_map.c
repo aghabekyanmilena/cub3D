@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:24:22 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/24 16:44:44 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/08/24 16:48:05 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int parse_map(t_config *data, char **lines, int start_index)
 				player_count++;
 			j++;
 		}
-		data->map[i] = ft_strtrim(line, " \t\r\n"); // ktrum em spacery u \n
+		data->map[i] = ft_strtrim(line, " \t\r\n");
 		if (!data->map[i])
 			return (0);
 		i++;

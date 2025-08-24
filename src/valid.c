@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:06:44 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/03 16:48:01 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/08/24 16:38:09 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,77 +25,81 @@ int	check_filename(char *filename)
 	return (1);
 }
 
+static char *skip_ws(char *s)
+{
+	while (*s == ' ' || *s == '\t')
+		s++;
+	return s;
+}
+
+int is_ws_only(char *s)
+{
+	size_t i;
+
+	i = 0;
+	while (s[i] == ' ' || s[i] == '\t' || s[i] == '\r' || s[i] == '\n')
+		i++;
+	return s[i] == '\0';
+}
+
 int	demi_6_toxy(char *line)
 {
+	char *s = skip_ws(line);
+
 	return (
-		ft_strcmp(line, "NO ") == 0 ||
-		ft_strcmp(line, "SO ") == 0 ||
-		ft_strcmp(line, "WE ") == 0 ||
-		ft_strcmp(line, "EA ") == 0 ||
-		ft_strcmp(line, "F ") == 0 ||
-		ft_strcmp(line, "C ") == 0
+		(s[0] == 'N' && s[1] == 'O' && (s[2] == ' ' || s[2] == '\t')) ||
+		(s[0] == 'S' && s[1] == 'O' && (s[2] == ' ' || s[2] == '\t')) ||
+		(s[0] == 'W' && s[1] == 'E' && (s[2] == ' ' || s[2] == '\t')) ||
+		(s[0] == 'E' && s[1] == 'A' && (s[2] == ' ' || s[2] == '\t')) ||
+		(s[0] == 'F' && (s[1] == ' ' || s[1] == '\t')) ||
+		(s[0] == 'C' && (s[1] == ' ' || s[1] == '\t'))
 	);
 }
 
 int	parse_et_6_toxy(t_config *data, char *line)
 {
-	if (ft_strcmp(line, "NO ") == 0)
-		return (parse_texture(&data->no_path, &data->no, line + 3, "NO"));
-	if (ft_strcmp(line, "SO ") == 0)
-		return (parse_texture(&data->so_path, &data->so, line + 3, "SO"));
-	if (ft_strcmp(line, "WE  ") == 0)
-		return (parse_texture(&data->we_path, &data->we, line + 3, "WE"));
-	if (ft_strcmp(line, "EA ") == 0)
-		return (parse_texture(&data->ea_path, &data->ea, line + 3, "EA"));
-	if (ft_strcmp(line, "F ") == 0)
-		return (parse_color(&data->floor, &data->f, line + 2, "F"));
-	if (ft_strcmp(line, "C ") == 0)
-		return (parse_color(&data->ceiling, &data->c, line + 2, "C"));
-	return (0);
+	char *s = skip_ws(line);
+
+	if (s[0] == 'N' && s[1] == 'O' && (s[2] == ' ' || s[2] == '\t'))
+		return parse_texture(data, &data->no, s + 2, "NO");
+	if (s[0] == 'S' && s[1] == 'O' && (s[2] == ' ' || s[2] == '\t'))
+		return parse_texture(data, &data->so, s + 2, "SO");
+	if (s[0] == 'W' && s[1] == 'E' && (s[2] == ' ' || s[2] == '\t'))
+		return parse_texture(data, &data->we, s + 2, "WE");
+	if (s[0] == 'E' && s[1] == 'A' && (s[2] == ' ' || s[2] == '\t'))
+		return parse_texture(data, &data->ea, s + 2, "EA");
+	if (s[0] == 'F' && (s[1] == ' ' || s[1] == '\t'))
+		return parse_color(data, &data->f, s + 1, "F");
+	if (s[0] == 'C' && (s[1] == ' ' || s[1] == '\t'))
+		return parse_color(data, &data->c, s + 1, "C");
+	return 0;
 }
 
-int	parse(t_config *data, char **lines, int *start_index)
+int	parse_texture(t_config *data, int *flag, char *after_key, char *type)
 {
-	int	i = 0;
-	while (lines[i])
-	{
-		if (demi_6_toxy(lines[i]))
-		{
-			if (!parse_et_6_toxy(data, lines[i]))
-				return (0);
-		}
-		else if (*lines[i] != '\0' && *lines[i] != '\n')
-			break;
-		i++;
-	}
-	if (!(data->no && data->so && data->we && data->ea &&
-		  data->f && data->c))
-	{
-		printf("Error: Missing texture or color.\n");
-		return (0);
-	}
-	*start_index = i;
-	return (1);
-}
+	char   **dest;
+	char   *pos = skip_ws(after_key);
+	char   *trimmed;
 
-int	parse_texture(char **dest, int *flag, char *path, char *type)
-{
-	(void)type;
 	if (*flag)
+		return (printf("Error: Duplicate %s\n", type), 0);
+	trimmed = ft_strtrim(pos, " \t\r\n");
+	if (!trimmed)
+		return 0;
+	if (ft_strlen(trimmed) < 5 || ft_strcmp(trimmed + ft_strlen(trimmed) - 4, ".xpm") != 0)
 	{
-		printf("Error: Duplicate\n");
-		return (0);
+		free(trimmed);
+		return (printf("Error: %s must be a .xpm file\n", type), 0);
 	}
-	while (*path == ' ')
-		path++;
-	if (ft_strlen(path) < 5 || ft_strcmp(path + ft_strlen(path) - 4, ".xpm") != 0)
-	{
-		printf("error, must be .xpm\n");
-		return (0);
-	}
-	*dest = ft_strdup(path);
-	if (!*dest)
-		return (0);
+	if (ft_strcmp(type, "NO") == 0)
+		dest = &data->no_path;
+	else if (ft_strcmp(type, "SO") == 0)
+		dest = &data->so_path;
+	else if (ft_strcmp(type, "WE") == 0)
+		dest = &data->we_path;
+	else
+		dest = &data->ea_path;
+	*dest = trimmed;
 	*flag = 1;
 	return (1);
 }
@@ -116,34 +120,54 @@ static int	guyni_stugum(char **str)
 	return (val);
 }
 
-int	parse_color(t_color *color, int *flag, char *line, char *type)
+
+int	parse_color(t_config *data, int *flag, char *after_key, char *type)
 {
-	(void)type;
-	char *tmp = line;
+	char	*tmp = skip_ws(after_key);
+	t_color	*color;
+
 	if (*flag)
-	{
-		printf("Error: Duplicate\n");
-		return (0);
-	}
+		return (printf("Error: Duplicate %s\n", type), 0);
+	color = (type[0] == 'F') ? &data->floor : &data->ceiling;
 	color->r = guyni_stugum(&tmp);
 	if (*tmp++ != ',')
-	{
-		printf("Error: Invalid format.\n");
-		return (0);
-	}
+		return (printf("Error: Invalid %s format\n", type), 0);
 	color->g = guyni_stugum(&tmp);
 	if (*tmp++ != ',')
-	{
-		printf("Error: Invalid format.\n");
-		return (0);
-	}
+		return (printf("Error: Invalid %s format\n", type), 0);
 	color->b = guyni_stugum(&tmp);
-	while (*tmp == ' ') tmp++;
-	if (color->r == -1 || color->g == -1 || color->b == -1)
-	{
-		printf("Error:\n");
-		return (0);
-	}
+	while (*tmp == ' ' || *tmp == '\t')
+		tmp++;
+	// if (!(*tmp == '\0' || *tmp == '\n' || *tmp == '\r'))
+	// 	return (printf("Error: Trailing characters in %s\n", type), 0);
+	// if (color->r == -1 || color->g == -1 || color->b == -1)
+	// 	return (printf("Error: %s values must be 0..255\n", type), 0);
 	*flag = 1;
-	return (1);
+	return 1;
+}
+
+int	parse(t_config *data, char **lines, int *start_index)
+{
+	int	i;
+
+	i = 0;
+	while (lines[i] && !(data->no && data->so && data->we && data->ea && data->f && data->c))
+	{
+		if (is_ws_only(lines[i])) 
+		{
+			i++;
+			continue;
+		}
+		if (!demi_6_toxy(lines[i]))
+			break;
+		if (!parse_et_6_toxy(data, lines[i]))
+			return 0;
+		i++;
+	}
+	if (!(data->no && data->so && data->we && data->ea && data->f && data->c))
+		return (printf("Error: Missing texture or color.\n"), 0);
+	while (lines[i] && is_ws_only(lines[i]))
+		i++;
+	*start_index = i;
+	return 1;
 }

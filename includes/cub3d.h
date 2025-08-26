@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/03 16:42:14 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/08/23 16:29:09 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,17 @@
 
 # define VALID_CHARS "01NSEWD \n"
 # define TILE_SIZE 32
+
+//keyboard keys
+# define XK_ESCAPE 0xff1b
+# define XK_WL 0x0077
+# define XK_AL 0x0061
+# define XK_SL 0x0073
+# define XK_DL 0x0064
+# define XK_A 0x0041
+# define XK_D 0x0044
+# define XK_W 0x0057
+# define XK_S 0x0053
 
 typedef struct s_color
 {
@@ -86,6 +97,9 @@ int	parse_et_6_toxy(t_config *data, char *line);
 int	parse_texture(char **dest, int *flag, char *path, char *type);
 int	parse(t_config *data, char **lines, int *start_index);
 int	parse_color(t_color *color, int *flag, char *line, char *type);
+
+//start
+void start(t_config *config, char **map);
 
 // texture
 void	draw_tile(t_data *data, int x, int y, void *img);

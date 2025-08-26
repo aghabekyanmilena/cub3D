@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:06:44 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/23 15:11:08 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/08/23 17:24:18 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ int	parse(t_config *data, char **lines, int *start_index)
 			break;
 		i++;
 	}
-	if (!(data->no && data->so && data->we && data->ea &&
-		  data->f && data->c))
-	{
-		printf("Error: Missing texture or color.\n");
-		return (0);
-	}
+	// if (!data->no || !data->so || !data->we || !data->ea ||
+	// 	  !data->f || !data->c)
+	// {
+	// 	printf("Error: Missing texture or color.\n");
+	// 	return (0);
+	// }
 	*start_index = i;
 	return (1);
 }
@@ -86,7 +86,7 @@ int	parse_texture(char **dest, int *flag, char *path, char *type)
 		printf("Error: Duplicate\n");
 		return (0);
 	}
-	while (*path == ' ')
+	while (ft_isspace(*path))
 		path++;
 	if (ft_strlen(path) < 5 || ft_strcmp(path + ft_strlen(path) - 4, ".xpm") != 0)
 	{

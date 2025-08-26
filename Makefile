@@ -7,6 +7,7 @@ LIBFT_DIR = libft
 SRC = $(SRC_DIR)/dfs.c $(SRC_DIR)/main.c $(SRC_DIR)/texture_handle.c \
 	$(SRC_DIR)/valid_map.c $(SRC_DIR)/valid.c \
 	$(SRC_DIR)/get_next_line.c $(SRC_DIR)/get_next_line_utils.c \
+	$(SRC_DIR)/start.c
 
 OBJ = $(SRC:.c=.o)
 

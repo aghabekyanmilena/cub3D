@@ -6,7 +6,7 @@
 /*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:29:20 by atseruny          #+#    #+#             */
-/*   Updated: 2025/08/27 14:29:17 by anush            ###   ########.fr       */
+/*   Updated: 2025/08/27 17:38:48 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	put_back(t_data *data)
 int	start_ray_casting(t_config *config)
 {
 	int	x;
+	double wallX; //where exactly the wall was hit
 	get_player_struct(config);
 	put_back(&config->data);
 
@@ -88,54 +89,89 @@ int	start_ray_casting(t_config *config)
 			config->ray.camera_x = 2 * x / WIDTH - 1;
 			config->ray.rayDir_x = config->player.dir_x + config->player.plane_x * config->ray.camera_x;
 			config->ray.rayDir_y = config->player.dir_y + config->player.plane_y * config->ray.camera_x;
-			x++;
-		}
-		if (config->ray.rayDir_x == 0 || config->ray.rayDir_x == 0)
-			return (0);
-		config->ray.deltaDist_x = fabs(1 / config->ray.rayDir_x);
-		config->ray.deltaDist_y = fabs(1 / config->ray.rayDir_y);
-		 if (config->ray.rayDir_x < 0)
-		{
-			config->player.step_x = -1;
-			config->ray.sideDist_x = (config->player.pos_x - config->player.map_x) * config->ray.deltaDist_x;
-		}
-		else
-		{
-			config->player.step_x = 1;
-			config->ray.sideDist_x = (config->player.map_x + 1.0 - config->player.pos_x) * config->ray.deltaDist_x;
-		}
-		if (config->ray.rayDir_y < 0)
-		{
-			config->player.step_y = -1;
-			config->ray.sideDist_y = (config->player.pos_y - config->player.map_y) * config->ray.deltaDist_y;
-		}
-		else
-		{
-			config->player.step_y = 1;
-			config->ray.sideDist_y = (config->player.map_y + 1.0 - config->player.pos_y) * config->ray.deltaDist_y;
-		}
-		while (config->ray.hit == '0')
-		{
-			if (config->ray.sideDist_x < config->ray.sideDist_y)
+			if (config->ray.rayDir_x == 0 || config->ray.rayDir_x == 0)
+				return (0);
+			config->ray.deltaDist_x = fabs(1 / config->ray.rayDir_x);
+			config->ray.deltaDist_y = fabs(1 / config->ray.rayDir_y);
+			if (config->ray.rayDir_x < 0)
 			{
-				config->ray.sideDist_x += config->ray.deltaDist_x;
-				config->player.map_x += config->player.step_x;
-				config->ray.side = 0;
+				config->player.step_x = -1;
+				config->ray.sideDist_x = (config->player.pos_x - config->player.map_x) * config->ray.deltaDist_x;
 			}
 			else
 			{
-				config->ray.sideDist_y += config->ray.deltaDist_y;
-				config->player.map_y += config->player.step_y;
-				config->ray.side = 1;
+				config->player.step_x = 1;
+				config->ray.sideDist_x = (config->player.map_x + 1.0 - config->player.pos_x) * config->ray.deltaDist_x;
 			}
-			if (config->map[config->player.map_x][config->player.map_y] != '0')
-				config->ray.hit = config->map[config->player.map_x][config->player.map_y];
-			printf("mapx->%d and mapy->%d\n", config->player.map_x, config->player.map_y);
+			if (config->ray.rayDir_y < 0)
+			{
+				config->player.step_y = -1;
+				config->ray.sideDist_y = (config->player.pos_y - config->player.map_y) * config->ray.deltaDist_y;
+			}
+			else
+			{
+				config->player.step_y = 1;
+				config->ray.sideDist_y = (config->player.map_y + 1.0 - config->player.pos_y) * config->ray.deltaDist_y;
+			}
+			while (config->ray.hit == '0')
+			{
+				if (config->ray.sideDist_x < config->ray.sideDist_y)
+				{
+					config->ray.sideDist_x += config->ray.deltaDist_x;
+					config->player.map_x += config->player.step_x;
+					config->ray.side = 0;
+				}
+				else
+				{
+					config->ray.sideDist_y += config->ray.deltaDist_y;
+					config->player.map_y += config->player.step_y;
+					config->ray.side = 1;
+				}
+				if (config->map[config->player.map_x][config->player.map_y] != '0')
+					config->ray.hit = config->map[config->player.map_x][config->player.map_y];
+			}
+			if (config->ray.side == 0)
+				config->ray.wallDist = (config->ray.sideDist_x - config->ray.deltaDist_x);
+			else
+				config->ray.wallDist = (config->ray.sideDist_y - config->ray.deltaDist_y);
+			config->wall.line_height = (int)(h / config->ray.wallDist);
+			config->wall.draw_start = config->wall.line_height / 2 + h / 2;
+			if (config->wall.draw_start < 0)
+				config->wall.draw_start = 0;
+			config->wall.draw_end = config->wall.line_height / 2 + h / 2;
+			if(config->wall.draw_end >= h)
+				config->wall.draw_end = h - 1;
+
+			if (side == 0)
+				wallX = config->player.pos_y + config->ray.wallDist * config->ray.rayDir_y;
+			else
+				wallX = config->player.pos_x + config->ray.wallDist * config->ray.rayDir_x;
+			wallX -= floor((wallX));
+
+			//x coordinate on the texture
+			int texX = int(wallX * double(texWidth));
+			if(side == 0 && rayDirX > 0) texX = texWidth - texX - 1;
+			if(side == 1 && rayDirY < 0) texX = texWidth - texX - 1;
+
+			// How much to increase the texture coordinate per screen pixel
+			double step = 1.0 * texHeight / lineHeight;
+			// Starting texture coordinate
+			double texPos = (drawStart - h / 2 + lineHeight / 2) * step;
+			for(int y = drawStart; y<drawEnd; y++)
+			{
+				// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
+				int texY = (int)texPos & (texHeight - 1);
+				texPos += step;
+				Uint32 color = texture[texNum][texWidth * texY + texX];
+				//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
+				if(side == 1) color = (color >> 1) & 8355711;
+				buffer[y][x] = color;
+			}
+
+
+			
+			x++;
 		}
-		if(config->ray.side == 0)
-			config->ray.wallDist = (config->ray.sideDist_x - config->ray.deltaDist_x);
-		else
-			config->ray.wallDist = (config->ray.sideDist_y - config->ray.deltaDist_y);
 	}
 	return (1);
 }

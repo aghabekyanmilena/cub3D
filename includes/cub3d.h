@@ -6,7 +6,7 @@
 /*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/27 14:03:22 by anush            ###   ########.fr       */
+/*   Updated: 2025/08/27 17:14:50 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define TILE_SIZE 32
 # define WIDTH 1000
 # define LENGTH 1800
+# define h 64
 
 //keyboard keys
 # define XK_ESCAPE 0xff1b
@@ -45,6 +46,17 @@ typedef struct s_color
 	int	b;
 	int	g;
 }	t_color;
+
+typedef struct s_wall
+{
+	int		tex_x;
+	int		tex_y;
+	int		draw_start;
+	int		draw_end;
+	int		line_height;
+	double	step;
+	double	tex_pos;
+}	t_wall;
 
 typedef struct s_ray
 {
@@ -106,6 +118,7 @@ typedef struct s_config
 	int			player_count;
 	t_player	player;//player structna
 	t_ray		ray;
+	t_wall		wall;
 }	t_config;
 
 

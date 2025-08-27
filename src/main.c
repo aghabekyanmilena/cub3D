@@ -6,7 +6,7 @@
 /*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/27 12:33:17 by anush            ###   ########.fr       */
+/*   Updated: 2025/08/27 12:39:26 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	main(int argc, char **argv)
 		return (free_lines(map_lines), 1);
 	if (!parse_map(&config, map_lines, map_start))
 		return (free_lines(map_lines), 1);
-
+	start(&config, map_lines);
 	// if (!validate_closure(&config))
 	// 	return (free_lines(map_lines), 1);
 	

@@ -6,7 +6,7 @@
 /*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/27 12:35:37 by anush            ###   ########.fr       */
+/*   Updated: 2025/08/27 14:03:22 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 
 # define VALID_CHARS "01NSEWD \n"
 # define TILE_SIZE 32
+# define WIDTH 1000
+# define LENGTH 1800
 
 //keyboard keys
 # define XK_ESCAPE 0xff1b
@@ -44,6 +46,33 @@ typedef struct s_color
 	int	g;
 }	t_color;
 
+typedef struct s_ray
+{
+	double	camera_x;
+	double	rayDir_x;
+	double	rayDir_y;
+	double	sideDist_x;
+	double	sideDist_y;
+	double	deltaDist_x;
+	double	deltaDist_y;
+	double	wallDist;
+	char	hit;
+	int		side;
+}	t_ray;
+
+typedef struct s_player {
+	double	pos_x;
+	double	pos_y;
+	double	dir_x;
+	double	dir_y;
+	double	plane_x;
+	double	plane_y;
+	int		step_x;
+	int		step_y;
+	int		map_x;
+	int		map_y;
+}	t_player;
+
 typedef struct s_data {
 	void	*mlx;
 	void	*win;
@@ -52,28 +81,31 @@ typedef struct s_data {
 	int		widths[4];
 	int		heights[4];
 	char	**map;
-	int		map_width;
-	int		map_height;
 }	t_data;
 
 typedef struct s_config
 {
-	t_data	graphics;
-	char	*no_path;
-	char	*so_path;
-	char	*we_path;
-	char	*ea_path;
-	t_color	floor;
-	t_color	ceiling;
-	int		no;
-	int		so;
-	int		we;
-	int		ea;
-	int		f;
-	int		c;
-	char	**map;
-	int		height; // mapi heighty
-	int		player_count;
+	t_data		data;
+	char		*no_path;
+	char		*so_path;
+	char		*we_path;
+	char		*ea_path;
+	t_color		floor;
+	t_color		ceiling;
+	int			no;
+	int			so;
+	int			we;
+	int			ea;
+	int			f;
+	int			c;
+	int			posX;//players position x and y
+	int			posY;
+	char		view;//uxxutyuny;
+	char		**map;
+	int			height; // mapi heighty
+	int			player_count;
+	t_player	player;//player structna
+	t_ray		ray;
 }	t_config;
 
 
@@ -99,11 +131,13 @@ int parse_texture(t_config *data, int *flag, char *after_key, char *type);
 int parse_color(t_config *data, int *flag, char *after_key, char *type);
 int is_ws_only(char *s);
 
-
 // texture
 void	draw_tile(t_data *data, int x, int y, void *img);
 void	render_map(t_config *config);
 void	init_window_and_textures(t_config *config);
 void	init_window_and_textures(t_config *config);
+
+//start
+void	start(t_config *config, char **map);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:24:22 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/27 12:26:23 by anush            ###   ########.fr       */
+/*   Updated: 2025/08/27 14:30:35 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,12 @@ int parse_map(t_config *data, char **lines, int start_index)
 				return (0);
 			}
 			if (ft_strchr("NSEW", line[j]))
+			{
+				data->posX = i; //payer's position
+				data->posY = j;
+				data->view = line[j]; //vor koxm a nayum u positiony
 				player_count++;
+			}
 			j++;
 		}
 		data->map[i] = ft_strtrim(line, " \t\r\n");

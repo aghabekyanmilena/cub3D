@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/23 14:53:32 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/08/27 12:22:33 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ static void	free_lines(char **lines)
 	free(lines);
 }
 
-static char **add_line(char **lines, char *line, int count)
+static char	**add_line(char **lines, char *line, int count)
 {
-	char **new_lines;
-	int i;
+	char	**new_lines;
+	int		i;
 
 	new_lines = malloc(sizeof(char *) * (count + 2));
 	if (!new_lines)
@@ -42,7 +42,7 @@ static char **add_line(char **lines, char *line, int count)
 	return (new_lines);
 }
 
-char **read_map(const char *filename)
+char	**read_map(const char *filename)
 {
 	int fd = open(filename, O_RDONLY);
 	char *line = NULL;
@@ -51,25 +51,25 @@ char **read_map(const char *filename)
 
 	if (fd < 0)
 	{
-	perror("open");
-	return NULL;
+		perror("open");
+		return (NULL);
 	}
 	while ((line = get_next_line(fd)) != NULL)
 	{
-	lines = add_line(lines, line, count);
-	if (!lines)
-	{
-	free(line);
-	close(fd);
-	return NULL;
-	}
-	count++;
+		lines = add_line(lines, line, count);
+		if (!lines)
+		{
+			free(line);
+			close(fd);
+			return (NULL);
+		}
+		count++;
 	}
 	close(fd);
 	return lines;
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_config config;
 	char **map_lines = NULL;
@@ -79,7 +79,6 @@ int main(int argc, char **argv)
 		return (printf("Usage: %s <map.cub>\n", argv[0]), 1);
 	if (!check_filename(argv[1]))
 		return (1);
-
 	ft_bzero(&config, sizeof(t_config));
 	map_lines = read_map(argv[1]);
 	if (!map_lines)
@@ -88,10 +87,6 @@ int main(int argc, char **argv)
 		return (free_lines(map_lines), 1);
 	if (!parse_map(&config, map_lines, map_start))
 		return (free_lines(map_lines), 1);
-
-	// if (!validate_closure(&config))
-	// 	return (free_lines(map_lines), 1);
-	
 	init_window_and_textures(&config);
 	render_map(&config);
 	mlx_loop(config.graphics.mlx);

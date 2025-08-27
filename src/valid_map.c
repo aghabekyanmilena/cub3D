@@ -3,51 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   valid_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:24:22 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/23 14:54:01 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/08/27 12:26:23 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static int	characker_check(char c)
+static int characker_check(char c)
 {
 	return (c == '0' || c == '1' || c == 'N' || c == 'S' ||
-			c == 'E' || c == 'W' || c == 'D' || c == ' ');
+			c == 'E' || c == 'W' || c == 'D' || c == ' ' || c == '\t');
 }
 
-int	parse_map(t_config *data, char **lines, int start_index)
+int parse_map(t_config *data, char **lines, int start_index)
 {
-	int		i;
-	int		line_count;
-	int		player_count;
+	int		i = start_index;
+	int		line_count = 0;
+	int		player_count = 0;
 	char	*line;
 	int		j;
 
-	i = start_index;
-	line_count = 0;
-	player_count = 0;
 	while (lines[i])
 	{
-		if (ft_strlen(lines[i]) == 0)
-		{
-			printf("error, empty line\n");
-			return (0);
-		}
-		line_count++;
+		if (!is_ws_only(lines[i]))
+			line_count++;
 		i++;
 	}
 	data->map = malloc(sizeof(char *) * (line_count + 1));
 	if (!data->map)
 		return (0);
 	i = 0;
-	while (i < line_count)
+	while (lines[start_index])
 	{
-		line = lines[start_index + i];
+		line = lines[start_index];
+		if (is_ws_only(line))
+		{
+			start_index++;
+			continue;
+		}
 		j = 0;
-		while(line[j])
+		while (line[j] && line[j] != '\n' && line[j] != '\r')
 		{
 			if (!characker_check(line[j]))
 			{
@@ -58,18 +56,19 @@ int	parse_map(t_config *data, char **lines, int start_index)
 				player_count++;
 			j++;
 		}
-		data->map[i] = ft_strdup(line);
+		data->map[i] = ft_strtrim(line, " \t\r\n");
 		if (!data->map[i])
 			return (0);
 		i++;
+		start_index++;
 	}
 	data->map[i] = NULL;
 	data->height = line_count;
 	data->player_count = player_count;
 	if (player_count != 1)
 	{
-		printf("error, too many players\n");
-		return (0);
+		printf("error, invalid number of players\n");
+		return 0;
 	}
 	return (1);
 }

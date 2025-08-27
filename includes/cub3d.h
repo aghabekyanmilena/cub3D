@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/03 16:42:14 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/08/27 12:21:55 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	parse_map(t_config *data, char **lines, int start_index);
 
 // gnl
 char	*ft_free_null(char *s);
-int	ft_newline_instr(char *s);
+int		ft_newline_instr(char *s);
 char	*ft_strjoinn(char *s1, char *s2, size_t l1, size_t l2);
 char	*get_next_line(int fd);
 
@@ -83,9 +83,11 @@ char	*get_next_line(int fd);
 int	check_filename(char *filename);
 int	demi_6_toxy(char *line);
 int	parse_et_6_toxy(t_config *data, char *line);
-int	parse_texture(char **dest, int *flag, char *path, char *type);
 int	parse(t_config *data, char **lines, int *start_index);
-int	parse_color(t_color *color, int *flag, char *line, char *type);
+int parse_texture(t_config *data, int *flag, char *after_key, char *type);
+int parse_color(t_config *data, int *flag, char *after_key, char *type);
+int is_ws_only(char *s);
+
 
 // texture
 void	draw_tile(t_data *data, int x, int y, void *img);

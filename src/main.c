@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
+/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/27 12:33:17 by anush            ###   ########.fr       */
+/*   Updated: 2025/08/30 15:55:24 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,17 +87,6 @@ int	main(int argc, char **argv)
 		return (free_lines(map_lines), 1);
 	if (!parse_map(&config, map_lines, map_start))
 		return (free_lines(map_lines), 1);
-
-	// if (!validate_closure(&config))
-	// 	return (free_lines(map_lines), 1);
-	
-	// init_window_and_textures(&config);
-	// render_map(&config);
-	// mlx_loop(config.graphics.mlx);
 	free_lines(map_lines);
 	return (0);
 }
-
-/* uremn vabshe inch em arel, validacian karelia asel arel uxxaki
-vonc vor shat andur kod lini ayspes asac tqac kpcrac, pordzel em
-grel mapy kardalu pahy mi qich ban man, bayc normal chi linum */

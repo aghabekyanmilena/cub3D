@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
+/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:06:44 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/27 12:29:59 by anush            ###   ########.fr       */
+/*   Updated: 2025/08/30 16:08:34 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,37 @@ int	check_filename(char *filename)
 	return (1);
 }
 
+// static char *skip_ws(char *s)
+// {
+// 	while (*s == ' ' || *s == '\t')
+// 		s++;
+// 	return (s);
+// }
+
+
 static char *skip_ws(char *s)
 {
-	while (*s == ' ' || *s == '\t')
+	while (ft_isspace(*s))
 		s++;
 	return (s);
 }
+
+// int is_ws_only(char *s)
+// {
+// 	size_t i;
+
+// 	i = 0;
+// 	while (s[i] == ' ' || s[i] == '\t' || s[i] == '\r' || s[i] == '\n')
+// 		i++;
+// 	return (s[i] == '\0');
+// }
 
 int is_ws_only(char *s)
 {
 	size_t i;
 
 	i = 0;
-	while (s[i] == ' ' || s[i] == '\t' || s[i] == '\r' || s[i] == '\n')
+	while (ft_isspace(s[i]))
 		i++;
 	return (s[i] == '\0');
 }
@@ -170,3 +188,7 @@ int	parse(t_config *data, char **lines, int *start_index)
 	*start_index = i;
 	return (1);
 }
+
+
+/* petqa nayel pak pateri depqy, vor ete 1er chi petqa lini invalid, heto petqa mi hat el nayem en vor
+ashxti isspaceov voch te menak space u tabov */

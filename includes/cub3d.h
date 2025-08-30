@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/29 16:21:06 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/08/30 18:41:09 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@
 
 # define VALID_CHARS "01NSEWD \n"
 # define TILE_SIZE 32
-# define WIDTH 720
-# define LENGTH 1280
-# define texh 128
+# define WIDTH 1440
+# define LENGTH 2560
+# define texh 256
+# define SPEED 0.025
 
 //keyboard keys
 # define XK_ESCAPE 0xff1b
@@ -95,6 +96,7 @@ typedef struct s_player {
 	int		step_y;
 	int		map_x;
 	int		map_y;
+	int		prev_view;
 }	t_player;
 
 typedef struct s_data {

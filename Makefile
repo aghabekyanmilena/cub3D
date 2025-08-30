@@ -12,8 +12,8 @@ SRC = $(SRC_DIR)/dfs.c $(SRC_DIR)/main.c $(SRC_DIR)/texture_handle.c \
 OBJ = $(SRC:.c=.o)
 
 CC = cc
-CFLAGS =  -I $(INC_DIR) -I $(MLX_DIR) -I $(LIBFT_DIR) #-g3 -fsanitize=address 
-# -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -I $(INC_DIR) -I $(MLX_DIR) -I $(LIBFT_DIR) #-g3 -fsanitize=address 
+
 MLX_LIB = $(MLX_DIR)/libmlx.a
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 MLX_FLAGS = -L $(MLX_DIR) -lmlx -L/usr/X11/lib -lX11 -lXext -lm

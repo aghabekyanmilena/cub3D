@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:29:20 by atseruny          #+#    #+#             */
-/*   Updated: 2025/08/29 16:51:30 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/08/30 18:53:16 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,14 @@ int	fri(t_data *data)
 	exit (0);
 }
 
+int rgb_to_int(t_color c)
+{
+	return ((c.r & 0xFF) << 16) | ((c.g & 0xFF) << 8) | (c.b & 0xFF);
+}
+
+
 int	check(int keycode, t_data *data)
 {
-
 	if (keycode == XK_ESCAPE)
 		fri(data);
 	return (0);
@@ -42,16 +47,35 @@ void	get_player_struct(t_config *config)
 {
 	config->player.pos_x = (double)config->posX + 0.5;
 	config->player.pos_y = (double)config->posY + 0.5;
-	
-	//check
-	config->player.plane_x = 0;
-	config->player.plane_y = 0.66;
-	config->player.dir_x = -1;
-	config->player.dir_y = 0;
-
-
-	config->player.map_x = config->posX;
-	config->player.map_y = config->posY;
+	if (config->view == 'N')
+	{
+		config->player.dir_x = -1;
+		config->player.dir_y = 0;
+		config->player.plane_x = 0;
+		config->player.plane_y = 0.66;
+	}
+	else if (config->view == 'S')
+	{
+		config->player.dir_x = 1;
+		config->player.dir_y = 0;
+		config->player.plane_x = 0;
+		config->player.plane_y = -0.66;
+	}
+	else if (config->view == 'W')
+	{
+		config->player.dir_x = 0;
+		config->player.dir_y = -1;
+		config->player.plane_x = -0.66;
+		config->player.plane_y = 0;
+	}
+	else
+	{
+		config->player.dir_x = 0;
+		config->player.dir_y = 1;
+		config->player.plane_x = 0.66;
+		config->player.plane_y = 0;
+	}
+	config->player.prev_view = -1;
 
 }
 
@@ -63,10 +87,10 @@ void	put_back(t_config *config)
 	dst = (unsigned int *) config->img.addr;
 	i = LENGTH * WIDTH / 2 + 1;
 	while (--i > 0)
-		*dst++ = 0xFFFFFF;
+		*dst++ = rgb_to_int(config->floor);
 	i = LENGTH * WIDTH / 2 + 1;
 	while (--i > 0)
-		*dst++ = 0x000000;
+		*dst++ = rgb_to_int(config->ceiling);
 }
 
 void	my_pixel_put(t_img *img, int x, int y, unsigned int color)
@@ -82,16 +106,18 @@ int	start_ray_casting(t_config *config)
 {
 	int		x;
 	int		y;
-	double	wallX; //where exactly the wall was hit
+	double	wallX;
 
 	config->img.img = mlx_new_image(config->data.mlx, LENGTH, WIDTH);
 	config->img.addr = mlx_get_data_addr(config->img.img, &config->img.bits_per_pixel,
 			&config->img.line_len, &config->img.endian);
 
-	get_player_struct(config);
 	put_back(config);
 
 	x = -1;
+	// printf("dir_x->%f\n", config->player.plane_x);
+	// printf("dir_y->%f\n", config->player.plane_y);
+
 	while (++x < LENGTH)
 	{
 		config->ray.camera_x = 2 * x / (double)LENGTH - 1;
@@ -128,7 +154,6 @@ int	start_ray_casting(t_config *config)
 		}
 		while (config->ray.hit == '0')
 		{
-
 			if (config->ray.sideDist_x < config->ray.sideDist_y)
 			{
 				config->ray.sideDist_x += config->ray.deltaDist_x;
@@ -143,7 +168,6 @@ int	start_ray_casting(t_config *config)
 			}
 			if (config->map[config->player.map_x][config->player.map_y] == '1')
 				config->ray.hit = '1';
-			
 		}
 
 		if (config->ray.side == 0)
@@ -180,20 +204,61 @@ int	start_ray_casting(t_config *config)
 			config->wall.tex_y = (int)config->wall.tex_pos & (texh - 1);
 			config->wall.tex_pos += config->wall.step;
 			if (config->ray.side == 0)
-				my_pixel_put(&config->img,  x, y, 0x0000FF);
+				my_pixel_put(&config->img,  x, y, 0x626570);
 			else
-				my_pixel_put(&config->img, x, y, 0x0000E0);
+				my_pixel_put(&config->img, x, y, 0x4E5159);
 		}
 
 	}
 	mlx_put_image_to_window(config->data.mlx, config->data.win, config->img.img, 0, 0);
 	mlx_destroy_image(config->data.mlx, config->img.img);
 
-	return (1);
+	return (0);
+}
+
+void	rotate_view(t_config *config, double angle)
+{
+	// printf("angle->%f\n", angle);
+	double	sa;
+	double	ca;
+	double	tmp;
+
+	ca = cos(angle);
+	sa = sin(angle);
+	// if (angle > 1.0)
+	// 	angle *= 0.001;
+	tmp = config->player.dir_x;
+	config->player.dir_x = config->player.dir_x * ca - config->player.dir_y * sa;
+	config->player.dir_y = tmp * sa + config->player.dir_y * ca;
+
+	tmp = config->player.plane_x;
+	config->player.plane_x = config->player.plane_x * ca - config->player.plane_y * sa;
+	config->player.plane_y = tmp * sa + config->player.plane_y * ca;
+
+}
+
+
+
+int	mouse_motion(int x, int y, t_config *config)
+{
+	double	delta_rot;
+
+	if (config->player.prev_view != -1)
+	{
+		delta_rot = (double)x - (double)config->player.prev_view;
+		if (delta_rot < 0)
+			rotate_view(config, (double)(SPEED));
+		else
+			rotate_view(config, (double)(-SPEED));
+	}
+	config->player.prev_view = x;
+	(void)y;
+	return (0);
 }
 
 void start(t_config *config, char **map)
 {
+	get_player_struct(config);
 	config->data.mlx = mlx_init();
 	if (!config->data.mlx)
 		return ;
@@ -205,9 +270,9 @@ void start(t_config *config, char **map)
 		free(config->data.mlx);
 		return ;
 	}
-
 	mlx_hook(config->data.win, 2, 1L << 0, check, &config->data);
 	mlx_hook(config->data.win, 17, 0, fri, &config->data);
+	mlx_hook(config->data.win, 6, (1L << 6), mouse_motion, config);
 	mlx_loop_hook(config->data.mlx, start_ray_casting, config);
 	mlx_loop(config->data.mlx);
 }

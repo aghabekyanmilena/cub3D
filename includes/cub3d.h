@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/27 17:14:50 by anush            ###   ########.fr       */
+/*   Updated: 2025/08/29 16:21:06 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
 
 # define VALID_CHARS "01NSEWD \n"
 # define TILE_SIZE 32
-# define WIDTH 1000
-# define LENGTH 1800
-# define h 64
+# define WIDTH 720
+# define LENGTH 1280
+# define texh 128
 
 //keyboard keys
 # define XK_ESCAPE 0xff1b
@@ -39,6 +39,18 @@
 # define XK_D 0x0044
 # define XK_W 0x0057
 # define XK_S 0x0053
+
+
+typedef struct s_img
+{
+	int		wd;
+	int		ht;
+	int		endian;
+	int		line_len;
+	int		bits_per_pixel;
+	char	*addr;
+	void	*img;
+}	t_img;
 
 typedef struct s_color
 {
@@ -119,6 +131,7 @@ typedef struct s_config
 	t_player	player;//player structna
 	t_ray		ray;
 	t_wall		wall;
+	t_img		img;
 }	t_config;
 
 

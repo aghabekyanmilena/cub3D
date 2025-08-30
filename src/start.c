@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:29:20 by atseruny          #+#    #+#             */
-/*   Updated: 2025/08/28 12:32:28 by anush            ###   ########.fr       */
+/*   Updated: 2025/08/29 16:51:30 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	fri(t_data *data)
 
 int	check(int keycode, t_data *data)
 {
+
 	if (keycode == XK_ESCAPE)
 		fri(data);
 	return (0);
@@ -39,8 +40,8 @@ int	check(int keycode, t_data *data)
 
 void	get_player_struct(t_config *config)
 {
-	config->player.pos_x = config->posX + 0.5;
-	config->player.pos_y = config->posY + 0.5;
+	config->player.pos_x = (double)config->posX + 0.5;
+	config->player.pos_y = (double)config->posY + 0.5;
 	
 	//check
 	config->player.plane_x = 0;
@@ -54,45 +55,28 @@ void	get_player_struct(t_config *config)
 
 }
 
-void	put_back(t_data *data)
+void	put_back(t_config *config)
 {
-	int i=0;
-	int j;
-	while (i<WIDTH)
-	{
-		j=0;
-		while(j<LENGTH)
-		{
-			if (i>500)
-				mlx_pixel_put(data->mlx, data->win, j, i, 0x000000);
-			else
-				mlx_pixel_put(data->mlx, data->win, j, i, 0xFFFFFF);
-			j++;
-		}
-		i++;
-	}
+	unsigned int	*dst;
+	unsigned int	i;
+
+	dst = (unsigned int *) config->img.addr;
+	i = LENGTH * WIDTH / 2 + 1;
+	while (--i > 0)
+		*dst++ = 0xFFFFFF;
+	i = LENGTH * WIDTH / 2 + 1;
+	while (--i > 0)
+		*dst++ = 0x000000;
 }
 
-int rgb_to_int(t_color c)
+void	my_pixel_put(t_img *img, int x, int y, unsigned int color)
 {
-	return ((c.r & 0xFF) << 16) | ((c.g & 0xFF) << 8) | (c.b & 0xFF);
+	char	*dst;
+
+	dst = img->addr + (y * img->line_len + x * (img->bits_per_pixel / 8));
+	*(unsigned int *)dst = color;
 }
 
-void	draw_buf(t_data *data, int buffer[WIDTH][LENGTH])
-{
-	int i=0;
-	int j;
-	while (i<LENGTH)
-	{
-		j = 0;
-		while(j<WIDTH)
-		{
-			mlx_pixel_put(data->mlx, data->win, j, i, buffer[j][i]);
-			j++;
-		}
-		i++;
-	}
-}
 
 int	start_ray_casting(t_config *config)
 {
@@ -100,123 +84,111 @@ int	start_ray_casting(t_config *config)
 	int		y;
 	double	wallX; //where exactly the wall was hit
 
-	// int buffer[LENGTH][WIDTH];
+	config->img.img = mlx_new_image(config->data.mlx, LENGTH, WIDTH);
+	config->img.addr = mlx_get_data_addr(config->img.img, &config->img.bits_per_pixel,
+			&config->img.line_len, &config->img.endian);
+
 	get_player_struct(config);
-	// put_back(&config->data);
-	while (1)
+	put_back(config);
+
+	x = -1;
+	while (++x < LENGTH)
 	{
-		x = 0;
-		while (x < WIDTH)
+		config->ray.camera_x = 2 * x / (double)LENGTH - 1;
+		config->ray.rayDir_x = config->player.dir_x + config->player.plane_x * config->ray.camera_x;
+		config->ray.rayDir_y = config->player.dir_y + config->player.plane_y * config->ray.camera_x;
+
+		config->player.map_x = (int)config->player.pos_x;
+		config->player.map_y = (int)config->player.pos_y;
+
+		
+		config->ray.deltaDist_x = (config->ray.rayDir_x == 0) ? 1e30 : fabs(1 / config->ray.rayDir_x);
+		config->ray.deltaDist_y = (config->ray.rayDir_y == 0) ? 1e30 : fabs(1 / config->ray.rayDir_y);
+		config->ray.hit = '0';
+
+		if (config->ray.rayDir_x < 0)
 		{
-			config->ray.hit = '0';
-			config->ray.camera_x = 2 * x / (double)WIDTH - 1;
-			config->ray.rayDir_x = config->player.dir_x + config->player.plane_x * config->ray.camera_x;
-			config->ray.rayDir_y = config->player.dir_y + config->player.plane_y * config->ray.camera_x;
-
-			config->ray.deltaDist_x = (config->ray.rayDir_x == 0) ? 1e30 : fabs(1 / config->ray.rayDir_x);
-			config->ray.deltaDist_y = (config->ray.rayDir_y == 0) ? 1e30 : fabs(1 / config->ray.rayDir_y);
-
-			if (config->ray.rayDir_x < 0)
-			{
-				config->player.step_x = -1;
-				config->ray.sideDist_x = (config->player.pos_x - config->player.map_x) * config->ray.deltaDist_x;
-			}
-			else
-			{
-				config->player.step_x = 1;
-				config->ray.sideDist_x = (config->player.map_x + 1.0 - config->player.pos_x) * config->ray.deltaDist_x;
-			}
-			if (config->ray.rayDir_y < 0)
-			{
-				config->player.step_y = -1;
-				config->ray.sideDist_y = (config->player.pos_y - config->player.map_y) * config->ray.deltaDist_y;
-			}
-			else
-			{
-				config->player.step_y = 1;
-				config->ray.sideDist_y = (config->player.map_y + 1.0 - config->player.pos_y) * config->ray.deltaDist_y;
-			}
-			// printf("%c\n", config->ray.hit);
-			while (config->ray.hit == '0')
-			{
-				printf("%c\n", config->map[config->player.map_x][config->player.map_y]);
-
-				if (config->ray.sideDist_x < config->ray.sideDist_y)
-				{
-					config->ray.sideDist_x += config->ray.deltaDist_x;
-					config->player.map_x += config->player.step_x;
-					config->ray.side = 0;
-				}
-				else
-				{
-					config->ray.sideDist_y += config->ray.deltaDist_y;
-					config->player.map_y += config->player.step_y;
-					config->ray.side = 1;
-				}
-				if (config->map[config->player.map_x][config->player.map_y] == '1')
-					config->ray.hit = '1';
-				
-			}
-
-			if (config->ray.side == 0)
-				config->ray.wallDist = (config->ray.sideDist_x - config->ray.deltaDist_x);
-			else
-				config->ray.wallDist = (config->ray.sideDist_y - config->ray.deltaDist_y);
-			config->wall.line_height = (int)(h / config->ray.wallDist);
-			config->wall.draw_start = config->wall.line_height / 2 + h / 2;
-			if (config->wall.draw_start < 0)
-				config->wall.draw_start = 0;
-			config->wall.draw_end = config->wall.line_height / 2 + h / 2;
-			if(config->wall.draw_end >= h)
-				config->wall.draw_end = h - 1;
-
-			if (config->ray.side == 0)
-				wallX = config->player.pos_y + config->ray.wallDist * config->ray.rayDir_y;
-			else
-				wallX = config->player.pos_x + config->ray.wallDist * config->ray.rayDir_x;
-			wallX -= floor((wallX));
-
-			config->wall.tex_x = (int)(wallX * (double)h);
-			if (config->ray.side == 0 && config->ray.rayDir_x > 0)
-				config->wall.tex_x = h - config->wall.tex_x - 1; // h=texWidth?
-			if (config->ray.side == 1 && config->ray.rayDir_y < 0)
-				config->wall.tex_x = h - config->wall.tex_x - 1;
-
-			// How much to increase the texture coordinate per screen pixel
-			config->wall.step = 1.0 * h / config->wall.line_height;
-			// Starting texture coordinate
-			config->wall.tex_pos = (config->wall.draw_start - h / 2 + config->wall.line_height / 2) * config->wall.step;
-			
-			
-			y = config->wall.draw_start;
-			while (y < config->wall.draw_end)
-			{
-				// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
-				config->wall.tex_y = (int)config->wall.tex_pos & (h - 1);
-				config->wall.tex_pos += config->wall.step;
-				// t_color c;
-				// c.r =128;
-				// c.g =128;
-				// c.b =128;
-
-				// printf("aaaa\n");
-				mlx_pixel_put(config->data.mlx, config->data.win, y, x, 0x0000FF);
-				
-
-				//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
-				// if (config->ray.side == 1)
-				// 	c = (t_color){80, 80, 80};
-				// buffer[y][x] = rgb_to_int(c);
-				
-				// printf("%d\n",rgb_to_int(buffer[y][x]) );
-				y++;
-			}
-
-			
-			// draw_buf(&config->data, buffer);
-			x++;
+			config->player.step_x = -1;
+			config->ray.sideDist_x = (config->player.pos_x - config->player.map_x) * config->ray.deltaDist_x;
 		}
+		else
+		{
+			config->player.step_x = 1;
+			config->ray.sideDist_x = (config->player.map_x + 1.0 - config->player.pos_x) * config->ray.deltaDist_x;
+		}
+		if (config->ray.rayDir_y < 0)
+		{
+			config->player.step_y = -1;
+			config->ray.sideDist_y = (config->player.pos_y - config->player.map_y) * config->ray.deltaDist_y;
+		}
+		else
+		{
+			config->player.step_y = 1;
+			config->ray.sideDist_y = (config->player.map_y + 1.0 - config->player.pos_y) * config->ray.deltaDist_y;
+		}
+		while (config->ray.hit == '0')
+		{
+
+			if (config->ray.sideDist_x < config->ray.sideDist_y)
+			{
+				config->ray.sideDist_x += config->ray.deltaDist_x;
+				config->player.map_x += config->player.step_x;
+				config->ray.side = 0;
+			}
+			else
+			{
+				config->ray.sideDist_y += config->ray.deltaDist_y;
+				config->player.map_y += config->player.step_y;
+				config->ray.side = 1;
+			}
+			if (config->map[config->player.map_x][config->player.map_y] == '1')
+				config->ray.hit = '1';
+			
+		}
+
+		if (config->ray.side == 0)
+			config->ray.wallDist = (config->ray.sideDist_x - config->ray.deltaDist_x);
+		else
+			config->ray.wallDist = (config->ray.sideDist_y - config->ray.deltaDist_y);
+		config->wall.line_height = (int)(WIDTH / config->ray.wallDist);
+		config->wall.draw_start = -config->wall.line_height / 2 + WIDTH / 2;
+		if (config->wall.draw_start < 0)
+			config->wall.draw_start = 0;
+		config->wall.draw_end = config->wall.line_height / 2 + WIDTH / 2;
+		if(config->wall.draw_end >= WIDTH)
+			config->wall.draw_end = WIDTH - 1;
+
+		if (config->ray.side == 0)
+			wallX = config->player.pos_y + config->ray.wallDist * config->ray.rayDir_y;
+		else
+			wallX = config->player.pos_x + config->ray.wallDist * config->ray.rayDir_x;
+		wallX -= floor((wallX));
+
+		config->wall.tex_x = (int)(wallX * (double)texh);
+		if (config->ray.side == 0 && config->ray.rayDir_x > 0)
+			config->wall.tex_x = texh - config->wall.tex_x - 1;
+		if (config->ray.side == 1 && config->ray.rayDir_y < 0)
+			config->wall.tex_x = texh - config->wall.tex_x - 1;
+
+		config->wall.step = 1.0 * texh / config->wall.line_height;
+		config->wall.tex_pos = (config->wall.draw_start - WIDTH / 2 + config->wall.line_height / 2) * config->wall.step;
+		
+		
+		y = config->wall.draw_start - 1;
+		while (++y < config->wall.draw_end)
+		{
+			config->wall.tex_y = (int)config->wall.tex_pos & (texh - 1);
+			config->wall.tex_pos += config->wall.step;
+			if (config->ray.side == 0)
+				my_pixel_put(&config->img,  x, y, 0x0000FF);
+			else
+				my_pixel_put(&config->img, x, y, 0x0000E0);
+		}
+
 	}
+	mlx_put_image_to_window(config->data.mlx, config->data.win, config->img.img, 0, 0);
+	mlx_destroy_image(config->data.mlx, config->img.img);
+
 	return (1);
 }
 
@@ -233,7 +205,8 @@ void start(t_config *config, char **map)
 		free(config->data.mlx);
 		return ;
 	}
-	mlx_key_hook(config->data.win, check, &config->data);
+
+	mlx_hook(config->data.win, 2, 1L << 0, check, &config->data);
 	mlx_hook(config->data.win, 17, 0, fri, &config->data);
 	mlx_loop_hook(config->data.mlx, start_ray_casting, config);
 	mlx_loop(config->data.mlx);

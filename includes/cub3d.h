@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/30 18:41:09 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/08/31 12:24:04 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 
 //keyboard keys
 # define XK_ESCAPE 0xff1b
+
+//walking
 # define XK_WL 0x0077
 # define XK_AL 0x0061
 # define XK_SL 0x0073
@@ -40,7 +42,10 @@
 # define XK_D 0x0044
 # define XK_W 0x0057
 # define XK_S 0x0053
-
+# define XK_UP 0xff52
+# define XK_DOWN 0xff54
+# define XK_LEFT 0xff51
+# define XK_RIGHT 0xff53
 
 typedef struct s_img
 {
@@ -167,5 +172,11 @@ void	init_window_and_textures(t_config *config);
 
 //start
 void	start(t_config *config, char **map);
+
+//free
+void	free_lines(char **lines);
+
+//motion
+int		mouse_motion(int x, int y, t_config *config);
 
 #endif

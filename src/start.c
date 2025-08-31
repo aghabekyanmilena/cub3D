@@ -3,30 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   start.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:29:20 by atseruny          #+#    #+#             */
-/*   Updated: 2025/08/30 18:53:16 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/08/31 12:35:56 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void free_map(char **map)
-{
-	int i=0;
-	while(map[i])
-		free(map[i++]);
-	free(map);
-}
-
 
 int	fri(t_data *data)
 {
 	mlx_destroy_window(data->mlx, data->win);
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
-	free_map(data->map);
+	free_lines(data->map);
 	exit (0);
 }
 
@@ -35,15 +26,22 @@ int rgb_to_int(t_color c)
 	return ((c.r & 0xFF) << 16) | ((c.g & 0xFF) << 8) | (c.b & 0xFF);
 }
 
-
-int	check(int keycode, t_data *data)
+int	check(int keycode, t_config *config)
 {
 	if (keycode == XK_ESCAPE)
-		fri(data);
+		fri(&config->data);
+	else if (keycode == XK_UP || keycode == XK_W || keycode == XK_WL)
+		printf("Going up: dir_x %f dir_y %f\n", config->player.dir_x, config->player.dir_y); // >0.5 == 1 so yst dra uxxutyuny voroshum enq 
+	else if (keycode == XK_DOWN || keycode == XK_S || keycode == XK_SL)
+		printf("Going down\n");
+	else if (keycode == XK_RIGHT || keycode == XK_D || keycode == XK_DL)
+		printf("Going right\n");
+	else if (keycode == XK_LEFT || keycode == XK_A || keycode == XK_AL)
+		printf("Going left\n");
 	return (0);
 }
 
-void	get_player_struct(t_config *config)
+void	init_player_struct(t_config *config)
 {
 	config->player.pos_x = (double)config->posX + 0.5;
 	config->player.pos_y = (double)config->posY + 0.5;
@@ -76,7 +74,6 @@ void	get_player_struct(t_config *config)
 		config->player.plane_y = 0;
 	}
 	config->player.prev_view = -1;
-
 }
 
 void	put_back(t_config *config)
@@ -111,13 +108,8 @@ int	start_ray_casting(t_config *config)
 	config->img.img = mlx_new_image(config->data.mlx, LENGTH, WIDTH);
 	config->img.addr = mlx_get_data_addr(config->img.img, &config->img.bits_per_pixel,
 			&config->img.line_len, &config->img.endian);
-
 	put_back(config);
-
 	x = -1;
-	// printf("dir_x->%f\n", config->player.plane_x);
-	// printf("dir_y->%f\n", config->player.plane_y);
-
 	while (++x < LENGTH)
 	{
 		config->ray.camera_x = 2 * x / (double)LENGTH - 1;
@@ -208,7 +200,6 @@ int	start_ray_casting(t_config *config)
 			else
 				my_pixel_put(&config->img, x, y, 0x4E5159);
 		}
-
 	}
 	mlx_put_image_to_window(config->data.mlx, config->data.win, config->img.img, 0, 0);
 	mlx_destroy_image(config->data.mlx, config->img.img);
@@ -216,49 +207,10 @@ int	start_ray_casting(t_config *config)
 	return (0);
 }
 
-void	rotate_view(t_config *config, double angle)
-{
-	// printf("angle->%f\n", angle);
-	double	sa;
-	double	ca;
-	double	tmp;
-
-	ca = cos(angle);
-	sa = sin(angle);
-	// if (angle > 1.0)
-	// 	angle *= 0.001;
-	tmp = config->player.dir_x;
-	config->player.dir_x = config->player.dir_x * ca - config->player.dir_y * sa;
-	config->player.dir_y = tmp * sa + config->player.dir_y * ca;
-
-	tmp = config->player.plane_x;
-	config->player.plane_x = config->player.plane_x * ca - config->player.plane_y * sa;
-	config->player.plane_y = tmp * sa + config->player.plane_y * ca;
-
-}
-
-
-
-int	mouse_motion(int x, int y, t_config *config)
-{
-	double	delta_rot;
-
-	if (config->player.prev_view != -1)
-	{
-		delta_rot = (double)x - (double)config->player.prev_view;
-		if (delta_rot < 0)
-			rotate_view(config, (double)(SPEED));
-		else
-			rotate_view(config, (double)(-SPEED));
-	}
-	config->player.prev_view = x;
-	(void)y;
-	return (0);
-}
 
 void start(t_config *config, char **map)
 {
-	get_player_struct(config);
+	init_player_struct(config);
 	config->data.mlx = mlx_init();
 	if (!config->data.mlx)
 		return ;
@@ -270,7 +222,7 @@ void start(t_config *config, char **map)
 		free(config->data.mlx);
 		return ;
 	}
-	mlx_hook(config->data.win, 2, 1L << 0, check, &config->data);
+	mlx_hook(config->data.win, 2, 1L << 0, check, config);
 	mlx_hook(config->data.win, 17, 0, fri, &config->data);
 	mlx_hook(config->data.win, 6, (1L << 6), mouse_motion, config);
 	mlx_loop_hook(config->data.mlx, start_ray_casting, config);

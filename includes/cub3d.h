@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/31 12:24:04 by anush            ###   ########.fr       */
+/*   Updated: 2025/09/01 17:44:23 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define LENGTH 2560
 # define texh 256
 # define SPEED 0.025
+# define STEP 0.07
 
 //keyboard keys
 # define XK_ESCAPE 0xff1b
@@ -42,8 +43,6 @@
 # define XK_D 0x0044
 # define XK_W 0x0057
 # define XK_S 0x0053
-# define XK_UP 0xff52
-# define XK_DOWN 0xff54
 # define XK_LEFT 0xff51
 # define XK_RIGHT 0xff53
 
@@ -175,8 +174,14 @@ void	start(t_config *config, char **map);
 
 //free
 void	free_lines(char **lines);
+int		fri(t_data *data);
 
 //motion
 int		mouse_motion(int x, int y, t_config *config);
+void	rotate_view(t_config *config, double angle);
+
+//move
+int		check(int keycode, t_config *config);
+
 
 #endif

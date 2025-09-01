@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:29:20 by atseruny          #+#    #+#             */
-/*   Updated: 2025/08/31 12:35:56 by anush            ###   ########.fr       */
+/*   Updated: 2025/09/01 16:59:23 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,6 @@ int	fri(t_data *data)
 int rgb_to_int(t_color c)
 {
 	return ((c.r & 0xFF) << 16) | ((c.g & 0xFF) << 8) | (c.b & 0xFF);
-}
-
-int	check(int keycode, t_config *config)
-{
-	if (keycode == XK_ESCAPE)
-		fri(&config->data);
-	else if (keycode == XK_UP || keycode == XK_W || keycode == XK_WL)
-		printf("Going up: dir_x %f dir_y %f\n", config->player.dir_x, config->player.dir_y); // >0.5 == 1 so yst dra uxxutyuny voroshum enq 
-	else if (keycode == XK_DOWN || keycode == XK_S || keycode == XK_SL)
-		printf("Going down\n");
-	else if (keycode == XK_RIGHT || keycode == XK_D || keycode == XK_DL)
-		printf("Going right\n");
-	else if (keycode == XK_LEFT || keycode == XK_A || keycode == XK_AL)
-		printf("Going left\n");
-	return (0);
 }
 
 void	init_player_struct(t_config *config)

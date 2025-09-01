@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/01 17:44:23 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/01 20:40:03 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ typedef struct s_ray
 	double	deltaDist_x;
 	double	deltaDist_y;
 	double	wallDist;
-	char	hit;
+	int		hit;
 	int		side;
 }	t_ray;
 

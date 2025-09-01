@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:29:20 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/01 16:59:23 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/01 20:47:24 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	start_ray_casting(t_config *config)
 		
 		config->ray.deltaDist_x = (config->ray.rayDir_x == 0) ? 1e30 : fabs(1 / config->ray.rayDir_x);
 		config->ray.deltaDist_y = (config->ray.rayDir_y == 0) ? 1e30 : fabs(1 / config->ray.rayDir_y);
-		config->ray.hit = '0';
+		config->ray.hit = 0;
 
 		if (config->ray.rayDir_x < 0)
 		{
@@ -129,7 +129,7 @@ int	start_ray_casting(t_config *config)
 			config->player.step_y = 1;
 			config->ray.sideDist_y = (config->player.map_y + 1.0 - config->player.pos_y) * config->ray.deltaDist_y;
 		}
-		while (config->ray.hit == '0')
+		while (config->ray.hit == 0)
 		{
 			if (config->ray.sideDist_x < config->ray.sideDist_y)
 			{
@@ -143,8 +143,15 @@ int	start_ray_casting(t_config *config)
 				config->player.map_y += config->player.step_y;
 				config->ray.side = 1;
 			}
-			if (config->map[config->player.map_x][config->player.map_y] == '1')
-				config->ray.hit = '1';
+			// printf("map_x %d map_y %d ray_hit %d\n", config->player.map_x, config->player.map_y, config->ray.hit);
+			if (config->map[config->player.map_x][config->player.map_y] != '0')
+				config->ray.hit = 1;
+			if (config->map[config->player.map_x][config->player.map_y] == 'N' || 
+			config->map[config->player.map_x][config->player.map_y] == 'W' ||
+			config->map[config->player.map_x][config->player.map_y] == 'S' || 
+			config->map[config->player.map_x][config->player.map_y] == 'E')
+				config->ray.hit = 0;
+			
 		}
 
 		if (config->ray.side == 0)

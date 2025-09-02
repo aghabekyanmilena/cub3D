@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/30 15:55:24 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/02 19:59:28 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	main(int argc, char **argv)
 	int map_start = 0;
 
 	if (argc != 2)
-		return (printf("Usage: %s <map.cub>\n", argv[0]), 1);
+		return (printf(" Error\nUsage: %s <map.cub>\n", argv[0]), 1);
 	if (!check_filename(argv[1]))
 		return (1);
 	ft_bzero(&config, sizeof(t_config));

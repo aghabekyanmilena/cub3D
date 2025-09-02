@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   valid.c                                            :+:      :+:    :+:   */
+/*   validation_en_6y.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/02 15:06:44 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/02 23:48:22 by miaghabe         ###   ########.fr       */
+/*   Created: 2025/09/01 13:37:05 by miaghabe          #+#    #+#             */
+/*   Updated: 2025/09/02 19:57:37 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static char *skip_ws(char *s)
+char *skip_ws(char *s)
 {
 	while (ft_isspace(*s))
 		s++;
@@ -34,12 +34,12 @@ int	demi_6_toxy(char *line)
 	char *s = skip_ws(line);
 
 	return (
-		(s[0] == 'N' && s[1] == 'O' && (s[2] == ' ' || s[2] == '\t')) ||
-		(s[0] == 'S' && s[1] == 'O' && (s[2] == ' ' || s[2] == '\t')) ||
-		(s[0] == 'W' && s[1] == 'E' && (s[2] == ' ' || s[2] == '\t')) ||
-		(s[0] == 'E' && s[1] == 'A' && (s[2] == ' ' || s[2] == '\t')) ||
-		(s[0] == 'F' && (s[1] == ' ' || s[1] == '\t')) ||
-		(s[0] == 'C' && (s[1] == ' ' || s[1] == '\t'))
+		(s[0] == 'N' && s[1] == 'O' && ft_isspace(s[2])) ||
+		(s[0] == 'S' && s[1] == 'O' && ft_isspace(s[2])) ||
+		(s[0] == 'W' && s[1] == 'E' && ft_isspace(s[2])) ||
+		(s[0] == 'E' && s[1] == 'A' && ft_isspace(s[2])) ||
+		(s[0] == 'F' && ft_isspace(s[1])) ||
+		(s[0] == 'C' && ft_isspace(s[1]))
 	);
 }
 
@@ -47,17 +47,17 @@ int	parse_et_6_toxy(t_config *data, char *line)
 {
 	char *s = skip_ws(line);
 
-	if (s[0] == 'N' && s[1] == 'O' && (s[2] == ' ' || s[2] == '\t'))
+	if (s[0] == 'N' && s[1] == 'O' && ft_isspace(s[2]))
 		return (parse_texture(data, &data->no, s + 2, "NO"));
-	if (s[0] == 'S' && s[1] == 'O' && (s[2] == ' ' || s[2] == '\t'))
+	if (s[0] == 'S' && s[1] == 'O' && ft_isspace(s[2]))
 		return (parse_texture(data, &data->so, s + 2, "SO"));
-	if (s[0] == 'W' && s[1] == 'E' && (s[2] == ' ' || s[2] == '\t'))
+	if (s[0] == 'W' && s[1] == 'E' && ft_isspace(s[2]))
 		return (parse_texture(data, &data->we, s + 2, "WE"));
-	if (s[0] == 'E' && s[1] == 'A' && (s[2] == ' ' || s[2] == '\t'))
+	if (s[0] == 'E' && s[1] == 'A' && ft_isspace(s[2]))
 		return (parse_texture(data, &data->ea, s + 2, "EA"));
-	if (s[0] == 'F' && (s[1] == ' ' || s[1] == '\t'))
+	if (s[0] == 'F' && ft_isspace(s[1]))
 		return (parse_color(data, &data->f, s + 1, "F"));
-	if (s[0] == 'C' && (s[1] == ' ' || s[1] == '\t'))
+	if (s[0] == 'C' && ft_isspace(s[1]))
 		return (parse_color(data, &data->c, s + 1, "C"));
 	return (0);
 }
@@ -76,7 +76,7 @@ int	parse_texture(t_config *data, int *flag, char *after_key, char *type)
 	if (ft_strlen(trimmed) < 5 || ft_strcmp(trimmed + ft_strlen(trimmed) - 4, ".xpm") != 0)
 	{
 		free(trimmed);
-		return (printf("Error\n %s must be a .xpm file\n", type), 0);
+		return (printf("Error\n%s must be a .xpm file\n", type), 0);
 	}
 	if (ft_strcmp(type, "NO") == 0)
 		dest = &data->no_path;
@@ -122,10 +122,12 @@ int	parse_color(t_config *data, int *flag, char *after_key, char *type)
 	if (*tmp++ != ',')
 		return (printf("Error\nInvalid %s format\n", type), 0);
 	color->b = guyni_stugum(&tmp);
-	while (*tmp == ' ' || *tmp == '\t')
+	while (ft_isspace(*tmp))
 		tmp++;
+	// if (!(*tmp == '\0' || *tmp == '\n' || *tmp == '\r'))
+	// 	return (printf("Error\nTrailing characters in %s\n", type), 0);
 	if (color->r == -1 || color->g == -1 || color->b == -1)
-		return (printf("Error\n%s values must be 0..255\n", type), 0);
+		return (printf("Error\n %s values must be 0..255\n", type), 0);
 	*flag = 1;
 	return (1);
 }

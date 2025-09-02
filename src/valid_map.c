@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
+/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:24:22 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/27 12:26:23 by anush            ###   ########.fr       */
+/*   Updated: 2025/09/02 17:46:19 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int parse_map(t_config *data, char **lines, int start_index)
 		{
 			if (!characker_check(line[j]))
 			{
-				printf("error, invalid character\n");
+				printf("Error\ninvalid character\n");
 				return (0);
 			}
 			if (ft_strchr("NSEW", line[j]))
@@ -67,7 +67,7 @@ int parse_map(t_config *data, char **lines, int start_index)
 	data->player_count = player_count;
 	if (player_count != 1)
 	{
-		printf("error, invalid number of players\n");
+		printf("Error\ninvalid number of players\n");
 		return 0;
 	}
 	return (1);

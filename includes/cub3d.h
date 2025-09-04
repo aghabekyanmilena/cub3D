@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/01 20:40:03 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:09:50 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,10 @@ typedef struct s_config
 	t_ray		ray;
 	t_wall		wall;
 	t_img		img;
+	t_img		south;
+	t_img		north;
+	t_img		east;
+	t_img		west;
 }	t_config;
 
 
@@ -182,6 +186,11 @@ void	rotate_view(t_config *config, double angle);
 
 //move
 int		check(int keycode, t_config *config);
+
+//utils
+int		rgb_to_int(t_color c);
+void	init_player_struct(t_config *config);
+void	get_textures(t_config *config);
 
 
 #endif

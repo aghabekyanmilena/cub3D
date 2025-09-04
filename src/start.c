@@ -6,60 +6,11 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:29:20 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/01 20:47:24 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:35:50 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-int	fri(t_data *data)
-{
-	mlx_destroy_window(data->mlx, data->win);
-	mlx_destroy_display(data->mlx);
-	free(data->mlx);
-	free_lines(data->map);
-	exit (0);
-}
-
-int rgb_to_int(t_color c)
-{
-	return ((c.r & 0xFF) << 16) | ((c.g & 0xFF) << 8) | (c.b & 0xFF);
-}
-
-void	init_player_struct(t_config *config)
-{
-	config->player.pos_x = (double)config->posX + 0.5;
-	config->player.pos_y = (double)config->posY + 0.5;
-	if (config->view == 'N')
-	{
-		config->player.dir_x = -1;
-		config->player.dir_y = 0;
-		config->player.plane_x = 0;
-		config->player.plane_y = 0.66;
-	}
-	else if (config->view == 'S')
-	{
-		config->player.dir_x = 1;
-		config->player.dir_y = 0;
-		config->player.plane_x = 0;
-		config->player.plane_y = -0.66;
-	}
-	else if (config->view == 'W')
-	{
-		config->player.dir_x = 0;
-		config->player.dir_y = -1;
-		config->player.plane_x = -0.66;
-		config->player.plane_y = 0;
-	}
-	else
-	{
-		config->player.dir_x = 0;
-		config->player.dir_y = 1;
-		config->player.plane_x = 0.66;
-		config->player.plane_y = 0;
-	}
-	config->player.prev_view = -1;
-}
 
 void	put_back(t_config *config)
 {
@@ -151,7 +102,6 @@ int	start_ray_casting(t_config *config)
 			config->map[config->player.map_x][config->player.map_y] == 'S' || 
 			config->map[config->player.map_x][config->player.map_y] == 'E')
 				config->ray.hit = 0;
-			
 		}
 
 		if (config->ray.side == 0)
@@ -214,6 +164,7 @@ void start(t_config *config, char **map)
 		free(config->data.mlx);
 		return ;
 	}
+	get_textures(config);
 	mlx_hook(config->data.win, 2, 1L << 0, check, config);
 	mlx_hook(config->data.win, 17, 0, fri, &config->data);
 	mlx_hook(config->data.win, 6, (1L << 6), mouse_motion, config);

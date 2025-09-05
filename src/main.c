@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/02 19:59:28 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/05 10:48:13 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,3 +90,4 @@ int	main(int argc, char **argv)
 	free_lines(map_lines);
 	return (0);
 }
+

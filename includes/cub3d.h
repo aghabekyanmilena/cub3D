@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
+/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/27 12:35:37 by anush            ###   ########.fr       */
+/*   Updated: 2025/09/05 00:39:50 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,10 @@ typedef struct s_config
 	int		c;
 	char	**map;
 	int		height; // mapi heighty
+	int		width;
 	int		player_count;
+	int		player_x;   // column in original (trimmed) map
+	int		player_y;   // row in original (trimmed) map
 }	t_config;
 
 
@@ -90,20 +93,20 @@ int		ft_newline_instr(char *s);
 char	*ft_strjoinn(char *s1, char *s2, size_t l1, size_t l2);
 char	*get_next_line(int fd);
 
-// valid.c
-int	check_filename(char *filename);
-int	demi_6_toxy(char *line);
-int	parse_et_6_toxy(t_config *data, char *line);
-int	parse(t_config *data, char **lines, int *start_index);
-int parse_texture(t_config *data, int *flag, char *after_key, char *type);
-int parse_color(t_config *data, int *flag, char *after_key, char *type);
-int is_ws_only(char *s);
+// // valid.c
+// int	check_filename(char *filename);
+// int	demi_6_toxy(char *line);
+// int	parse_et_6_toxy(t_config *data, char *line);
+// int	parse(t_config *data, char **lines, int *start_index);
+// int parse_texture(t_config *data, int *flag, char *after_key, char *type);
+// int parse_color(t_config *data, int *flag, char *after_key, char *type);
+// int is_ws_only(char *s);
 
 
-// texture
-void	draw_tile(t_data *data, int x, int y, void *img);
-void	render_map(t_config *config);
-void	init_window_and_textures(t_config *config);
-void	init_window_and_textures(t_config *config);
+// // texture
+// void	draw_tile(t_data *data, int x, int y, void *img);
+// void	render_map(t_config *config);
+// void	init_window_and_textures(t_config *config);
+// void	init_window_and_textures(t_config *config);
 
 #endif

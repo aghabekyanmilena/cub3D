@@ -6,28 +6,11 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:06:44 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/02 23:48:22 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/06 16:10:08 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-static char *skip_ws(char *s)
-{
-	while (ft_isspace(*s))
-		s++;
-	return (s);
-}
-
-int is_ws_only(char *s)
-{
-	size_t i;
-
-	i = 0;
-	while (ft_isspace(s[i]))
-		i++;
-	return (s[i] == '\0');
-}
 
 int	demi_6_toxy(char *line)
 {

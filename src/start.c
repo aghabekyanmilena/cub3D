@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:29:20 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/04 16:35:50 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/06 16:23:22 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,66 @@ void	my_pixel_put(t_img *img, int x, int y, unsigned int color)
 	*(unsigned int *)dst = color;
 }
 
+void	minimap(t_config *config)
+{
+	int	i;
+	int	j;
+	int	k;
+	int	m;
+	int	n;
+
+	j = 0;
+	n = 0;
+	while (config->map[j])
+	{
+		i = 0;
+		while (i < 7)
+		{
+			k = 0;
+			m = 0;
+			while (config->map[j][k] != '\0')
+			{
+				while (ft_isspace(config->map[j][k]))
+				{
+					k++;
+					m += 3;
+				}
+				if (config->map[j][k] == '\0')
+					break;
+				if (config->map[j][k] == '1')
+				{
+					my_pixel_put(&config->img, m, n, 0x000000);
+					my_pixel_put(&config->img, m + 1, n, 0x000000);
+					my_pixel_put(&config->img, m + 2, n, 0x000000);
+					my_pixel_put(&config->img, m + 3, n, 0x000000);
+					my_pixel_put(&config->img, m + 4, n, 0x000000);
+					my_pixel_put(&config->img, m + 5, n, 0x000000);
+					my_pixel_put(&config->img, m + 6, n, 0x000000);
+					// my_pixel_put(&config->img, m + 7, n, 0x000000);
+					// my_pixel_put(&config->img, m + 8, n, 0x000000);
+					// my_pixel_put(&config->img, m + 9, n, 0x000000);
+
+				}
+				else if (config->map[j][k] == 'N' || config->map[j][k] == 'S' || config->map[j][k] == 'W' || config->map[j][k] == 'E')
+				{
+					my_pixel_put(&config->img, m, n, 0xFF0000);
+					my_pixel_put(&config->img, m + 1, n, 0xFF0000);
+					my_pixel_put(&config->img, m + 2, n, 0xFF0000);
+					my_pixel_put(&config->img, m + 3, n, 0xFF0000);
+					my_pixel_put(&config->img, m + 4, n, 0xFF0000);
+					my_pixel_put(&config->img, m + 5, n, 0xFF0000);
+					my_pixel_put(&config->img, m + 6, n, 0xFF0000);
+				}
+				m += 7;
+				k++;
+			}
+			i++;
+			n++;
+		}
+		j++;
+	}
+	
+}
 
 int	start_ray_casting(t_config *config)
 {
@@ -94,7 +154,6 @@ int	start_ray_casting(t_config *config)
 				config->player.map_y += config->player.step_y;
 				config->ray.side = 1;
 			}
-			// printf("map_x %d map_y %d ray_hit %d\n", config->player.map_x, config->player.map_y, config->ray.hit);
 			if (config->map[config->player.map_x][config->player.map_y] != '0')
 				config->ray.hit = 1;
 			if (config->map[config->player.map_x][config->player.map_y] == 'N' || 
@@ -137,12 +196,17 @@ int	start_ray_casting(t_config *config)
 		{
 			config->wall.tex_y = (int)config->wall.tex_pos & (texh - 1);
 			config->wall.tex_pos += config->wall.step;
-			if (config->ray.side == 0)
-				my_pixel_put(&config->img,  x, y, 0x626570);
-			else
-				my_pixel_put(&config->img, x, y, 0x4E5159);
+			if (config->ray.side == 0 && config->ray.rayDir_x > 0)
+				my_pixel_put(&config->img, x, y, get_pixel(&config->south, config->wall.tex_x, config->wall.tex_y));
+			else if (config->ray.side == 0 && config->ray.rayDir_x < 0)
+				my_pixel_put(&config->img, x, y, get_pixel(&config->north, config->wall.tex_x, config->wall.tex_y));
+			else if (config->ray.side == 1 && config->ray.rayDir_y > 0)
+				my_pixel_put(&config->img, x, y, get_pixel(&config->east, config->wall.tex_x, config->wall.tex_y));
+			else if (config->ray.side == 1 && config->ray.rayDir_y < 0)
+				my_pixel_put(&config->img, x, y, get_pixel(&config->west, config->wall.tex_x, config->wall.tex_y));
 		}
 	}
+	minimap(config);
 	mlx_put_image_to_window(config->data.mlx, config->data.win, config->img.img, 0, 0);
 	mlx_destroy_image(config->data.mlx, config->img.img);
 

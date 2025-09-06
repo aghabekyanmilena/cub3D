@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/04 16:09:50 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/04 19:53:55 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,7 @@ int		check(int keycode, t_config *config);
 int		rgb_to_int(t_color c);
 void	init_player_struct(t_config *config);
 void	get_textures(t_config *config);
+unsigned int	get_pixel(t_img *tex, int x, int y);
 
 
 #endif

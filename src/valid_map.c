@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:24:22 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/02 17:46:19 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/06 19:54:57 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,45 +20,51 @@ static int characker_check(char c)
 
 int parse_map(t_config *data, char **lines, int start_index)
 {
-	int		i = start_index;
-	int		line_count = 0;
-	int		player_count = 0;
-	char	*line;
-	int		j;
+	int	i = 0;
+	int	player_count = 0;
+	int	line_count = 0;
+	int	j;
 
-	while (lines[i])
+	int	k = start_index;
+	while (lines[k])
 	{
-		if (!is_ws_only(lines[i]))
-			line_count++;
-		i++;
+		if (!is_ws_only(lines[k]))
+				line_count++;
+		k++;
 	}
 	data->map = malloc(sizeof(char *) * (line_count + 1));
 	if (!data->map)
 		return (0);
-	i = 0;
 	while (lines[start_index])
 	{
-		line = lines[start_index];
-		if (is_ws_only(line))
+		if (is_ws_only(lines[start_index]))
 		{
 			start_index++;
 			continue;
 		}
 		j = 0;
-		while (line[j] && line[j] != '\n' && line[j] != '\r')
+		while (lines[start_index][j] && lines[start_index][j] != '\n' && lines[start_index][j] != '\r')
 		{
-			if (!characker_check(line[j]))
+			if (!characker_check(lines[start_index][j]))
 			{
-				printf("Error\ninvalid character\n");
+				printf("Error\ninvalid character in map\n");
+				while (i > 0)
+					free(data->map[--i]);
+				free(data->map);
 				return (0);
 			}
-			if (ft_strchr("NSEW", line[j]))
+			if (ft_strchr("NSEW", lines[start_index][j]))
 				player_count++;
 			j++;
 		}
-		data->map[i] = ft_strtrim(line, " \t\r\n");
+		data->map[i] = ft_strdup(lines[start_index]);
 		if (!data->map[i])
+		{
+			while (i > 0)
+				free(data->map[--i]);
+			free(data->map);
 			return (0);
+		}
 		i++;
 		start_index++;
 	}
@@ -66,9 +72,6 @@ int parse_map(t_config *data, char **lines, int start_index)
 	data->height = line_count;
 	data->player_count = player_count;
 	if (player_count != 1)
-	{
-		printf("Error\ninvalid number of players\n");
-		return 0;
-	}
+		return (printf("Error\ninvalid number of players\n"), 0);
 	return (1);
 }

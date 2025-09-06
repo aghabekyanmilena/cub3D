@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/06 16:15:47 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/06 20:00:46 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,9 @@ typedef struct s_config
 	int		height; // mapi heighty
 	int		width;
 	int		player_count;
-	int		player_x;   // column in original (trimmed) map
-	int		player_y;   // row in original (trimmed) map
+	int		player_x;
+	int		player_y;
 }	t_config;
-
 
 // valid_map u dfs
 char	**copy_map(char **map, int height);

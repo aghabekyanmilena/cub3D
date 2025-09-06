@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 16:00:12 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/03 16:33:16 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/06 19:33:26 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	load_textures(t_config *config)
 		);
 		if (!config->graphics.textures[i])
 		{
-			printf("load failed: %s\n", config->graphics.texture_paths[i]);
+			printf("Error\nLoad failed: %s\n", config->graphics.texture_paths[i]);
 			exit(1);
 		}
 	}

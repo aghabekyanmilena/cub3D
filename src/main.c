@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/06 16:19:15 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/06 19:38:08 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,20 @@ int	main(int argc, char **argv)
 		return (1);
 	ft_bzero(&config, sizeof(t_config));
 	map_lines = read_map(argv[1]);
+	
 	if (!map_lines)
 		return (1);
 	if (!parse(&config, map_lines, &map_start))
 		return (free_lines(map_lines), 1);
 	if (!parse_map(&config, map_lines, map_start))
 		return (free_lines(map_lines), 1);
+	// int o = 0;
+	// while(config.map[o])
+	// {
+	// 	printf("%s\n", config.map[o]);
+	// 	o++;
+	// }
+	// printf("%d\n", config.floor.g);
 	free_lines(map_lines);
 	return (0);
 }

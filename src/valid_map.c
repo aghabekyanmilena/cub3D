@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:24:22 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/06 19:54:57 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/07 19:09:48 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,11 @@ int parse_map(t_config *data, char **lines, int start_index)
 				return (0);
 			}
 			if (ft_strchr("NSEW", lines[start_index][j]))
+			{
+				data->player_x = j;
+				data->player_y = i;
 				player_count++;
+			}
 			j++;
 		}
 		data->map[i] = ft_strdup(lines[start_index]);

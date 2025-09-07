@@ -6,22 +6,22 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:18:18 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/06 16:19:46 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/07 13:51:07 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-char *skip_ws(char *s)
+char	*skip_ws(char *s)
 {
 	while (ft_isspace(*s))
 		s++;
 	return (s);
 }
 
-int is_ws_only(char *s)
+int	is_ws_only(char *s)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (ft_isspace(s[i]))

@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/06 20:00:46 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/07 22:25:57 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ typedef struct s_config
 }	t_config;
 
 // valid_map u dfs
-char	**copy_map(char **map, int height);
+char	**copy_map(char **map);
 int		is_invalid_tile(char c);
 int		qaylelu_tex(char c);
 int		dfs(char **map, int x, int y, int max_y);
@@ -111,6 +111,11 @@ void	init_window_and_textures(t_config *config);
 
 int		parse(t_config *data, char **lines, int *start_index);
 int		parse_map(t_config *data, char **lines, int start_index);
+
+
+int	check_map_closed(t_config *config);
+
+
 
 
 #endif

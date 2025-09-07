@@ -6,65 +6,89 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 14:14:36 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/03 14:19:35 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/07 23:52:42 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-char	**copy_map(char **map, int height)
+char	**copy_map(char **map)
 {
 	char	**copy;
 	int		i;
 
-	copy = malloc(sizeof(char *) * (height + 1));
+	i = 0;
+	while (map[i])
+		i++;
+	copy = malloc(sizeof(char *) * (i + 1));
 	if (!copy)
 		return (NULL);
 	i = 0;
 	while (map[i])
 	{
 		copy[i] = ft_strdup(map[i]);
-		if (!copy[i])
-			return (NULL);
+		// if (!copy[i])
+		// 	return (NULL);
 		i++;
 	}
 	copy[i] = NULL;
 	return (copy);
 }
 
-int	is_invalid_tile(char c)
+int	flood_fill_rec(char **map, int y, int x)
 {
-	return (c == ' ' || c == '\0');
+	
+	if (y < 0 || x < 0 || map[y][x] == '\0')
+		return 0;
+	printf("%c\n", map[y][x]);
+	if (map[y][x] != '\0' && map[y][x] != '1' && map[y][x] != 'F')
+		map[y][x] = 'F';
+	else
+		return 1;
+	if (!flood_fill_rec(map, y + 1, x))
+		return 0;
+	if (!flood_fill_rec(map, y - 1, x))
+		return 0;
+	if (!flood_fill_rec(map, y, x + 1))
+		return 0;
+	if (!flood_fill_rec(map, y, x - 1))
+		return 0;
+	return (1);
 }
 
-int	qaylelu_tex(char c)
+void	flood_fill(char **map, int start_y, int start_x)
 {
-	return (c == '0' || c == 'N' ||
-		c == 'S' || c == 'E' || c == 'W' || c == 'D');
+	if (!map)
+		return;
+	if (!flood_fill_rec(map, start_y, start_x))
+		printf("Invalid\n");
 }
 
-// Recursive DFS
-int	dfs(char **map, int x, int y, int max_y)
+void	free_temp_map(char **temp_map, int height)
 {
-	int	row_len;
+	int	y = 0;
+	while (y < height)
+		free(temp_map[y++]);
+	free(temp_map);
+}
 
-	if (y < 0 || y >= max_y)
+int	check_map_closed(t_config *config)
+{
+	char	**temp_map;
+
+	temp_map = (char **)malloc((14 + 1) * sizeof(char *));
+	if (!temp_map)
 		return (0);
-	row_len = ft_strlen(map[y]);
-	if (x < 0 || x >= row_len)
+	temp_map = copy_map(config->map);
+	if (!temp_map)
 		return (0);
-	if (is_invalid_tile(map[y][x]))
-		return (0);
-	if (!qaylelu_tex(map[y][x]))
-		return (1);
-	map[y][x] = 'x';
-	if (!dfs(map, x + 1, y, max_y))
-		return (0);
-	if (!dfs(map, x - 1, y, max_y))
-		return (0);
-	if (!dfs(map, x, y + 1, max_y))
-		return (0);
-	if (!dfs(map, x, y - 1, max_y))
-		return (0);
+	flood_fill(temp_map, config->player_y, config->player_x);
+	int o = 0;
+	while(temp_map[o])
+	{
+		printf("%s\n", temp_map[o]);
+		o++;
+	}
+	free_temp_map(temp_map, config->height);
 	return (1);
 }

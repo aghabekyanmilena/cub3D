@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:06:44 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/06 19:37:06 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/07 22:59:25 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ int	parse_et_6_toxy(t_config *data, char *line)
 	return (0);
 }
 
-int	parse_texture(t_config *data, int *flag, char *after_key, char *type)
+int	parse_texture(t_config *data, int *flag, char *skip, char *type)
 {
 	char	**dest;
-	char	*pos = skip_ws(after_key);
+	char	*pos = skip_ws(skip);
 	char	*trimmed;
 
 	if (*flag)
@@ -89,9 +89,9 @@ static int	guyni_stugum(char **str)
 	return (val);
 }
 
-int	parse_color(t_config *data, int *flag, char *after_key, char *type)
+int	parse_color(t_config *data, int *flag, char *skip, char *type)
 {
-	char	*tmp = skip_ws(after_key);
+	char	*tmp = skip_ws(skip);
 	t_color	*color;
 
 	if (*flag)

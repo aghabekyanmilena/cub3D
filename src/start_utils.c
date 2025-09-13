@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 15:57:28 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/04 19:46:10 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/13 15:38:01 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,20 @@ void	init_player_struct(t_config *config)
 
 void	get_textures(t_config *config)
 {
+	char	*hands_path = "./textures/camera.xpm";
+	config->hands.ht = texh;
+	config->hands.wd = texh;
+	config->hands.img = mlx_xpm_file_to_image(config->data.mlx, hands_path, &config->hands.wd, &config->hands.ht);
+	config->hands.addr = mlx_get_data_addr(config->hands.img, &config->hands.bits_per_pixel,
+			&config->hands.line_len, &config->hands.endian);
+
+	char	*closed_door_path= "./textures/closed_door.xpm";
+	config->closed_door.ht = texh;
+	config->closed_door.wd = texh;
+	config->closed_door.img = mlx_xpm_file_to_image(config->data.mlx, closed_door_path, &config->closed_door.wd, &config->closed_door.ht);
+	config->closed_door.addr = mlx_get_data_addr(config->closed_door.img, &config->closed_door.bits_per_pixel,
+			&config->closed_door.line_len, &config->open_door.endian);
+
 	config->south.ht = texh;
 	config->south.wd = texh;
 	config->south.img = mlx_xpm_file_to_image(config->data.mlx, config->so_path, &config->south.wd, &config->south.ht);

@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/04 19:53:55 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/13 15:36:19 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define LENGTH 2560
 # define texh 256
 # define SPEED 0.025
-# define STEP 0.07
+# define STEP 0.0773
 
 //keyboard keys
 # define XK_ESCAPE 0xff1b
@@ -142,6 +142,9 @@ typedef struct s_config
 	t_img		north;
 	t_img		east;
 	t_img		west;
+	t_img		hands;
+	t_img		open_door;
+	t_img		closed_door;
 }	t_config;
 
 

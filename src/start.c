@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:29:20 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/06 16:23:22 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/13 15:34:43 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,21 @@ void	my_pixel_put(t_img *img, int x, int y, unsigned int color)
 	*(unsigned int *)dst = color;
 }
 
-void	minimap(t_config *config)
+void	put_miniback(t_config *config)
 {
 	int	i;
 	int	j;
 	int	k;
 	int	m;
 	int	n;
+	int	c;
 
 	j = 0;
 	n = 0;
 	while (config->map[j])
 	{
 		i = 0;
-		while (i < 7)
+		while (i++ < 10)
 		{
 			k = 0;
 			m = 0;
@@ -56,44 +57,98 @@ void	minimap(t_config *config)
 				while (ft_isspace(config->map[j][k]))
 				{
 					k++;
-					m += 3;
+					m += 10;
 				}
 				if (config->map[j][k] == '\0')
 					break;
-				if (config->map[j][k] == '1')
-				{
-					my_pixel_put(&config->img, m, n, 0x000000);
-					my_pixel_put(&config->img, m + 1, n, 0x000000);
-					my_pixel_put(&config->img, m + 2, n, 0x000000);
-					my_pixel_put(&config->img, m + 3, n, 0x000000);
-					my_pixel_put(&config->img, m + 4, n, 0x000000);
-					my_pixel_put(&config->img, m + 5, n, 0x000000);
-					my_pixel_put(&config->img, m + 6, n, 0x000000);
-					// my_pixel_put(&config->img, m + 7, n, 0x000000);
-					// my_pixel_put(&config->img, m + 8, n, 0x000000);
-					// my_pixel_put(&config->img, m + 9, n, 0x000000);
-
-				}
-				else if (config->map[j][k] == 'N' || config->map[j][k] == 'S' || config->map[j][k] == 'W' || config->map[j][k] == 'E')
-				{
-					my_pixel_put(&config->img, m, n, 0xFF0000);
-					my_pixel_put(&config->img, m + 1, n, 0xFF0000);
-					my_pixel_put(&config->img, m + 2, n, 0xFF0000);
-					my_pixel_put(&config->img, m + 3, n, 0xFF0000);
-					my_pixel_put(&config->img, m + 4, n, 0xFF0000);
-					my_pixel_put(&config->img, m + 5, n, 0xFF0000);
-					my_pixel_put(&config->img, m + 6, n, 0xFF0000);
-				}
-				m += 7;
+				c = 0;
+				while (c++ < 10)
+					my_pixel_put(&config->img, m++, n, 0x404040);
 				k++;
 			}
+			n++;
+		}
+		j++;
+	}
+}
+
+void	minimap(t_config *config)
+{
+	int	i;
+	int	j;
+	int	k;
+	int	m;
+	int	n;
+	int c;
+	j = 0;
+	n = 0;
+	put_miniback(config);
+	while (config->map[j])
+	{
+		i = 0;
+		while (i < 10)
+		{
+			k = 0;
+			m = 0;
+			while (config->map[j][k] != '\0')
+			{
+				while (ft_isspace(config->map[j][k]))
+				{
+					k++;
+					m += 10;
+				}
+				if (config->map[j][k] != '\0' && config->map[j][k] == '1')
+				{
+					c = 0;
+					while (c < 10)
+						my_pixel_put(&config->img, m + c++, n, 0x000000);
+				}
+				else if (config->map[j][k] != '\0' && config->map[j][k] == 'D')
+				{
+					c = 0;
+					while (c < 10)
+						my_pixel_put(&config->img, m + c++, n, 0x000090);
+				}
+				
+				m += 10;
+				k++;
+			}
+			c = 0;
+			while (c < 6 && i < 6)
+				my_pixel_put(&config->img, (config->player.pos_y * 10 + c++ - 3), (config->player.pos_x * 10 + i - 3), 0xF02020);
 			i++;
 			n++;
 		}
 		j++;
 	}
-	
 }
+
+// void	hands(t_config *config)
+// {
+// 	int	i = WIDTH - 768;
+// 	int	j = (LENGTH - 768) / 2;
+// 	int	k = 0;
+// 	int	l;
+// 	while (k < 768)
+// 	{
+// 		j = (LENGTH - 768) / 2;
+// 		l = 0;
+// 		while (l < 768)
+// 		{
+// 			if (get_pixel(&config->hands, l, k) >= 0xFDFDFD)
+// 			{
+// 				j++;
+// 				l++;
+// 				continue;
+// 			}
+// 			my_pixel_put(&config->img, j, i, get_pixel(&config->hands, l, k));
+// 			j++;
+// 			l++;
+// 		}
+// 		k++;
+// 		i++;
+// 	}
+// }
 
 int	start_ray_casting(t_config *config)
 {
@@ -115,7 +170,6 @@ int	start_ray_casting(t_config *config)
 		config->player.map_x = (int)config->player.pos_x;
 		config->player.map_y = (int)config->player.pos_y;
 
-		
 		config->ray.deltaDist_x = (config->ray.rayDir_x == 0) ? 1e30 : fabs(1 / config->ray.rayDir_x);
 		config->ray.deltaDist_y = (config->ray.rayDir_y == 0) ? 1e30 : fabs(1 / config->ray.rayDir_y);
 		config->ray.hit = 0;
@@ -154,13 +208,15 @@ int	start_ray_casting(t_config *config)
 				config->player.map_y += config->player.step_y;
 				config->ray.side = 1;
 			}
-			if (config->map[config->player.map_x][config->player.map_y] != '0')
+			if (config->map[config->player.map_x][config->player.map_y] == '1')
 				config->ray.hit = 1;
-			if (config->map[config->player.map_x][config->player.map_y] == 'N' || 
-			config->map[config->player.map_x][config->player.map_y] == 'W' ||
-			config->map[config->player.map_x][config->player.map_y] == 'S' || 
-			config->map[config->player.map_x][config->player.map_y] == 'E')
-				config->ray.hit = 0;
+			else if (config->map[config->player.map_x][config->player.map_y] == 'D')
+				config->ray.hit = 2;
+			// if (config->map[config->player.map_x][config->player.map_y] == 'N' || 
+			// config->map[config->player.map_x][config->player.map_y] == 'W' ||
+			// config->map[config->player.map_x][config->player.map_y] == 'S' || 
+			// config->map[config->player.map_x][config->player.map_y] == 'E')
+			// 	config->ray.hit = 0;
 		}
 
 		if (config->ray.side == 0)
@@ -190,7 +246,6 @@ int	start_ray_casting(t_config *config)
 		config->wall.step = 1.0 * texh / config->wall.line_height;
 		config->wall.tex_pos = (config->wall.draw_start - WIDTH / 2 + config->wall.line_height / 2) * config->wall.step;
 		
-		
 		y = config->wall.draw_start - 1;
 		while (++y < config->wall.draw_end)
 		{
@@ -204,15 +259,52 @@ int	start_ray_casting(t_config *config)
 				my_pixel_put(&config->img, x, y, get_pixel(&config->east, config->wall.tex_x, config->wall.tex_y));
 			else if (config->ray.side == 1 && config->ray.rayDir_y < 0)
 				my_pixel_put(&config->img, x, y, get_pixel(&config->west, config->wall.tex_x, config->wall.tex_y));
+			else if (config->ray.hit == 2)
+				my_pixel_put(&config->img, x, y, get_pixel(&config->closed, config->wall.tex_x, config->wall.tex_y));
 		}
 	}
 	minimap(config);
+	// hands(config);
 	mlx_put_image_to_window(config->data.mlx, config->data.win, config->img.img, 0, 0);
 	mlx_destroy_image(config->data.mlx, config->img.img);
 
 	return (0);
 }
 
+
+// void	take_photo(t_config *config)
+// {
+// 	// static int	c;
+// 	// int			k;
+// 	// int			x = 0;
+// 	// int			y = 0;
+
+// 	// if (c == 300)
+// 	// 	return ;
+// 	// x = 0;
+
+// 	unsigned int	*dst;
+// 	unsigned int	i;
+
+// 	dst = (unsigned int *) config->img.addr;
+// 	i = LENGTH * WIDTH + 1;
+// 	while (--i > 0)
+// 		*dst++ = 0xFFFFFF;
+
+// 	// c++;
+
+// }
+
+
+// int mouse_photo(int button, int x, int y, t_config *config)
+// {
+// 	(void)x;
+// 	(void)y;
+	
+// 	if (button == 1)
+// 		take_photo(config);
+// 	return (0);
+// }
 
 void start(t_config *config, char **map)
 {
@@ -229,8 +321,9 @@ void start(t_config *config, char **map)
 		return ;
 	}
 	get_textures(config);
-	mlx_hook(config->data.win, 2, 1L << 0, check, config);
+	mlx_hook(config->data.win, 2, (1L << 0), check, config);
 	mlx_hook(config->data.win, 17, 0, fri, &config->data);
+	// mlx_hook(config->data.win, 4, (1L << 2), mouse_photo, config);
 	mlx_hook(config->data.win, 6, (1L << 6), mouse_motion, config);
 	mlx_loop_hook(config->data.mlx, start_ray_casting, config);
 	mlx_loop(config->data.mlx);

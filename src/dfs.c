@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 14:14:36 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/07 23:52:42 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/14 00:03:38 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,9 @@ char	**copy_map(char **map)
 
 int	flood_fill_rec(char **map, int y, int x)
 {
-	
 	if (y < 0 || x < 0 || map[y][x] == '\0')
 		return 0;
-	printf("%c\n", map[y][x]);
+	// printf("%c\n", map[y][x]);
 	if (map[y][x] != '\0' && map[y][x] != '1' && map[y][x] != 'F')
 		map[y][x] = 'F';
 	else
@@ -75,19 +74,19 @@ void	free_temp_map(char **temp_map, int height)
 int	check_map_closed(t_config *config)
 {
 	char	**temp_map;
+	int		i = 0;
 
-	temp_map = (char **)malloc((14 + 1) * sizeof(char *));
+	temp_map = (char **)malloc((config->height + 1) * sizeof(char *));
 	if (!temp_map)
 		return (0);
 	temp_map = copy_map(config->map);
 	if (!temp_map)
 		return (0);
-	flood_fill(temp_map, config->player_y, config->player_x);
-	int o = 0;
-	while(temp_map[o])
+	// flood_fill(temp_map, config->player_y, config->player_x);
+	while(temp_map[i])
 	{
-		printf("%s\n", temp_map[o]);
-		o++;
+		printf("%s\n", temp_map[i]);
+		i++;
 	}
 	free_temp_map(temp_map, config->height);
 	return (1);

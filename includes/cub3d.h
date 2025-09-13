@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/07 22:25:57 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/13 23:58:19 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdbool.h>
 # include "../libft/libft.h"
 # include "get_next_line.h"
 # include "../minilibx-linux/mlx.h"
@@ -79,20 +80,13 @@ typedef struct s_config
 	int		player_y;
 }	t_config;
 
-// valid_map u dfs
-char	**copy_map(char **map);
-int		is_invalid_tile(char c);
-int		qaylelu_tex(char c);
-int		dfs(char **map, int x, int y, int max_y);
-int		parse_map(t_config *data, char **lines, int start_index);
-
 // gnl
 char	*ft_free_null(char *s);
 int		ft_newline_instr(char *s);
 char	*ft_strjoinn(char *s1, char *s2, size_t l1, size_t l2);
 char	*get_next_line(int fd);
 
-// // valid.c
+// valid and texture
 int		check_filename(char *filename);
 int		demi_6_toxy(char *line);
 int		parse_et_6_toxy(t_config *data, char *line);
@@ -103,19 +97,15 @@ int		is_ws_only(char *s);
 char	*skip_ws(char *s);
 
 
-// // texture
-void	draw_tile(t_data *data, int x, int y, void *img);
-void	render_map(t_config *config);
-void	init_window_and_textures(t_config *config);
-void	init_window_and_textures(t_config *config);
-
-int		parse(t_config *data, char **lines, int *start_index);
 int		parse_map(t_config *data, char **lines, int start_index);
+int		check_map_closed(t_config *config);
+char	**copy_map(char **map);
 
 
-int	check_map_closed(t_config *config);
-
-
-
+// texture
+// void	draw_tile(t_data *data, int x, int y, void *img);
+// void	render_map(t_config *config);
+// void	init_window_and_textures(t_config *config);
+// void	init_window_and_textures(t_config *config);
 
 #endif

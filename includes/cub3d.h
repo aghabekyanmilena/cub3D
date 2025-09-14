@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/13 23:58:19 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/14 22:44:55 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,16 +96,8 @@ int		parse_color(t_config *data, int *flag, char *after_key, char *type);
 int		is_ws_only(char *s);
 char	*skip_ws(char *s);
 
-
+// parse and valid map and also dfs
+bool	check_map_closed(t_config *cfg);
 int		parse_map(t_config *data, char **lines, int start_index);
-int		check_map_closed(t_config *config);
-char	**copy_map(char **map);
-
-
-// texture
-// void	draw_tile(t_data *data, int x, int y, void *img);
-// void	render_map(t_config *config);
-// void	init_window_and_textures(t_config *config);
-// void	init_window_and_textures(t_config *config);
 
 #endif

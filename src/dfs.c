@@ -6,88 +6,132 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 14:14:36 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/14 00:03:38 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/14 22:47:36 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-char	**copy_map(char **map)
+char **copy_map(t_config *data)
 {
-	char	**copy;
 	int		i;
+	char	**copy;
 
-	i = 0;
-	while (map[i])
-		i++;
-	copy = malloc(sizeof(char *) * (i + 1));
+	copy = malloc(sizeof(char *) * (data->height + 1));
 	if (!copy)
 		return (NULL);
 	i = 0;
-	while (map[i])
+	while (i < data->height)
 	{
-		copy[i] = ft_strdup(map[i]);
-		// if (!copy[i])
-		// 	return (NULL);
+		copy[i] = ft_strdup(data->map[i]);
+		if (!copy[i])
+		{
+			while (--i >= 0)
+				free(copy[i]);
+			free(copy);
+			return (NULL);
+		}
 		i++;
 	}
-	copy[i] = NULL;
+	copy[data->height] = NULL;
 	return (copy);
 }
 
-int	flood_fill_rec(char **map, int y, int x)
+void free_map_copy(char ***map, int height)
 {
-	if (y < 0 || x < 0 || map[y][x] == '\0')
-		return 0;
-	// printf("%c\n", map[y][x]);
-	if (map[y][x] != '\0' && map[y][x] != '1' && map[y][x] != 'F')
-		map[y][x] = 'F';
-	else
-		return 1;
-	if (!flood_fill_rec(map, y + 1, x))
-		return 0;
-	if (!flood_fill_rec(map, y - 1, x))
-		return 0;
-	if (!flood_fill_rec(map, y, x + 1))
-		return 0;
-	if (!flood_fill_rec(map, y, x - 1))
-		return 0;
-	return (1);
-}
+	int i;
 
-void	flood_fill(char **map, int start_y, int start_x)
-{
-	if (!map)
+	if (!map || !*map)
 		return;
-	if (!flood_fill_rec(map, start_y, start_x))
-		printf("Invalid\n");
-}
-
-void	free_temp_map(char **temp_map, int height)
-{
-	int	y = 0;
-	while (y < height)
-		free(temp_map[y++]);
-	free(temp_map);
-}
-
-int	check_map_closed(t_config *config)
-{
-	char	**temp_map;
-	int		i = 0;
-
-	temp_map = (char **)malloc((config->height + 1) * sizeof(char *));
-	if (!temp_map)
-		return (0);
-	temp_map = copy_map(config->map);
-	if (!temp_map)
-		return (0);
-	// flood_fill(temp_map, config->player_y, config->player_x);
-	while(temp_map[i])
+	i = 0;
+	while (i < height)
 	{
-		printf("%s\n", temp_map[i]);
+		free((*map)[i]);
 		i++;
 	}
-	free_temp_map(temp_map, config->height);
-	return (1);
+	free(*map);
+	*map = NULL;
+}
+
+int is_spawn_or_walkable(char c)
+{
+	return (c == '0' || c == 'N' || c == 'S' ||
+			c == 'E' || c == 'W' || c == 'D');
+}
+
+bool dfs_outside(char **map, int row, int col, t_config *data)
+{
+	if (row < 0 || col < 0 || row >= data->height || col >= data->width)
+		return (true);
+	if (map[row][col] == 'F' || map[row][col] == '1')
+		return (true);
+	if (is_spawn_or_walkable(map[row][col]))
+		return (false);
+	if (map[row][col] != '2')
+		return (true);
+	map[row][col] = 'F';
+	if (!dfs_outside(map, row - 1, col, data))
+		return (false);
+	if (!dfs_outside(map, row + 1, col, data))
+		return (false);
+	if (!dfs_outside(map, row, col - 1, data))
+		return (false);
+	if (!dfs_outside(map, row, col + 1, data))
+		return (false);
+	return (true);
+}
+
+bool check_map_closed(t_config *data)
+{
+	char	**map_copy;
+	int		r;
+	int		c;
+
+	map_copy = copy_map(data);
+	if (!map_copy)
+		return (printf("Error\nmalloc error\n"), false);
+	r = 0;
+	while (r < data->height)
+	{
+		if (is_spawn_or_walkable(map_copy[r][0])
+			|| is_spawn_or_walkable(map_copy[r][data->width - 1]))
+		{
+			free_map_copy(&map_copy, data->height);
+			return (false);
+		}
+		r++;
+	}
+	c = 0;
+	while (c < data->width)
+	{
+		if (is_spawn_or_walkable(map_copy[0][c])
+			|| is_spawn_or_walkable(map_copy[data->height - 1][c]))
+		{
+			free_map_copy(&map_copy, data->height);
+			return (false);
+		}
+		c++;
+	}
+	r = 0;
+	while (r < data->height)
+	{
+		if (map_copy[r][0] == '2' && !dfs_outside(map_copy, r, 0, data))
+			return (free_map_copy(&map_copy, data->height), false);
+		if (map_copy[r][data->width - 1] == '2'
+			&& !dfs_outside(map_copy, r, data->width - 1, data))
+			return (free_map_copy(&map_copy, data->height), false);
+		r++;
+	}
+	c = 0;
+	while (c < data->width)
+	{
+		if (map_copy[0][c] == '2' && !dfs_outside(map_copy, 0, c, data))
+			return (free_map_copy(&map_copy, data->height), false);
+		if (map_copy[data->height - 1][c] == '2'
+			&& !dfs_outside(map_copy, data->height - 1, c, data))
+			return (free_map_copy(&map_copy, data->height), false);
+		c++;
+	}
+	free_map_copy(&map_copy, data->height);
+	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/14 00:00:44 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/14 22:43:58 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,7 @@ char	**read_map(const char *filename)
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-	{
-		perror("open");
-		return (NULL);
-	}
+		return (perror("open"), NULL);
 	while ((line = get_next_line(fd)) != NULL)
 	{
 		lines = add_line(lines, line, count);
@@ -72,13 +69,14 @@ char	**read_map(const char *filename)
 	return (lines);
 }
 
-int	main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 	t_config	config;
-	char		**map_lines = NULL;
+	char		**map_lines;
 	int			map_start;
 
 	map_start = 0;
+	map_lines = NULL;
 	if (argc != 2)
 		return (printf("Error\nUsage: %s <map.cub>\n", argv[0]), 1);
 	if (!check_filename(argv[1]))
@@ -86,7 +84,7 @@ int	main(int argc, char **argv)
 	ft_bzero(&config, sizeof(t_config));
 	map_lines = read_map(argv[1]);
 	if (!map_lines)
-		return (1);
+		return (printf("Error\nEmpty file\n"), 1);
 	if (!parse(&config, map_lines, &map_start))
 		return (free_lines(map_lines), 1);
 	if (!parse_map(&config, map_lines, map_start))
@@ -96,12 +94,6 @@ int	main(int argc, char **argv)
 		free_lines(map_lines);
 		return (printf("Error\nmap not enclosed\n"), 1);
 	}
-	// int boo = 0;
-	// while(map_lines[boo])
-	// {
-	// 	printf("%s", map_lines[boo]);
-	// 	boo++;
-	// }
 	free_lines(map_lines);
 	return (0);
 }

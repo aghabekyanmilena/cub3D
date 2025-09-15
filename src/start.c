@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:29:20 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/13 15:34:43 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/15 20:08:33 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,6 @@ void	put_miniback(t_config *config)
 			m = 0;
 			while (config->map[j][k] != '\0')
 			{
-				while (ft_isspace(config->map[j][k]))
-				{
-					k++;
-					m += 10;
-				}
-				if (config->map[j][k] == '\0')
-					break;
 				c = 0;
 				while (c++ < 10)
 					my_pixel_put(&config->img, m++, n, 0x404040);
@@ -80,6 +73,7 @@ void	minimap(t_config *config)
 	int	m;
 	int	n;
 	int c;
+
 	j = 0;
 	n = 0;
 	put_miniback(config);
@@ -92,30 +86,20 @@ void	minimap(t_config *config)
 			m = 0;
 			while (config->map[j][k] != '\0')
 			{
-				while (ft_isspace(config->map[j][k]))
-				{
-					k++;
-					m += 10;
-				}
-				if (config->map[j][k] != '\0' && config->map[j][k] == '1')
-				{
-					c = 0;
+				c = 0;
+				if (config->map[j][k] == '1')
 					while (c < 10)
 						my_pixel_put(&config->img, m + c++, n, 0x000000);
-				}
-				else if (config->map[j][k] != '\0' && config->map[j][k] == 'D')
-				{
-					c = 0;
+				else if (config->map[j][k] == 'C' || config->map[j][k] == 'O')
 					while (c < 10)
 						my_pixel_put(&config->img, m + c++, n, 0x000090);
-				}
-				
 				m += 10;
 				k++;
 			}
 			c = 0;
 			while (c < 6 && i < 6)
-				my_pixel_put(&config->img, (config->player.pos_y * 10 + c++ - 3), (config->player.pos_x * 10 + i - 3), 0xF02020);
+				my_pixel_put(&config->img, (config->player.pos_y * 10 + c++
+						- 3), (config->player.pos_x * 10 + i - 3), 0xF02020);
 			i++;
 			n++;
 		}
@@ -123,32 +107,32 @@ void	minimap(t_config *config)
 	}
 }
 
-// void	hands(t_config *config)
-// {
-// 	int	i = WIDTH - 768;
-// 	int	j = (LENGTH - 768) / 2;
-// 	int	k = 0;
-// 	int	l;
-// 	while (k < 768)
-// 	{
-// 		j = (LENGTH - 768) / 2;
-// 		l = 0;
-// 		while (l < 768)
-// 		{
-// 			if (get_pixel(&config->hands, l, k) >= 0xFDFDFD)
-// 			{
-// 				j++;
-// 				l++;
-// 				continue;
-// 			}
-// 			my_pixel_put(&config->img, j, i, get_pixel(&config->hands, l, k));
-// 			j++;
-// 			l++;
-// 		}
-// 		k++;
-// 		i++;
-// 	}
-// }
+void	spider_anim(t_config *config)
+{
+	int	i = 10;
+	int	j = 200;
+	int	k = 0;
+	int	l;
+	while (k < 548)
+	{
+		j = (LENGTH - 768) / 2;
+		l = 0;
+		while (l < 1393)
+		{
+			if (get_pixel(&config->hands, l, k) == 0x76BBD0)
+			{
+				j++;
+				l++;
+				continue;
+			}
+			my_pixel_put(&config->img, j, i, get_pixel(&config->hands, l, k));
+			j++;
+			l++;
+		}
+		k++;
+		i++;
+	}
+}
 
 int	start_ray_casting(t_config *config)
 {
@@ -210,15 +194,11 @@ int	start_ray_casting(t_config *config)
 			}
 			if (config->map[config->player.map_x][config->player.map_y] == '1')
 				config->ray.hit = 1;
-			else if (config->map[config->player.map_x][config->player.map_y] == 'D')
-				config->ray.hit = 2;
-			// if (config->map[config->player.map_x][config->player.map_y] == 'N' || 
-			// config->map[config->player.map_x][config->player.map_y] == 'W' ||
-			// config->map[config->player.map_x][config->player.map_y] == 'S' || 
-			// config->map[config->player.map_x][config->player.map_y] == 'E')
-			// 	config->ray.hit = 0;
+			else if (config->map[config->player.map_x][config->player.map_y] == 'C')
+				config->ray.hit = 2; // closed
+			else if (config->map[config->player.map_x][config->player.map_y] == 'O')
+				config->ray.hit = 3; // open
 		}
-
 		if (config->ray.side == 0)
 			config->ray.wallDist = (config->ray.sideDist_x - config->ray.deltaDist_x);
 		else
@@ -251,7 +231,11 @@ int	start_ray_casting(t_config *config)
 		{
 			config->wall.tex_y = (int)config->wall.tex_pos & (texh - 1);
 			config->wall.tex_pos += config->wall.step;
-			if (config->ray.side == 0 && config->ray.rayDir_x > 0)
+			if (config->ray.hit == 2) //closed
+				my_pixel_put(&config->img, x, y, get_pixel(&config->closed_door, config->wall.tex_x, config->wall.tex_y));
+			else if (config->ray.hit == 3) //open
+				my_pixel_put(&config->img, x, y, get_pixel(&config->open_door, config->wall.tex_x, config->wall.tex_y));
+			else if (config->ray.side == 0 && config->ray.rayDir_x > 0)
 				my_pixel_put(&config->img, x, y, get_pixel(&config->south, config->wall.tex_x, config->wall.tex_y));
 			else if (config->ray.side == 0 && config->ray.rayDir_x < 0)
 				my_pixel_put(&config->img, x, y, get_pixel(&config->north, config->wall.tex_x, config->wall.tex_y));
@@ -259,12 +243,10 @@ int	start_ray_casting(t_config *config)
 				my_pixel_put(&config->img, x, y, get_pixel(&config->east, config->wall.tex_x, config->wall.tex_y));
 			else if (config->ray.side == 1 && config->ray.rayDir_y < 0)
 				my_pixel_put(&config->img, x, y, get_pixel(&config->west, config->wall.tex_x, config->wall.tex_y));
-			else if (config->ray.hit == 2)
-				my_pixel_put(&config->img, x, y, get_pixel(&config->closed, config->wall.tex_x, config->wall.tex_y));
 		}
 	}
 	minimap(config);
-	// hands(config);
+	spider_anim(config);
 	mlx_put_image_to_window(config->data.mlx, config->data.win, config->img.img, 0, 0);
 	mlx_destroy_image(config->data.mlx, config->img.img);
 
@@ -272,41 +254,7 @@ int	start_ray_casting(t_config *config)
 }
 
 
-// void	take_photo(t_config *config)
-// {
-// 	// static int	c;
-// 	// int			k;
-// 	// int			x = 0;
-// 	// int			y = 0;
-
-// 	// if (c == 300)
-// 	// 	return ;
-// 	// x = 0;
-
-// 	unsigned int	*dst;
-// 	unsigned int	i;
-
-// 	dst = (unsigned int *) config->img.addr;
-// 	i = LENGTH * WIDTH + 1;
-// 	while (--i > 0)
-// 		*dst++ = 0xFFFFFF;
-
-// 	// c++;
-
-// }
-
-
-// int mouse_photo(int button, int x, int y, t_config *config)
-// {
-// 	(void)x;
-// 	(void)y;
-	
-// 	if (button == 1)
-// 		take_photo(config);
-// 	return (0);
-// }
-
-void start(t_config *config, char **map)
+void	start(t_config *config, char **map)
 {
 	init_player_struct(config);
 	config->data.mlx = mlx_init();

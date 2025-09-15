@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:24:22 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/08/27 14:30:35 by anush            ###   ########.fr       */
+/*   Updated: 2025/09/15 14:23:33 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int characker_check(char c)
 {
 	return (c == '0' || c == '1' || c == 'N' || c == 'S' ||
-			c == 'E' || c == 'W' || c == 'D' || c == ' ' || c == '\t');
+			c == 'E' || c == 'W' || c == 'O' || c == ' ' || c == '\t' || c == 'C');
 }
 
 int parse_map(t_config *data, char **lines, int start_index)
@@ -70,6 +70,7 @@ int parse_map(t_config *data, char **lines, int start_index)
 	data->map[i] = NULL;
 	data->height = line_count;
 	data->player_count = player_count;
+	data->is_open = 0;
 	if (player_count != 1)
 	{
 		printf("error, invalid number of players\n");

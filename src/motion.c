@@ -6,11 +6,26 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 16:47:19 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/01 16:47:20 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/15 15:32:18 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+
+void	open_the_door(t_config *config)
+{
+	double	next_x;
+	double	next_y;
+	double	len;
+
+	len = sqrt(config->player.dir_x*config->player.dir_x + config->player.dir_y*config->player.dir_y);
+	next_x = config->player.pos_x + config->player.dir_x / len * STEP * 10;
+	next_y = config->player.pos_y + config->player.dir_y / len * STEP * 10;
+	if (config->map[(int)next_x][(int)next_y] == 'C')
+		config->map[(int)next_x][(int)next_y] = 'O';
+	else if (config->map[(int)next_x][(int)next_y] == 'O')
+		config->map[(int)next_x][(int)next_y] = 'C';
+}
 
 void	rotate_view(t_config *config, double angle)
 {

@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/13 15:36:19 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/15 20:12:24 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@
 # define XK_S 0x0053
 # define XK_LEFT 0xff51
 # define XK_RIGHT 0xff53
+# define XK_SPACE 0x20
 
 typedef struct s_img
 {
@@ -101,6 +102,7 @@ typedef struct s_player {
 	int		map_x;
 	int		map_y;
 	int		prev_view;
+	char	prev_char;
 }	t_player;
 
 typedef struct s_data {
@@ -134,6 +136,7 @@ typedef struct s_config
 	char		**map;
 	int			height; // mapi heighty
 	int			player_count;
+	int			is_open;
 	t_player	player;//player structna
 	t_ray		ray;
 	t_wall		wall;
@@ -145,6 +148,8 @@ typedef struct s_config
 	t_img		hands;
 	t_img		open_door;
 	t_img		closed_door;
+	t_img		*up_down;
+	t_img		*right_left;
 }	t_config;
 
 
@@ -186,6 +191,8 @@ int		fri(t_data *data);
 //motion
 int		mouse_motion(int x, int y, t_config *config);
 void	rotate_view(t_config *config, double angle);
+void	open_the_door(t_config *config);
+
 
 //move
 int		check(int keycode, t_config *config);

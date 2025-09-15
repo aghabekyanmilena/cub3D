@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 15:57:28 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/13 15:38:01 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/15 20:04:32 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	rgb_to_int(t_color c)
 {
 	return ((c.r & 0xFF) << 16) | ((c.g & 0xFF) << 8) | (c.b & 0xFF);
 }
+
 unsigned int get_pixel(t_img *tex, int x, int y)
 {
 	char *dst;
@@ -70,23 +71,24 @@ void	init_player_struct(t_config *config)
 		config->player.plane_y = 0;
 	}
 	config->player.prev_view = -1;
+	config->player.prev_char = config->map[(int)config->player.pos_x][(int)config->player.pos_y];
 }
 
 void	get_textures(t_config *config)
 {
-	char	*hands_path = "./textures/camera.xpm";
-	config->hands.ht = texh;
-	config->hands.wd = texh;
-	config->hands.img = mlx_xpm_file_to_image(config->data.mlx, hands_path, &config->hands.wd, &config->hands.ht);
-	config->hands.addr = mlx_get_data_addr(config->hands.img, &config->hands.bits_per_pixel,
-			&config->hands.line_len, &config->hands.endian);
-
 	char	*closed_door_path= "./textures/closed_door.xpm";
 	config->closed_door.ht = texh;
 	config->closed_door.wd = texh;
 	config->closed_door.img = mlx_xpm_file_to_image(config->data.mlx, closed_door_path, &config->closed_door.wd, &config->closed_door.ht);
 	config->closed_door.addr = mlx_get_data_addr(config->closed_door.img, &config->closed_door.bits_per_pixel,
-			&config->closed_door.line_len, &config->open_door.endian);
+		&config->closed_door.line_len, &config->open_door.endian);
+		
+	char	*open_door_path= "./textures/open_door.xpm";
+	config->open_door.ht = texh;
+	config->open_door.wd = texh;
+	config->open_door.img = mlx_xpm_file_to_image(config->data.mlx, open_door_path, &config->open_door.wd, &config->open_door.ht);
+	config->open_door.addr = mlx_get_data_addr(config->open_door.img, &config->open_door.bits_per_pixel,
+		&config->open_door.line_len, &config->open_door.endian);
 
 	config->south.ht = texh;
 	config->south.wd = texh;

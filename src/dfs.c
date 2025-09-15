@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 14:14:36 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/14 22:47:36 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/15 20:46:54 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void free_map_copy(char ***map, int height)
 int is_spawn_or_walkable(char c)
 {
 	return (c == '0' || c == 'N' || c == 'S' ||
-			c == 'E' || c == 'W' || c == 'D');
+			c == 'E' || c == 'W' || c == 'C' || c == 'O');
 }
 
 bool dfs_outside(char **map, int row, int col, t_config *data)
@@ -81,6 +81,35 @@ bool dfs_outside(char **map, int row, int col, t_config *data)
 	return (true);
 }
 
+int	check_door(char **lines)
+{
+	int	k;
+	int	j;
+
+	k = 0;
+	while(lines[k])
+	{
+		j = 0;
+		while (lines[k][j])
+		{
+			if (lines[k][j] && (lines[k][j] == 'C' || lines[k][j] == 'O'))
+			{
+				if (lines[k][j+1] && lines[k][j-1] && lines[k][j+1] == '1' && lines[k][j-1] == '1' && 
+					(lines[k+1][j] && lines[k-1][j] && lines[k-1][j] != '1' && lines[k+1][j] != '1'))
+					return (printf("okay\n"), 1);
+				else if ((lines[k+1][j] && lines[k-1][j] && lines[k-1][j] == '1' && lines[k+1][j] == '1') &&
+					(lines[k][j+1] && lines[k][j-1] && lines[k][j+1] != '1' && lines[k][j-1] != '1'))
+					return (printf("OKAY\n"), 1);
+				else
+					return(printf("door error\n"), 0);
+			}
+			j++;
+		}
+		k++;
+	}
+	return (1);
+}
+
 bool check_map_closed(t_config *data)
 {
 	char	**map_copy;
@@ -90,6 +119,8 @@ bool check_map_closed(t_config *data)
 	map_copy = copy_map(data);
 	if (!map_copy)
 		return (printf("Error\nmalloc error\n"), false);
+	if (!check_door(map_copy))
+		return (printf("aaaaaaaaaaa\n"), false);
 	r = 0;
 	while (r < data->height)
 	{
@@ -132,6 +163,25 @@ bool check_map_closed(t_config *data)
 			return (free_map_copy(&map_copy, data->height), false);
 		c++;
 	}
+	r = 0;
+	while (r < data->height)
+	{
+		c = 0;
+		while (c < data->width)
+		{
+			if (map_copy[r][c] == '2')
+			{
+				if (!dfs_outside(map_copy, r, c, data))
+				{
+				    free_map_copy(&map_copy, data->height);
+				    return (false);
+				}
+			}
+			c++;
+		}
+		r++;
+	}
 	free_map_copy(&map_copy, data->height);
 	return (true);
 }
+

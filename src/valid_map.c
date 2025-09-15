@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:24:22 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/14 22:48:00 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/15 19:59:42 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 static int characker_check(char c)
 {
 	return (c == '0' || c == '1' || c == 'N' || c == 'S' ||
-			c == 'E' || c == 'W' || c == 'D' || c == ' ' || c == '\t');
+			c == 'E' || c == 'W' || c == 'O' || c == ' ' ||
+			c == '\t' || c == 'C');
 }
 
 int parse_map(t_config *data, char **lines, int start_index)
@@ -75,9 +76,7 @@ int parse_map(t_config *data, char **lines, int start_index)
 					data->map[i][syun++] = '2';
 			}
 			else if (lines[start_index][j] == ' ')
-			{
 				data->map[i][syun++] = '2';
-			}
 			else
 				data->map[i][syun++] = lines[start_index][j];
 			j++;
@@ -89,11 +88,12 @@ int parse_map(t_config *data, char **lines, int start_index)
 		start_index++;
 	}
 	data->map[i] = NULL;
-	// int boo = 0;
+	return (1);
+}
+
+// int boo = 0;
 	// while(lines[boo])
 	// {
 	// 	printf("%s", lines[boo]);
 	// 	boo++;
 	// }
-	return (1);
-}

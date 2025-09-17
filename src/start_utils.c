@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 15:57:28 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/15 20:04:32 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/17 15:34:08 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,42 @@ void	init_player_struct(t_config *config)
 	config->player.prev_char = config->map[(int)config->player.pos_x][(int)config->player.pos_y];
 }
 
+void	get_animation_textures(t_config *config)
+{
+	int		i;
+	char	*name;
+	char	*num;
+
+	config->up_down = (t_img *)malloc(29 * sizeof(t_img));
+	if (!config->up_down)
+		return ;
+	i = 0;
+	while (i < 29)
+	{
+		name = ft_itoa(i + 1);
+		num = ft_strjoin("./textures/animation/New_Project_", name);
+		free(name);
+		name = ft_strjoin(num, ".xpm");
+		free(num);
+		config->up_down[i].ht = 1393;
+		config->up_down[i].wd = 548;
+		config->up_down[i].img = mlx_xpm_file_to_image(config->data.mlx, name, &config->up_down[i].wd, &config->up_down[i].ht);
+		config->up_down[i].addr = mlx_get_data_addr(config->up_down[i].img, &config->up_down[i].bits_per_pixel,
+			&config->up_down[i].line_len, &config->open_door.endian);
+		i++;
+		free(name);
+	}
+}
+
 void	get_textures(t_config *config)
 {
+	get_animation_textures(config);
 	char	*closed_door_path= "./textures/closed_door.xpm";
 	config->closed_door.ht = texh;
 	config->closed_door.wd = texh;
 	config->closed_door.img = mlx_xpm_file_to_image(config->data.mlx, closed_door_path, &config->closed_door.wd, &config->closed_door.ht);
 	config->closed_door.addr = mlx_get_data_addr(config->closed_door.img, &config->closed_door.bits_per_pixel,
-		&config->closed_door.line_len, &config->open_door.endian);
+		&config->closed_door.line_len, &config->closed_door.endian);
 		
 	char	*open_door_path= "./textures/open_door.xpm";
 	config->open_door.ht = texh;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:29:20 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/15 20:08:33 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/17 15:32:27 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,31 +107,38 @@ void	minimap(t_config *config)
 	}
 }
 
-void	spider_anim(t_config *config)
+void	my_image_put(t_config *config, int i)
 {
-	int	i = 10;
-	int	j = 200;
-	int	k = 0;
-	int	l;
-	while (k < 548)
+	int	x;
+	int	y;
+
+	x = 0;
+	while (x < config->up_down[i].wd)
 	{
-		j = (LENGTH - 768) / 2;
-		l = 0;
-		while (l < 1393)
+		y = 0;
+		while (y < config->up_down[i].ht)
 		{
-			if (get_pixel(&config->hands, l, k) == 0x76BBD0)
+			if (get_pixel(&config->up_down[i], x, y + 55) == 0x76BBD0)
 			{
-				j++;
-				l++;
+				y++;
 				continue;
 			}
-			my_pixel_put(&config->img, j, i, get_pixel(&config->hands, l, k));
-			j++;
-			l++;
+			my_pixel_put(&config->img, x + 250 , y, get_pixel(&config->up_down[i], x, y + 55));
+			y++;
 		}
-		k++;
-		i++;
+		x++;
 	}
+	
+}
+
+void	spider_anim(t_config *config)
+{
+	static int	c;
+
+	my_image_put(config, c / 5);
+	c++;
+	if (c == 130)
+		c = 90;
 }
 
 int	start_ray_casting(t_config *config)
@@ -271,7 +278,6 @@ void	start(t_config *config, char **map)
 	get_textures(config);
 	mlx_hook(config->data.win, 2, (1L << 0), check, config);
 	mlx_hook(config->data.win, 17, 0, fri, &config->data);
-	// mlx_hook(config->data.win, 4, (1L << 2), mouse_photo, config);
 	mlx_hook(config->data.win, 6, (1L << 6), mouse_motion, config);
 	mlx_loop_hook(config->data.mlx, start_ray_casting, config);
 	mlx_loop(config->data.mlx);

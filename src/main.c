@@ -6,11 +6,11 @@
 /*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/17 15:32:58 by anush            ###   ########.fr       */
+/*   Updated: 2025/09/17 16:01:04 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
 void	free_lines(char **lines)
 {

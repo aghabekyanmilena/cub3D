@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 16:59:08 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/15 15:37:20 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/17 15:41:21 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	go_left(t_config *config)
 int	check(int keycode, t_config *config)
 {
 	if (keycode == XK_ESCAPE)
-		fri(&config->data);
+		fri(config);
 	else if (keycode == XK_SPACE)
 		open_the_door(config);
 	else if (keycode == XK_W || keycode == XK_WL)

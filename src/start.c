@@ -6,7 +6,7 @@
 /*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:29:20 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/17 15:32:27 by anush            ###   ########.fr       */
+/*   Updated: 2025/09/17 16:14:26 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,87 +24,6 @@ void	put_back(t_config *config)
 	i = LENGTH * WIDTH / 2 + 1;
 	while (--i > 0)
 		*dst++ = rgb_to_int(config->ceiling);
-}
-
-void	my_pixel_put(t_img *img, int x, int y, unsigned int color)
-{
-	char	*dst;
-
-	dst = img->addr + (y * img->line_len + x * (img->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
-}
-
-void	put_miniback(t_config *config)
-{
-	int	i;
-	int	j;
-	int	k;
-	int	m;
-	int	n;
-	int	c;
-
-	j = 0;
-	n = 0;
-	while (config->map[j])
-	{
-		i = 0;
-		while (i++ < 10)
-		{
-			k = 0;
-			m = 0;
-			while (config->map[j][k] != '\0')
-			{
-				c = 0;
-				while (c++ < 10)
-					my_pixel_put(&config->img, m++, n, 0x404040);
-				k++;
-			}
-			n++;
-		}
-		j++;
-	}
-}
-
-void	minimap(t_config *config)
-{
-	int	i;
-	int	j;
-	int	k;
-	int	m;
-	int	n;
-	int c;
-
-	j = 0;
-	n = 0;
-	put_miniback(config);
-	while (config->map[j])
-	{
-		i = 0;
-		while (i < 10)
-		{
-			k = 0;
-			m = 0;
-			while (config->map[j][k] != '\0')
-			{
-				c = 0;
-				if (config->map[j][k] == '1')
-					while (c < 10)
-						my_pixel_put(&config->img, m + c++, n, 0x000000);
-				else if (config->map[j][k] == 'C' || config->map[j][k] == 'O')
-					while (c < 10)
-						my_pixel_put(&config->img, m + c++, n, 0x000090);
-				m += 10;
-				k++;
-			}
-			c = 0;
-			while (c < 6 && i < 6)
-				my_pixel_put(&config->img, (config->player.pos_y * 10 + c++
-						- 3), (config->player.pos_x * 10 + i - 3), 0xF02020);
-			i++;
-			n++;
-		}
-		j++;
-	}
 }
 
 void	my_image_put(t_config *config, int i)
@@ -252,7 +171,7 @@ int	start_ray_casting(t_config *config)
 				my_pixel_put(&config->img, x, y, get_pixel(&config->west, config->wall.tex_x, config->wall.tex_y));
 		}
 	}
-	minimap(config);
+	minimap(config, 0, 0);
 	spider_anim(config);
 	mlx_put_image_to_window(config->data.mlx, config->data.win, config->img.img, 0, 0);
 	mlx_destroy_image(config->data.mlx, config->img.img);
@@ -277,7 +196,7 @@ void	start(t_config *config, char **map)
 	}
 	get_textures(config);
 	mlx_hook(config->data.win, 2, (1L << 0), check, config);
-	mlx_hook(config->data.win, 17, 0, fri, &config->data);
+	mlx_hook(config->data.win, 17, 0, fri, config);
 	mlx_hook(config->data.win, 6, (1L << 6), mouse_motion, config);
 	mlx_loop_hook(config->data.mlx, start_ray_casting, config);
 	mlx_loop(config->data.mlx);

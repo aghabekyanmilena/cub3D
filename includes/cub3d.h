@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/15 20:12:24 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/17 16:14:05 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,11 +145,9 @@ typedef struct s_config
 	t_img		north;
 	t_img		east;
 	t_img		west;
-	t_img		hands;
 	t_img		open_door;
 	t_img		closed_door;
 	t_img		*up_down;
-	t_img		*right_left;
 }	t_config;
 
 
@@ -186,7 +184,7 @@ void	start(t_config *config, char **map);
 
 //free
 void	free_lines(char **lines);
-int		fri(t_data *data);
+int		fri(t_config *config);
 
 //motion
 int		mouse_motion(int x, int y, t_config *config);
@@ -202,6 +200,10 @@ int		rgb_to_int(t_color c);
 void	init_player_struct(t_config *config);
 void	get_textures(t_config *config);
 unsigned int	get_pixel(t_img *tex, int x, int y);
+void	my_pixel_put(t_img *img, int x, int y, unsigned int color);
 
+
+//minimap
+void	minimap(t_config *config, int j, int n);
 
 #endif

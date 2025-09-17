@@ -6,18 +6,39 @@
 /*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 15:57:28 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/17 15:34:08 by anush            ###   ########.fr       */
+/*   Updated: 2025/09/17 16:14:35 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	fri(t_data *data)
+void	my_pixel_put(t_img *img, int x, int y, unsigned int color)
 {
-	mlx_destroy_window(data->mlx, data->win);
-	mlx_destroy_display(data->mlx);
-	free(data->mlx);
-	free_lines(data->map);
+	char	*dst;
+
+	dst = img->addr + (y * img->line_len + x * (img->bits_per_pixel / 8));
+	*(unsigned int *)dst = color;
+}
+
+int	fri(t_config *config)
+{
+	int	i;
+
+	i = 0;
+	mlx_destroy_image(config->data.mlx, config->south.img);
+	mlx_destroy_image(config->data.mlx, config->east.img);
+	mlx_destroy_image(config->data.mlx, config->west.img);
+	mlx_destroy_image(config->data.mlx, config->north.img);
+	mlx_destroy_image(config->data.mlx, config->open_door.img);
+	mlx_destroy_image(config->data.mlx, config->closed_door.img);
+	while (i < 26)
+		mlx_destroy_image(config->data.mlx, config->up_down[i++].img);
+	mlx_destroy_window(config->data.mlx, config->data.win);
+	mlx_destroy_display(config->data.mlx);
+	free(config->up_down);
+	free(config->data.mlx);
+	free_lines(config->map);
+	free_lines(config->data.map);
 	exit (0);
 }
 
@@ -72,73 +93,4 @@ void	init_player_struct(t_config *config)
 	}
 	config->player.prev_view = -1;
 	config->player.prev_char = config->map[(int)config->player.pos_x][(int)config->player.pos_y];
-}
-
-void	get_animation_textures(t_config *config)
-{
-	int		i;
-	char	*name;
-	char	*num;
-
-	config->up_down = (t_img *)malloc(29 * sizeof(t_img));
-	if (!config->up_down)
-		return ;
-	i = 0;
-	while (i < 29)
-	{
-		name = ft_itoa(i + 1);
-		num = ft_strjoin("./textures/animation/New_Project_", name);
-		free(name);
-		name = ft_strjoin(num, ".xpm");
-		free(num);
-		config->up_down[i].ht = 1393;
-		config->up_down[i].wd = 548;
-		config->up_down[i].img = mlx_xpm_file_to_image(config->data.mlx, name, &config->up_down[i].wd, &config->up_down[i].ht);
-		config->up_down[i].addr = mlx_get_data_addr(config->up_down[i].img, &config->up_down[i].bits_per_pixel,
-			&config->up_down[i].line_len, &config->open_door.endian);
-		i++;
-		free(name);
-	}
-}
-
-void	get_textures(t_config *config)
-{
-	get_animation_textures(config);
-	char	*closed_door_path= "./textures/closed_door.xpm";
-	config->closed_door.ht = texh;
-	config->closed_door.wd = texh;
-	config->closed_door.img = mlx_xpm_file_to_image(config->data.mlx, closed_door_path, &config->closed_door.wd, &config->closed_door.ht);
-	config->closed_door.addr = mlx_get_data_addr(config->closed_door.img, &config->closed_door.bits_per_pixel,
-		&config->closed_door.line_len, &config->closed_door.endian);
-		
-	char	*open_door_path= "./textures/open_door.xpm";
-	config->open_door.ht = texh;
-	config->open_door.wd = texh;
-	config->open_door.img = mlx_xpm_file_to_image(config->data.mlx, open_door_path, &config->open_door.wd, &config->open_door.ht);
-	config->open_door.addr = mlx_get_data_addr(config->open_door.img, &config->open_door.bits_per_pixel,
-		&config->open_door.line_len, &config->open_door.endian);
-
-	config->south.ht = texh;
-	config->south.wd = texh;
-	config->south.img = mlx_xpm_file_to_image(config->data.mlx, config->so_path, &config->south.wd, &config->south.ht);
-	config->south.addr = mlx_get_data_addr(config->south.img, &config->south.bits_per_pixel,
-			&config->south.line_len, &config->south.endian);
-
-	config->north.img = mlx_xpm_file_to_image(config->data.mlx, config->no_path, &config->north.wd, &config->north.ht);
-	config->north.ht = texh;
-	config->north.wd = texh;
-	config->north.addr = mlx_get_data_addr(config->north.img, &config->north.bits_per_pixel,
-			&config->north.line_len, &config->north.endian);
-
-	config->west.img = mlx_xpm_file_to_image(config->data.mlx, config->we_path, &config->west.wd, &config->west.ht);
-	config->west.ht = texh;
-	config->west.wd = texh;
-	config->west.addr = mlx_get_data_addr(config->west.img, &config->west.bits_per_pixel,
-			&config->west.line_len, &config->west.endian);
-
-	config->east.img = mlx_xpm_file_to_image(config->data.mlx, config->ea_path, &config->east.wd, &config->east.ht);
-	config->east.ht = texh;
-	config->east.wd = texh;
-	config->east.addr = mlx_get_data_addr(config->east.img, &config->east.bits_per_pixel,
-			&config->east.line_len, &config->east.endian);
 }

@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 14:14:36 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/15 20:46:54 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/18 18:47:29 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,17 +110,26 @@ int	check_door(char **lines)
 	return (1);
 }
 
+bool	check_map(t_config *data)
+{
+	if (!data->map || data->height == 0 || data->width == 0)
+		return (false);
+	return (true);
+}
+
 bool check_map_closed(t_config *data)
 {
 	char	**map_copy;
 	int		r;
 	int		c;
 
+	// if (!check_map(data))
+	// 	return (printf("Error\nNo map found\n"), false);
 	map_copy = copy_map(data);
 	if (!map_copy)
 		return (printf("Error\nmalloc error\n"), false);
 	if (!check_door(map_copy))
-		return (printf("aaaaaaaaaaa\n"), false);
+		return (printf("aaaaaaaaaaa\n"), false); // stuguma dury
 	r = 0;
 	while (r < data->height)
 	{
@@ -180,6 +189,12 @@ bool check_map_closed(t_config *data)
 			c++;
 		}
 		r++;
+	}
+	int n = 0;
+	while(map_copy[n])
+	{
+		printf("%s\n", map_copy[n]);
+		n++;
 	}
 	free_map_copy(&map_copy, data->height);
 	return (true);

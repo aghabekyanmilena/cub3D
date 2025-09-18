@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/18 18:46:20 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/18 20:21:23 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,7 @@ char	*skip_ws(char *s);
 bool	check_map_closed(t_config *cfg);
 int		parse_map(t_config *data, char **lines, int start_index);
 bool	check_map(t_config *data);
+bool check_single_spawn(t_config *data);
+
 
 #endif

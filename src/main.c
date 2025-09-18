@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/18 18:46:34 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/18 20:22:42 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,9 @@ int main(int argc, char **argv)
 	if (!parse_map(&config, map_lines, map_start))
 		return (free_lines(map_lines), 1);
 	if (!check_map(&config))
-		return (printf("Error\nNo map found\n"), false);
+		return (printf("Error\nNo map found\n"), 1);
+	if (!check_single_spawn(&config))
+		return(1);
 	if (!check_map_closed(&config))
 	{
 		free_lines(map_lines);

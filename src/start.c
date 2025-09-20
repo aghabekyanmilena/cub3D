@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:29:20 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/20 14:16:09 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/20 18:21:40 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,15 @@ void	my_image_put(t_config *config, int i)
 	while (x < config->up_down[i].wd)
 	{
 		y = 0;
-		while (y < config->up_down[i].ht)
+		while (y < config->up_down[i].ht - 66)
 		{
-			pixel = get_pixel(&config->up_down[i], x, y);
-			if (pixel == 0x76BBD0)
-			{
-				y++;
-				continue;
-			}
-			my_pixel_put(&config->img, x + 250 , y, pixel);
+			pixel = get_pixel(&config->up_down[i], x, y + 66);
+			if (pixel != 0x76BBD0)
+				my_pixel_put(&config->img, x + 250 , y, pixel);
 			y++;
 		}
 		x++;
 	}
-	
 }
 
 void	spider_anim(t_config *config)

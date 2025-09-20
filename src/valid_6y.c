@@ -6,11 +6,12 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:06:44 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/20 17:10:38 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/20 17:57:45 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+
 int	demi_6_toxy(char *line)
 {
 	char *s = skip_ws(line);

@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 17:22:42 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/20 17:22:43 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/20 17:44:06 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,14 @@ void	put_miniback(t_config *config, int j, int n)
 			m = 0;
 			while (config->map[j][k] != '\0')
 			{
-				c = 0;
-				while (c++ < 10)
-					my_pixel_put(&config->img, m++, n, 0x404040);
+				if (config->map[j][k] != '2')
+				{
+					c = 0;
+					while (c++ < 10)
+						my_pixel_put(&config->img, m++, n, 0x404040);
+				}
+				else
+					m += 10;
 				k++;
 			}
 			n++;

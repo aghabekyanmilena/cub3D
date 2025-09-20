@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 15:57:28 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/17 16:14:35 by anush            ###   ########.fr       */
+/*   Updated: 2025/09/20 17:59:30 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@ int	fri(t_config *config)
 	mlx_destroy_display(config->data.mlx);
 	free(config->up_down);
 	free(config->data.mlx);
+	free(config->ea_path);
+	free(config->we_path);
+	free(config->no_path);
+	free(config->so_path);
 	free_lines(config->map);
 	free_lines(config->data.map);
 	exit (0);

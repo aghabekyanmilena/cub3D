@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:29:20 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/17 16:14:26 by anush            ###   ########.fr       */
+/*   Updated: 2025/09/20 14:16:09 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ void	put_back(t_config *config)
 
 void	my_image_put(t_config *config, int i)
 {
-	int	x;
-	int	y;
+	int				x;
+	int				y;
+	unsigned int	pixel;
 
 	x = 0;
 	while (x < config->up_down[i].wd)
@@ -37,12 +38,13 @@ void	my_image_put(t_config *config, int i)
 		y = 0;
 		while (y < config->up_down[i].ht)
 		{
-			if (get_pixel(&config->up_down[i], x, y + 55) == 0x76BBD0)
+			pixel = get_pixel(&config->up_down[i], x, y);
+			if (pixel == 0x76BBD0)
 			{
 				y++;
 				continue;
 			}
-			my_pixel_put(&config->img, x + 250 , y, get_pixel(&config->up_down[i], x, y + 55));
+			my_pixel_put(&config->img, x + 250 , y, pixel);
 			y++;
 		}
 		x++;
@@ -54,10 +56,10 @@ void	spider_anim(t_config *config)
 {
 	static int	c;
 
-	my_image_put(config, c / 5);
+	my_image_put(config, c / 3);
 	c++;
-	if (c == 130)
-		c = 90;
+	if (c == 78)
+		c = 54;
 }
 
 int	start_ray_casting(t_config *config)

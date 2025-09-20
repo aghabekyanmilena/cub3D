@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 14:14:36 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/18 20:28:43 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/20 14:36:08 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ bool check_single_spawn(t_config *data)
 		r++;
 	}
 	if (spawn_count != 1)
-		return (printf("Error\nMore than one spawn point\n"), false);
+		return (printf("Error\nWrong nuumber of characters\n"), false);
 	return (true);
 }
 
@@ -121,12 +121,12 @@ int	check_door(char **lines)
 			{
 				if (lines[k][j+1] && lines[k][j-1] && lines[k][j+1] == '1' && lines[k][j-1] == '1' && 
 					(lines[k+1][j] && lines[k-1][j] && lines[k-1][j] != '1' && lines[k+1][j] != '1'))
-					return (printf("okay\n"), 1);
+					return (1);
 				else if ((lines[k+1][j] && lines[k-1][j] && lines[k-1][j] == '1' && lines[k+1][j] == '1') &&
 					(lines[k][j+1] && lines[k][j-1] && lines[k][j+1] != '1' && lines[k][j-1] != '1'))
-					return (printf("OKAY\n"), 1);
+					return (1);
 				else
-					return(printf("door error\n"), 0);
+					return(0);
 			}
 			j++;
 		}
@@ -152,7 +152,7 @@ bool check_map_closed(t_config *data)
 	if (!map_copy)
 		return (printf("Error\nmalloc error\n"), false);
 	if (!check_door(map_copy))
-		return (printf("aaaaaaaaaaa\n"), false); // stuguma dury
+		return (printf("Error\nInvalid door\n"), false);
 	r = 0;
 	while (r < data->height)
 	{
@@ -160,7 +160,7 @@ bool check_map_closed(t_config *data)
 			|| is_spawn_or_walkable(map_copy[r][data->width - 1]))
 		{
 			free_map_copy(&map_copy, data->height);
-			return (false);
+			return (printf("Error\nMap not enclosed\n"), false);
 		}
 		r++;
 	}
@@ -171,7 +171,7 @@ bool check_map_closed(t_config *data)
 			|| is_spawn_or_walkable(map_copy[data->height - 1][c]))
 		{
 			free_map_copy(&map_copy, data->height);
-			return (false);
+			return (printf("Error\nMap not enclosed\n"), false);
 		}
 		c++;
 	}
@@ -182,7 +182,7 @@ bool check_map_closed(t_config *data)
 			return (free_map_copy(&map_copy, data->height), false);
 		if (map_copy[r][data->width - 1] == '2'
 			&& !dfs_outside(map_copy, r, data->width - 1, data))
-			return (free_map_copy(&map_copy, data->height), false);
+			return (free_map_copy(&map_copy, data->height), printf("Error\nMap not enclosed\n"), false);
 		r++;
 	}
 	c = 0;
@@ -192,7 +192,7 @@ bool check_map_closed(t_config *data)
 			return (free_map_copy(&map_copy, data->height), false);
 		if (map_copy[data->height - 1][c] == '2'
 			&& !dfs_outside(map_copy, data->height - 1, c, data))
-			return (free_map_copy(&map_copy, data->height), false);
+			return (free_map_copy(&map_copy, data->height), printf("Error\nMap not enclosed\n"), false);
 		c++;
 	}
 	r = 0;
@@ -206,7 +206,7 @@ bool check_map_closed(t_config *data)
 				if (!dfs_outside(map_copy, r, c, data))
 				{
 				    free_map_copy(&map_copy, data->height);
-				    return (false);
+				    return (printf("Error\nMap not enclosed\n"), false);
 				}
 			}
 			c++;

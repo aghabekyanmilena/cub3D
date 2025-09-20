@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:06:44 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/07 22:59:25 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/20 14:44:18 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	parse_texture(t_config *data, int *flag, char *skip, char *type)
 	if (ft_strlen(trimmed) < 5 || ft_strcmp(trimmed + ft_strlen(trimmed) - 4, ".xpm") != 0)
 	{
 		free(trimmed);
-		return (printf("Error\n %s must be a .xpm file\n", type), 0);
+		return (printf("Error\n%s must be a .xpm file\n", type), 0);
 	}
 	if (ft_strcmp(type, "NO") == 0)
 		dest = &data->no_path;

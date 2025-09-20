@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/20 17:33:12 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/20 19:18:52 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,11 @@ int main(int argc, char **argv)
 		free_lines(map_lines);
 		return (1);
 	}
-	start(&config, map_lines);
+	// start(&config, map_lines);
 	free_lines(map_lines);
+	free(config.ea_path);
+	free(config.we_path);
+	free(config.no_path);
+	free(config.so_path);
 	return (0);
 }

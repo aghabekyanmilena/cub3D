@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/20 17:30:07 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/20 17:53:11 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ typedef struct s_ray
 	int		side;
 }	t_ray;
 
-typedef struct s_player {
+typedef struct s_player
+{
 	double	pos_x;
 	double	pos_y;
 	double	dir_x;
@@ -106,7 +107,8 @@ typedef struct s_player {
 	char	prev_char;
 }	t_player;
 
-typedef struct s_data {
+typedef struct s_data
+{
 	void	*mlx;
 	void	*win;
 	char	*texture_paths[4];
@@ -137,12 +139,11 @@ typedef struct s_config
 	char		**map;
 	int			player_x;
 	int			player_y; //sranq
-	
 	int			height; // mapi heighty
 	int			width;
 	int			player_count;
 	int			is_open;
-	t_player	player;//player structna
+	t_player	player; //player structna
 	t_ray		ray;
 	t_wall		wall;
 	t_img		img;
@@ -154,60 +155,56 @@ typedef struct s_config
 	t_img		closed_door;
 	t_img		*up_down;
 }	t_config;
+
+
 // gnl
 char	*ft_free_null(char *s);
 int		ft_newline_instr(char *s);
 char	*ft_strjoinn(char *s1, char *s2, size_t l1, size_t l2);
 char	*get_next_line(int fd);
 
-// valid.c
-int	demi_6_toxy(char *line);
-int	parse_et_6_toxy(t_config *data, char *line);
-int	parse(t_config *data, char **lines, int *start_index);
-int parse_texture(t_config *data, int *flag, char *after_key, char *type);
-int parse_color(t_config *data, int *flag, char *after_key, char *type);
+// 6 toxy.c
+int		demi_6_toxy(char *line);
+int		parse_et_6_toxy(t_config *data, char *line);
+int		parse(t_config *data, char **lines, int *start_index);
+int		parse_texture(t_config *data, int *flag, char *after_key, char *type);
+int		parse_color(t_config *data, int *flag, char *after_key, char *type);
 
-void	free_lines(char **lines);
-
-
-int	parse_map(t_config *data, char **lines, int start_index);
+// parse map
+int		parse_map(t_config *data, char **lines, int start_index);
 bool	check_map(t_config *data);
-bool check_single_spawn(t_config *data);
-bool check_map_closed(t_config *data);
-
+bool	check_single_spawn(t_config *data);
+bool	check_map_closed(t_config *data);
 
 //start
+void	free_lines(char **lines);
 void	start(t_config *config, char **map);
 
 //start_utils
 void	init_player_struct(t_config *config);
-int	fri(t_config *config);
+int		fri(t_config *config);
 void	my_pixel_put(t_img *img, int x, int y, unsigned int color);
-int	rgb_to_int(t_color c);
-unsigned int get_pixel(t_img *tex, int x, int y);
+int		rgb_to_int(t_color c);
 
 
 //textures
 void	get_textures(t_config *config);
 
 //move
-int	check(int keycode, t_config *config);
+int		check(int keycode, t_config *config);
 
 //minimap
 void	minimap(t_config *config, int j, int n);
 
 //motion
-int	mouse_motion(int x, int y, t_config *config);
+int		mouse_motion(int x, int y, t_config *config);
 void	rotate_view(t_config *config, double angle);
 void	open_the_door(t_config *config);
 
-
-
 //valid_utils
 char	*skip_ws(char *s);
-int is_ws_only(char *s);
-int	check_filename(char *filename);
-
-
+int		is_ws_only(char *s);
+int		check_filename(char *filename);
+unsigned int	get_pixel(t_img *tex, int x, int y);
 
 #endif

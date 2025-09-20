@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_6y.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:06:44 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/20 17:10:38 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/20 17:45:11 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ int	parse_color(t_config *data, int *flag, char *skip, char *type)
 	color->b = guyni_stugum(&tmp);
 	while (ft_isspace(*tmp))
 		tmp++;
+	if (*tmp != '\0')
+		return (printf("Error\nInvalid %s format\n", type), 0);
 	if (color->r == -1 || color->g == -1 || color->b == -1)
 		return (printf("Error\n%s values must be 0..255\n", type), 0);
 	*flag = 1;

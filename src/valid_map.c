@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:24:22 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/20 17:05:42 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/20 17:13:50 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int	parse_map(t_config *data, char **lines, int start_index)
         start_index++;
     }
     data->map[i] = NULL;
+	data->is_open = 0;
     return (1);
 }
 

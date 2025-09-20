@@ -4,16 +4,17 @@ INC_DIR = includes
 MLX_DIR = minilibx-linux
 LIBFT_DIR = libft
 
-SRC = $(SRC_DIR)/main.c $(SRC_DIR)/texture_handle.c \
+SRC = $(SRC_DIR)/main.c \
 	$(SRC_DIR)/valid_6y.c \
 	$(SRC_DIR)/get_next_line.c $(SRC_DIR)/get_next_line_utils.c \
-	$(SRC_DIR)/start.c $(SRC_DIR)/valid_utils.c $(SRC_DIR)/dfs.c \
+	$(SRC_DIR)/start.c $(SRC_DIR)/motion.c $(SRC_DIR)/move.c $(SRC_DIR)/start_utils.c \
+	$(SRC_DIR)/textures.c $(SRC_DIR)/minimap.c $(SRC_DIR)/valid_utils.c $(SRC_DIR)/dfs.c \
 	$(SRC_DIR)/valid_map.c
 
 OBJ = $(SRC:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I $(INC_DIR) -I $(MLX_DIR) -I $(LIBFT_DIR) #-fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror -I $(INC_DIR) -I $(MLX_DIR) -I $(LIBFT_DIR) #-g3 -fsanitize=address 
 
 MLX_LIB = $(MLX_DIR)/libmlx.a
 LIBFT_LIB = $(LIBFT_DIR)/libft.a

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/20 14:32:21 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/20 17:33:12 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
-static void	free_lines(char **lines)
+void	free_lines(char **lines)
 {
 	int	i;
 
@@ -98,6 +98,7 @@ int main(int argc, char **argv)
 		free_lines(map_lines);
 		return (1);
 	}
+	start(&config, map_lines);
 	free_lines(map_lines);
 	return (0);
 }

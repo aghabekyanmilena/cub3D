@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dfs.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 14:14:36 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/20 14:36:08 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/20 17:36:46 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,18 @@ bool check_single_spawn(t_config *data)
 		{
 			if (data->map[r][c] == 'N' || data->map[r][c] == 'S' ||
 				data->map[r][c] == 'E' || data->map[r][c] == 'W')
+			{
+				data->posX = r;
+				data->posY = c;
+				data->view = data->map[r][c];
 				spawn_count++;
+			}
 			c++;
 		}
 		r++;
 	}
 	if (spawn_count != 1)
-		return (printf("Error\nWrong nuumber of characters\n"), false);
+		return (printf("Error\nWrong number of characters\n"), false);
 	return (true);
 }
 

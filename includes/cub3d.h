@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/20 17:53:11 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/21 21:49:25 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,6 @@ bool	check_single_spawn(t_config *data);
 bool	check_map_closed(t_config *data);
 
 //start
-void	free_lines(char **lines);
 void	start(t_config *config, char **map);
 
 //start_utils
@@ -200,11 +199,29 @@ void	minimap(t_config *config, int j, int n);
 int		mouse_motion(int x, int y, t_config *config);
 void	rotate_view(t_config *config, double angle);
 void	open_the_door(t_config *config);
+unsigned int	get_pixel(t_img *tex, int x, int y);
 
 //valid_utils
 char	*skip_ws(char *s);
 int		is_ws_only(char *s);
 int		check_filename(char *filename);
-unsigned int	get_pixel(t_img *tex, int x, int y);
+int		characker_check(char c);
+char	**copy_map(t_config *data);
+
+
+// free functions
+void	free_lines(char **lines);
+void	free_map(t_config *data);
+void	free_config(t_config *data);
+void	free_map_copy(char ***map, int height);
+
+// dfs
+int	is_spawn_or_walkable(char c);
+bool	dfs_outside(char **map, int row, int col, t_config *data);
+int	check_door(char **lines);
+
+
+
+
 
 #endif

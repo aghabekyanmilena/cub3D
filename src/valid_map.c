@@ -6,90 +6,113 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:24:22 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/20 19:18:36 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/21 21:18:08 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static int characker_check(char c)
+static void	hashvel(char **lines, int start, int *h, int *w)
 {
-	return (c == '0' || c == '1' || c == 'N' || c == 'S' ||
-			c == 'E' || c == 'W' || c == 'O' || c == ' ' ||
-			c == '\t' || c == 'C');
+	int	k;
+	int	len;
+	int	j;
+
+	*h = 0;
+	*w = 0;
+	k = start;
+	while (lines[k])
+	{
+		len = 0;
+		j = 0;
+		while (lines[k][j] && lines[k][j] != '\n' && lines[k][j] != '\r')
+		{
+			if (lines[k][j] == '\t')
+				len += 4;
+			else
+				len++;
+			j++;
+		}
+		if (len > *w)
+			*w = len;
+		(*h)++;
+		k++;
+	}
+}
+
+static void	fill_empty_line(char *dst, int max_width)
+{
+	int	i;
+
+	i = 0;
+	while (i < max_width)
+	{
+		dst[i] = '2';
+		i++;
+	}
+	dst[i] = '\0';
+}
+
+static int	handle_char(char c, char *dst, int *syun, int max_width)
+{
+	int	t;
+
+	if (!characker_check(c))
+		return (printf("Error\nInvalid character in map\n"), 0);
+	if (c == '\t')
+	{
+		t = 0;
+		while (t++ < 4 && *syun < max_width)
+			dst[(*syun)++] = '2';
+	}
+	else if (c == ' ')
+		dst[(*syun)++] = '2';
+	else
+		dst[(*syun)++] = c;
+	return (1);
+}
+
+static int	copy_line(t_config *data, char *src, int i, int max_width)
+{
+	int	j;
+	int	syun;
+
+	j = 0;
+	syun = 0;
+	if (is_ws_only(src))
+		return (fill_empty_line(data->map[i], max_width), 1);
+	while (src[j] && src[j] != '\n' && src[j] != '\r')
+	{
+		if (!handle_char(src[j], data->map[i], &syun, max_width))
+			return (0);
+		j++;
+	}
+	while (syun < max_width)
+		data->map[i][syun++] = '2';
+	data->map[i][syun] = '\0';
+	return (1);
 }
 
 int	parse_map(t_config *data, char **lines, int start_index)
 {
-	int i, j, k = start_index;
-	int line_count = 0;
-	int max_width = 0;
+	int	i;
 
-	while (lines[k])
-	{
-	    int len = 0;
-	    int j = 0;
-	    while (lines[k][j] && lines[k][j] != '\n' && lines[k][j] != '\r')
-	    {
-	        if (lines[k][j] == '\t')
-	            len += 4;
-	        else
-	            len++;
-	        j++;
-	    }
-	    if (len > max_width)
-	        max_width = len;
-	    line_count++;
-	    k++;
-	}
-	data->height = line_count;
-	data->width = max_width;
-	data->map = malloc(sizeof(char *) * (line_count + 1));
+	hashvel(lines, start_index, &data->height, &data->width);
+	data->map = malloc(sizeof(char *) * (data->height + 1));
 	if (!data->map)
-	    return (0);
+		return (0);
 	i = 0;
 	while (lines[start_index])
 	{
-	    data->map[i] = malloc(max_width + 1);
-	    if (!data->map[i])
-	        return (0);
-	    if (is_ws_only(lines[start_index]))
-	    {
-	        int syun = 0;
-	        while (syun < max_width)
-	            data->map[i][syun++] = '2';
-	        data->map[i][syun] = '\0';
-	        i++;
-	        start_index++;
-	        continue;
-	    }	
-	    j = 0;
-	    int syun = 0;
-	    while (lines[start_index][j] &&
-	           lines[start_index][j] != '\n' &&
-	           lines[start_index][j] != '\r')
-	    {
-	        if (!characker_check(lines[start_index][j]))
-	            return (printf("Error\nInvalid character in map\n"), 0);
-	        if (lines[start_index][j] == '\t')
-	        {
-	            for (int t = 0; t < 4 && syun < max_width; t++)
-	                data->map[i][syun++] = '2';
-	        }
-	        else if (lines[start_index][j] == ' ')
-	            data->map[i][syun++] = '2';
-	        else
-	            data->map[i][syun++] = lines[start_index][j];
-	        j++;
-	    }
-	    while (syun < max_width)
-	        data->map[i][syun++] = '2';
-	    data->map[i][syun] = '\0';
-	    i++;
-	    start_index++;
+		data->map[i] = malloc(data->width + 1);
+		if (!data->map[i])
+			return (0);
+		if (!copy_line(data, lines[start_index], i, data->width))
+			return (0);
+		i++;
+		start_index++;
 	}
 	data->map[i] = NULL;
 	data->is_open = 0;
 	return (1);
 }
-

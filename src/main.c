@@ -6,23 +6,11 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/20 19:18:52 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/21 21:10:40 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	free_lines(char **lines)
-{
-	int	i;
-
-	i = 0;
-	if (!lines)
-		return;
-	while (lines[i])
-		free(lines[i++]);
-	free(lines);
-}
 
 static char	**add_line(char **lines, char *line, int count)
 {
@@ -47,10 +35,13 @@ static char	**add_line(char **lines, char *line, int count)
 char	**read_map(const char *filename)
 {
 	int		fd;
-	char	*line = NULL;
-	char	**lines = NULL;
-	int		count = 0;
+	char	*line;
+	char	**lines;
+	int		count;
 
+	count = 0;
+	line = NULL;
+	lines = NULL;
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		return (printf("Error\nInvalid file\n"), NULL);
@@ -69,7 +60,7 @@ char	**read_map(const char *filename)
 	return (lines);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_config	config;
 	char		**map_lines;
@@ -86,23 +77,19 @@ int main(int argc, char **argv)
 	if (!map_lines)
 		return (1);
 	if (!parse(&config, map_lines, &map_start))
-		return (free_lines(map_lines), 1);
+		return (free_lines(map_lines), free_config(&config), 1);
 	if (!parse_map(&config, map_lines, map_start))
-		return (free_lines(map_lines), 1);
+		return (free_lines(map_lines), free_config(&config), 1);
 	if (!check_map(&config))
-		return (printf("Error\nNo map found\n"), 1);
+		return (free_lines(map_lines), free_config(&config),
+			printf("Error\nNo map found\n"), 1);
 	if (!check_single_spawn(&config))
-		return(1);
+		return (free_lines(map_lines), free_config(&config), 1);
 	if (!check_map_closed(&config))
-	{
-		free_lines(map_lines);
-		return (1);
-	}
+		return (free_lines(map_lines), free_config(&config), 1);
 	// start(&config, map_lines);
 	free_lines(map_lines);
-	free(config.ea_path);
-	free(config.we_path);
-	free(config.no_path);
-	free(config.so_path);
+	free_map(&config);
+	free_config(&config);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:03:48 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/22 17:16:36 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/22 17:36:12 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ static int	parse_component(char **str, int storaket)
 	val = guyni_stugum(str);
 	if (val == -1)
 		return (-1);
+	while (ft_isspace(**str))
+		(*str)++;
 	if (storaket)
 	{
 		if (**str == ',')

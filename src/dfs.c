@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 14:14:36 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/21 21:46:41 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/22 14:40:45 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ bool	check_single_spawn(t_config *data)
 	int	c;
 	int	spawn_count;
 
-	r = 0;
+	r = -1;
 	spawn_count = 0;
-	while (r < data->height)
+	while (++r < data->height)
 	{
 		c = 0;
 		while (data->map[r][c])
@@ -63,11 +63,25 @@ bool	check_single_spawn(t_config *data)
 			}
 			c++;
 		}
-		r++;
 	}
 	if (spawn_count != 1)
-		return (printf("Error\nWrong number of characters\n"), false);
+		return (ft_putendl_fd("Error", 2), false);
 	return (true);
+}
+
+static int	check_one_door(char **lines, int k, int j)
+{
+	if (lines[k][j + 1] && lines[k][j - 1]
+		&& lines[k][j + 1] == '1' && lines[k][j - 1] == '1'
+		&& lines[k + 1][j] && lines[k - 1][j]
+		&& lines[k - 1][j] != '1' && lines[k + 1][j] != '1')
+		return (1);
+	if (lines[k + 1][j] && lines[k - 1][j]
+		&& lines[k - 1][j] == '1' && lines[k + 1][j] == '1'
+		&& lines[k][j + 1] && lines[k][j - 1]
+		&& lines[k][j + 1] != '1' && lines[k][j - 1] != '1')
+		return (1);
+	return (0);
 }
 
 int	check_door(char **lines)
@@ -81,15 +95,9 @@ int	check_door(char **lines)
 		j = 0;
 		while (lines[k][j])
 		{
-			if (lines[k][j] && (lines[k][j] == 'C' || lines[k][j] == 'O'))
+			if (lines[k][j] == 'C' || lines[k][j] == 'O')
 			{
-				if (lines[k][j + 1] && lines[k][j - 1] && lines[k][j + 1] == '1' && lines[k][j - 1] == '1'
-					&& (lines[k + 1][j] && lines[k - 1][j] && lines[k - 1][j] != '1' && lines[k + 1][j] != '1'))
-					return (1);
-				else if ((lines[k + 1][j] && lines[k - 1][j] && lines[k - 1][j] == '1' && lines[k + 1][j] == '1') &&
-					(lines[k][j + 1] && lines[k][j - 1] && lines[k][j + 1] != '1' && lines[k][j - 1] != '1'))
-					return (1);
-				else
+				if (!check_one_door(lines, k, j))
 					return (0);
 			}
 			j++;
@@ -97,11 +105,4 @@ int	check_door(char **lines)
 		k++;
 	}
 	return (1);
-}
-
-bool	check_map(t_config *data)
-{
-	if (!data->map || data->height == 0 || data->width == 0)
-		return (false);
-	return (true);
 }

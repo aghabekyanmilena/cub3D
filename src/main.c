@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/21 21:10:40 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/22 14:17:16 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,21 @@ char	**read_map(const char *filename)
 	lines = NULL;
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		return (printf("Error\nInvalid file\n"), NULL);
-	while ((line = get_next_line(fd)) != NULL)
+		return (ft_putendl_fd("Error", 2), NULL);
+	line = get_next_line(fd);
+	while (line != NULL)
 	{
 		lines = add_line(lines, line, count);
 		if (!lines)
 		{
 			free(line);
 			close(fd);
-			return (printf("Error\nEmpty file\n"), NULL);
+			return (ft_putendl_fd("Error", 2), NULL);
 		}
+		line = get_next_line(fd);
 		count++;
 	}
-	close(fd);
-	return (lines);
+	return (close(fd), lines);
 }
 
 int	main(int argc, char **argv)
@@ -75,14 +76,14 @@ int	main(int argc, char **argv)
 	ft_bzero(&config, sizeof(t_config));
 	map_lines = read_map(argv[1]);
 	if (!map_lines)
-		return (1);
+		return (ft_putendl_fd("Error", 2), 1);
 	if (!parse(&config, map_lines, &map_start))
 		return (free_lines(map_lines), free_config(&config), 1);
 	if (!parse_map(&config, map_lines, map_start))
 		return (free_lines(map_lines), free_config(&config), 1);
 	if (!check_map(&config))
 		return (free_lines(map_lines), free_config(&config),
-			printf("Error\nNo map found\n"), 1);
+			ft_putendl_fd("Error", 2), 1);
 	if (!check_single_spawn(&config))
 		return (free_lines(map_lines), free_config(&config), 1);
 	if (!check_map_closed(&config))

@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:18:18 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/21 22:15:08 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/22 14:08:15 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	check_filename(char *filename)
 	name = ft_strchr(filename, '.');
 	if (!name || ft_strcmp(name, ".cub") != 0 || ft_strlen(name) != 4)
 	{
-		printf("Error\nInvalid file name\n");
+		ft_putendl_fd("Error", 2);
 		return (0);
 	}
 	return (1);

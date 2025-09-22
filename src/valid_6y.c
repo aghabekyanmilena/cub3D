@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:06:44 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/21 22:08:34 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/22 14:07:21 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,13 @@ int	parse_texture(t_config *data, int *flag, char *skip, char *type)
 
 	pos = skip_ws(skip);
 	if (*flag)
-		return (printf("Error\nDuplicate %s\n", type), 0);
+		return (ft_putendl_fd("Error", 2), 0);
 	trimmed = ft_strtrim(pos, " \t\r\n\v\f");
 	if (!trimmed)
 		return (0);
 	if (ft_strlen(trimmed) < 5
 		|| ft_strcmp(trimmed + ft_strlen(trimmed) - 4, ".xpm") != 0)
-		return (free(trimmed),
-			printf("Error\n%s must be a .xpm file\n", type), 0);
+		return (free(trimmed), ft_putendl_fd("Error", 2), 0);
 	if (ft_strcmp(type, "NO") == 0)
 		dest = &data->no_path;
 	else if (ft_strcmp(type, "SO") == 0)
@@ -96,7 +95,7 @@ int	parse(t_config *data, char **lines, int *start_index)
 		i++;
 	}
 	if (!(data->no && data->so && data->we && data->ea && data->f && data->c))
-		return (printf("Error\nMissing texture or color.\n"), 0);
+		return (ft_putendl_fd("Error", 2), 0);
 	while (lines[i] && is_ws_only(lines[i]))
 		i++;
 	*start_index = i;

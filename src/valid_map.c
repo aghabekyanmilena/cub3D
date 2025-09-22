@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:24:22 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/21 21:18:08 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/22 14:07:54 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	handle_char(char c, char *dst, int *syun, int max_width)
 	int	t;
 
 	if (!characker_check(c))
-		return (printf("Error\nInvalid character in map\n"), 0);
+		return (ft_putendl_fd("Error", 2), 0);
 	if (c == '\t')
 	{
 		t = 0;

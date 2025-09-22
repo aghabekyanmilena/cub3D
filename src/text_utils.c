@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:03:48 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/21 22:10:19 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/22 14:10:34 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,15 @@ static int	parse_component(char **str)
 
 static int	validate_color(char *tmp, t_color *color, char *type)
 {
+	(void)type;
 	if (color->r < 0 || color->r > 255
 		|| color->g < 0 || color->g > 255
 		|| color->b < 0 || color->b > 255)
-		return (printf("Error\n%s values must be 0..255\n", type), 0);
+		return (ft_putendl_fd("Error", 2), 0);
 	while (ft_isspace(*tmp))
 		tmp++;
 	if (*tmp != '\0')
-		return (printf("Error\nInvalid %s format\n", type), 0);
+		return (ft_putendl_fd("Error", 2), 0);
 	return (1);
 }
 
@@ -59,7 +60,7 @@ int	parse_color(t_config *data, int *flag, char *skip, char *type)
 
 	tmp = skip_ws(skip);
 	if (*flag)
-		return (printf("Error\nDuplicate %s\n", type), 0);
+		return (ft_putendl_fd("Error", 2), 0);
 	if (type[0] == 'F')
 		color = &data->floor;
 	else

@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/21 21:49:25 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/22 14:38:13 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,6 @@ int		fri(t_config *config);
 void	my_pixel_put(t_img *img, int x, int y, unsigned int color);
 int		rgb_to_int(t_color c);
 
-
 //textures
 void	get_textures(t_config *config);
 
@@ -220,6 +219,8 @@ int	is_spawn_or_walkable(char c);
 bool	dfs_outside(char **map, int row, int col, t_config *data);
 int	check_door(char **lines);
 
+// check_map
+bool	check_map(t_config *data);
 
 
 

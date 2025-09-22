@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/20 17:30:07 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/22 14:11:27 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,13 @@ typedef struct s_wall
 typedef struct s_ray
 {
 	double	camera_x;
-	double	rayDir_x;
-	double	rayDir_y;
-	double	sideDist_x;
-	double	sideDist_y;
-	double	deltaDist_x;
-	double	deltaDist_y;
-	double	wallDist;
+	double	ray_dir_x;
+	double	ray_dir_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	wall_dist;
 	int		hit;
 	int		side;
 }	t_ray;
@@ -131,8 +131,8 @@ typedef struct s_config
 	int			ea;
 	int			f;
 	int			c;
-	int			posX;//players position x and y
-	int			posY;
+	int			pos_x;//players position x and y
+	int			pos_y;
 	char		view;//uxxutyuny;
 	char		**map;
 	int			player_x;
@@ -150,8 +150,8 @@ typedef struct s_config
 	t_img		north;
 	t_img		east;
 	t_img		west;
-	t_img		open_door;
-	t_img		closed_door;
+	t_img		open;
+	t_img		close;
 	t_img		*up_down;
 }	t_config;
 // gnl
@@ -195,12 +195,21 @@ int	check(int keycode, t_config *config);
 
 //minimap
 void	minimap(t_config *config, int j, int n);
+void	change_map(t_config *config, int next_x, int next_y);
+
 
 //motion
 int	mouse_motion(int x, int y, t_config *config);
 void	rotate_view(t_config *config, double angle);
 void	open_the_door(t_config *config);
+void	spider_anim(t_config *config);
 
+//ray_casting
+void	get_ray_dir(t_ray *ray, t_player *player, int x);
+void	get_step_player(t_ray *ray, t_player *player);
+void	check_if_hit(t_ray *ray, t_player *player, char **map);
+void	get_wall_size(t_ray *ray, t_player *player, t_wall *wall);
+void	draw_wall(t_config *config, t_wall *wall, int x, int y);
 
 
 //valid_utils

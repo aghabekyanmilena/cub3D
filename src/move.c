@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 16:59:08 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/17 15:41:21 by anush            ###   ########.fr       */
+/*   Updated: 2025/09/22 14:29:45 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	change_map(t_config *config, int next_x, int next_y)
-{
-	char	p;
-
-	p = config->map[(int)config->player.pos_x][(int)config->player.pos_y];
-	config->map[(int)config->player.pos_x][(int)config->player.pos_y] = config->player.prev_char;
-	config->player.prev_char = config->map[(int)next_x][(int)next_y];
-	config->map[(int)next_x][(int)next_y] = p;
-}
 
 void	go_forward(t_config *config)
 {
@@ -28,10 +18,12 @@ void	go_forward(t_config *config)
 	double	next_y;
 	double	len;
 
-	len = sqrt(config->player.dir_x*config->player.dir_x + config->player.dir_y*config->player.dir_y);
+	len = sqrt(config->player.dir_x * config->player.dir_x
+			+ config->player.dir_y * config->player.dir_y);
 	next_x = config->player.pos_x + config->player.dir_x / len * STEP;
 	next_y = config->player.pos_y + config->player.dir_y / len * STEP;
-	if (config->map[(int)next_x][(int)next_y] != '1' && config->map[(int)next_x][(int)next_y] != 'C')
+	if (config->map[(int)next_x][(int)next_y] != '1'
+		&& config->map[(int)next_x][(int)next_y] != 'C')
 	{
 		change_map(config, (int)next_x, (int)next_y);
 		config->player.pos_x = next_x;
@@ -45,10 +37,12 @@ void	go_back(t_config *config)
 	double	next_y;
 	double	len;
 
-	len = sqrt(config->player.dir_x*config->player.dir_x + config->player.dir_y*config->player.dir_y);
+	len = sqrt(config->player.dir_x * config->player.dir_x
+			+ config->player.dir_y * config->player.dir_y);
 	next_x = config->player.pos_x - config->player.dir_x / len * STEP;
 	next_y = config->player.pos_y - config->player.dir_y / len * STEP;
-	if (config->map[(int)next_x][(int)next_y] != '1' && config->map[(int)next_x][(int)next_y] != 'C')
+	if (config->map[(int)next_x][(int)next_y] != '1'
+		&& config->map[(int)next_x][(int)next_y] != 'C')
 	{
 		change_map(config, (int)next_x, (int)next_y);
 		config->player.pos_x = next_x;
@@ -62,10 +56,12 @@ void	go_right(t_config *config)
 	double	next_y;
 	double	len;
 
-	len = sqrt(config->player.dir_x*config->player.dir_x + config->player.dir_y*config->player.dir_y);
+	len = sqrt(config->player.dir_x * config->player.dir_x
+			+ config->player.dir_y * config->player.dir_y);
 	next_x = config->player.pos_x + config->player.dir_y / len * STEP;
 	next_y = config->player.pos_y - config->player.dir_x / len * STEP;
-	if (config->map[(int)next_x][(int)next_y] != '1' && config->map[(int)next_x][(int)next_y] != 'C')
+	if (config->map[(int)next_x][(int)next_y] != '1'
+		&& config->map[(int)next_x][(int)next_y] != 'C')
 	{
 		change_map(config, (int)next_x, (int)next_y);
 		config->player.pos_x = next_x;
@@ -79,10 +75,12 @@ void	go_left(t_config *config)
 	double	next_y;
 	double	len;
 
-	len = sqrt(config->player.dir_x*config->player.dir_x + config->player.dir_y*config->player.dir_y);
+	len = sqrt(config->player.dir_x * config->player.dir_x
+			+ config->player.dir_y * config->player.dir_y);
 	next_x = config->player.pos_x - config->player.dir_y / len * STEP;
 	next_y = config->player.pos_y + config->player.dir_x / len * STEP;
-	if (config->map[(int)next_x][(int)next_y] != '1' && config->map[(int)next_x][(int)next_y] != 'C')
+	if (config->map[(int)next_x][(int)next_y] != '1'
+		&& config->map[(int)next_x][(int)next_y] != 'C')
 	{
 		change_map(config, (int)next_x, (int)next_y);
 		config->player.pos_x = next_x;

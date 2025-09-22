@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 14:14:36 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/20 17:36:46 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/21 17:42:41 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ bool check_single_spawn(t_config *data)
 			if (data->map[r][c] == 'N' || data->map[r][c] == 'S' ||
 				data->map[r][c] == 'E' || data->map[r][c] == 'W')
 			{
-				data->posX = r;
-				data->posY = c;
+				data->pos_x = r;
+				data->pos_y = c;
 				data->view = data->map[r][c];
 				spawn_count++;
 			}

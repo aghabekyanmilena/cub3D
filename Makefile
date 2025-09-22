@@ -9,7 +9,7 @@ SRC = $(SRC_DIR)/main.c \
 	$(SRC_DIR)/get_next_line.c $(SRC_DIR)/get_next_line_utils.c \
 	$(SRC_DIR)/start.c $(SRC_DIR)/motion.c $(SRC_DIR)/move.c $(SRC_DIR)/start_utils.c \
 	$(SRC_DIR)/textures.c $(SRC_DIR)/minimap.c $(SRC_DIR)/valid_utils.c $(SRC_DIR)/dfs.c \
-	$(SRC_DIR)/valid_map.c
+	$(SRC_DIR)/valid_map.c $(SRC_DIR)/ray_casting_funcs.c
 
 OBJ = $(SRC:.c=.o)
 

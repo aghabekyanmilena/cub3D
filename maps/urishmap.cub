@@ -1,11 +1,11 @@
-NO 																    ./textures/Lana_1.xpm
-SO    a       ./textures/Lana_2.xpm
+NO ./textures/Lana_1.xpm
+SO ./textures/Lana_2.xpm
 WE ./textures/Lana_3.xpm
 EA ./textures/Lana_4.xpm
 
-F 		50        ,                    50,                  ,							             50
+F 50,50,50
 
-C            														                              229,229,239
+C 229,229,239
 
 
 

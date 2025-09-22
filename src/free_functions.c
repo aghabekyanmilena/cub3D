@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 20:26:32 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/22 15:30:52 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/22 17:15:58 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,15 @@ void	free_map_copy(char ***map, int height)
 	}
 	free(*map);
 	*map = NULL;
+}
+
+void	free_half(t_config *conf, int i)
+{
+	int	j;
+
+	j = 0;
+	while (j <= i)
+		free(conf->map[j++]);
+	free(conf->map);
+	conf->map = NULL;
 }

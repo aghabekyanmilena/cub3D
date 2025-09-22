@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_6y.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:06:44 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/22 14:47:10 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/22 17:07:37 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	parse_texture(t_config *data, int *flag, char *skip, char *type)
 	if (!trimmed)
 		return (0);
 	if (ft_strlen(trimmed) < 5
+		|| ft_strncmp(trimmed, "./", 2) != 0
 		|| ft_strcmp(trimmed + ft_strlen(trimmed) - 4, ".xpm") != 0)
 		return (free(trimmed), ft_putendl_fd("Error", 2), 0);
 	if (ft_strcmp(type, "NO") == 0)

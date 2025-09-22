@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/22 15:24:25 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/22 17:14:30 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ int	validation(t_config *config, char **map_lines, int map_start)
 	if (!check_map(config))
 		return (free_lines(map_lines), free_config(config),
 			ft_putendl_fd("Error", 2), 0);
-
 	if (!check_single_spawn(config))
 		return (free_lines(map_lines), free_config(config), 0);
 	if (!check_map_closed(config))

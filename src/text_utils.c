@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   text_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:03:48 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/22 15:20:12 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/22 17:16:36 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,24 @@ static int	guyni_stugum(char **str)
 	return (val);
 }
 
-static int	parse_component(char **str)
+static int	parse_component(char **str, int storaket)
 {
 	int	val;
 
 	val = guyni_stugum(str);
-	if (*(*str) == ',')
+	if (val == -1)
+		return (-1);
+	if (storaket)
+	{
+		if (**str == ',')
+			return (-1);
+	}
+	else
+	{
+		if (**str != ',')
+			return (-1);
 		(*str)++;
+	}
 	return (val);
 }
 
@@ -64,9 +75,9 @@ int	parse_color(t_config *data, int *flag, char *skip, char *type)
 		color = &data->floor;
 	else
 		color = &data->ceiling;
-	color->r = parse_component(&tmp);
-	color->g = parse_component(&tmp);
-	color->b = parse_component(&tmp);
+	color->r = parse_component(&tmp, 0);
+	color->g = parse_component(&tmp, 0);
+	color->b = parse_component(&tmp, 1);
 	if (!validate_color(tmp, color))
 		return (0);
 	*flag = 1;

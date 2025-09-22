@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 15:24:22 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/22 14:07:54 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/22 15:33:44 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,16 @@ static int	copy_line(t_config *data, char *src, int i, int max_width)
 	return (1);
 }
 
+void	free_half(t_config *conf, int i)
+{
+	int j = 0;
+	
+	while (j<=i)
+		free(conf->map[j++]);
+	free(conf->map);
+	conf->map = NULL;
+}
+
 int	parse_map(t_config *data, char **lines, int start_index)
 {
 	int	i;
@@ -102,13 +112,14 @@ int	parse_map(t_config *data, char **lines, int start_index)
 	if (!data->map)
 		return (0);
 	i = 0;
+
 	while (lines[start_index])
 	{
 		data->map[i] = malloc(data->width + 1);
 		if (!data->map[i])
-			return (0);
+			return (free_half(data, i - 1), 0);
 		if (!copy_line(data, lines[start_index], i, data->width))
-			return (0);
+			return (free_half(data, i), 0);
 		i++;
 		start_index++;
 	}

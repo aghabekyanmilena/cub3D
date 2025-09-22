@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 20:26:32 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/22 15:01:15 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/22 15:30:52 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,13 @@ void	free_lines(char **lines)
 
 void	free_config(t_config *data)
 {
-	int	i;
-
-	i = 0;
-	if (!data->map)
-		return ;
-	while (data->map[i])
-	{
-		free(data->map[i]);
-		i++;
-	}
-	free(data->map);
+	if (data->map)
+		free_lines(data->map);
 	data->map = NULL;
 	free(data->no_path);
 	free(data->so_path);
 	free(data->we_path);
 	free(data->ea_path);
-	data->map = NULL;
 	data->no_path = NULL;
 	data->so_path = NULL;
 	data->we_path = NULL;

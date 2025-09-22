@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   text_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:03:48 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/22 14:10:34 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/22 15:20:12 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,8 @@ static int	parse_component(char **str)
 	return (val);
 }
 
-static int	validate_color(char *tmp, t_color *color, char *type)
+static int	validate_color(char *tmp, t_color *color)
 {
-	(void)type;
 	if (color->r < 0 || color->r > 255
 		|| color->g < 0 || color->g > 255
 		|| color->b < 0 || color->b > 255)
@@ -68,7 +67,7 @@ int	parse_color(t_config *data, int *flag, char *skip, char *type)
 	color->r = parse_component(&tmp);
 	color->g = parse_component(&tmp);
 	color->b = parse_component(&tmp);
-	if (!validate_color(tmp, color, type))
+	if (!validate_color(tmp, color))
 		return (0);
 	*flag = 1;
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 21:42:26 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/22 14:43:48 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/22 18:02:05 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ bool	check_map_closed(t_config *data)
 	map_copy = copy_map(data);
 	if (!map_copy)
 		return (ft_putendl_fd("Error", 2), false);
-	if (!check_door(map_copy))
+	if (!check_door(map_copy, data))
 		return (free_map_copy(&map_copy, data->height),
 			ft_putendl_fd("Error", 2), false);
 	if (!check_border_rows_cols(data, map_copy)

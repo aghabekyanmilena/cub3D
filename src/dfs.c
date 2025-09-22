@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dfs.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 14:14:36 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/22 14:47:44 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/22 18:13:16 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,22 +69,23 @@ bool	check_single_spawn(t_config *data)
 	return (true);
 }
 
-static int	check_one_door(char **lines, int k, int j)
+static int	check_one_door(char **lines, int k, int j, t_config *config)
 {
-	if (lines[k][j + 1] && lines[k][j - 1]
+	if (lines[k][j + 1] && j != 0 && lines[k][j - 1]
 		&& lines[k][j + 1] == '1' && lines[k][j - 1] == '1'
-		&& lines[k + 1][j] && lines[k - 1][j]
+		&& k != config->height - 1 && lines[k + 1][j] && k != 0
+		&& lines[k - 1][j]
 		&& lines[k - 1][j] != '1' && lines[k + 1][j] != '1')
 		return (1);
-	if (lines[k + 1][j] && lines[k - 1][j]
+	if (k != config->height - 1 && lines[k + 1][j] && k != 0 && lines[k - 1][j]
 		&& lines[k - 1][j] == '1' && lines[k + 1][j] == '1'
-		&& lines[k][j + 1] && lines[k][j - 1]
+		&& lines[k][j + 1] && j != 0 && lines[k][j - 1]
 		&& lines[k][j + 1] != '1' && lines[k][j - 1] != '1')
 		return (1);
 	return (0);
 }
 
-int	check_door(char **lines)
+int	check_door(char **lines, t_config *config)
 {
 	int	k;
 	int	j;
@@ -97,7 +98,7 @@ int	check_door(char **lines)
 		{
 			if (lines[k][j] == 'C' || lines[k][j] == 'O')
 			{
-				if (!check_one_door(lines, k, j))
+				if (!check_one_door(lines, k, j, config))
 					return (0);
 			}
 			j++;

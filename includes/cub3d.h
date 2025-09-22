@@ -6,7 +6,7 @@
 /*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/22 17:15:19 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/22 18:02:24 by miaghabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,7 @@ void			free_half(t_config *conf, int i);
 // dfs
 int				is_spawn_or_walkable(char c);
 bool			dfs_outside(char **map, int row, int col, t_config *data);
-int				check_door(char **lines);
+int				check_door(char **lines, t_config *config);
 
 // check_map
 bool			check_map(t_config *data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/22 14:17:16 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/22 15:00:11 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,22 @@ char	**read_map(const char *filename)
 	return (close(fd), lines);
 }
 
+int	validation(t_config *config, char **map_lines, int map_start)
+{
+	if (!parse(config, map_lines, &map_start))
+		return (free_lines(map_lines), free_config(config), 0);
+	if (!parse_map(config, map_lines, map_start))
+		return (free_lines(map_lines), free_config(config), 0);
+	if (!check_map(config))
+		return (free_lines(map_lines), free_config(config),
+			ft_putendl_fd("Error", 2), 0);
+	if (!check_single_spawn(config))
+		return (free_lines(map_lines), free_config(config), 0);
+	if (!check_map_closed(config))
+		return (free_lines(map_lines), free_config(config), 0);
+	return (1);
+}
+
 int	main(int argc, char **argv)
 {
 	t_config	config;
@@ -73,24 +89,14 @@ int	main(int argc, char **argv)
 		return (printf("Error\nUsage: %s <map.cub>\n", argv[0]), 1);
 	if (!check_filename(argv[1]))
 		return (1);
-	ft_bzero(&config, sizeof(t_config));
 	map_lines = read_map(argv[1]);
 	if (!map_lines)
 		return (ft_putendl_fd("Error", 2), 1);
-	if (!parse(&config, map_lines, &map_start))
-		return (free_lines(map_lines), free_config(&config), 1);
-	if (!parse_map(&config, map_lines, map_start))
-		return (free_lines(map_lines), free_config(&config), 1);
-	if (!check_map(&config))
-		return (free_lines(map_lines), free_config(&config),
-			ft_putendl_fd("Error", 2), 1);
-	if (!check_single_spawn(&config))
-		return (free_lines(map_lines), free_config(&config), 1);
-	if (!check_map_closed(&config))
-		return (free_lines(map_lines), free_config(&config), 1);
-	// start(&config, map_lines);
+	ft_bzero(&config, sizeof(t_config));
+	if (!validation(&config, map_lines, map_start))
+		return (1);
+	start(&config, map_lines);
 	free_lines(map_lines);
-	free_map(&config);
 	free_config(&config);
 	return (0);
 }

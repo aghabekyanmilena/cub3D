@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/22 14:38:13 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/22 15:05:54 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # define TILE_SIZE 32
 # define WIDTH 1440
 # define LENGTH 2560
-# define texh 256
+# define TEX_H 256
 # define SPEED 0.025
 # define STEP 0.0773
 
@@ -80,13 +80,13 @@ typedef struct s_wall
 typedef struct s_ray
 {
 	double	camera_x;
-	double	rayDir_x;
-	double	rayDir_y;
-	double	sideDist_x;
-	double	sideDist_y;
-	double	deltaDist_x;
-	double	deltaDist_y;
-	double	wallDist;
+	double	ray_dir_x;
+	double	ray_dir_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	wall_dist;
 	int		hit;
 	int		side;
 }	t_ray;
@@ -133,8 +133,8 @@ typedef struct s_config
 	int			ea;
 	int			f;
 	int			c;
-	int			posX;//players position x and y
-	int			posY;
+	int			pos_x;//players position x and y
+	int			pos_y;
 	char		view;//uxxutyuny;
 	char		**map;
 	int			player_x;
@@ -151,78 +151,83 @@ typedef struct s_config
 	t_img		north;
 	t_img		east;
 	t_img		west;
-	t_img		open_door;
-	t_img		closed_door;
+	t_img		open;
+	t_img		close;
 	t_img		*up_down;
 }	t_config;
 
-
 // gnl
-char	*ft_free_null(char *s);
-int		ft_newline_instr(char *s);
-char	*ft_strjoinn(char *s1, char *s2, size_t l1, size_t l2);
-char	*get_next_line(int fd);
+char			*ft_free_null(char *s);
+int				ft_newline_instr(char *s);
+char			*ft_strjoinn(char *s1, char *s2, size_t l1, size_t l2);
+char			*get_next_line(int fd);
 
 // 6 toxy.c
-int		demi_6_toxy(char *line);
-int		parse_et_6_toxy(t_config *data, char *line);
-int		parse(t_config *data, char **lines, int *start_index);
-int		parse_texture(t_config *data, int *flag, char *after_key, char *type);
-int		parse_color(t_config *data, int *flag, char *after_key, char *type);
+int				demi_6_toxy(char *line);
+int				parse_et_6_toxy(t_config *data, char *line);
+int				parse(t_config *data, char **lines, int *start_index);
+int				parse_texture(t_config *data, int *flag,
+					char *after_key, char *type);
+int				parse_color(t_config *data, int *flag,
+					char *after_key, char *type);
 
 // parse map
-int		parse_map(t_config *data, char **lines, int start_index);
-bool	check_map(t_config *data);
-bool	check_single_spawn(t_config *data);
-bool	check_map_closed(t_config *data);
+int				parse_map(t_config *data, char **lines, int start_index);
+bool			check_map(t_config *data);
+bool			check_single_spawn(t_config *data);
+bool			check_map_closed(t_config *data);
 
 //start
-void	start(t_config *config, char **map);
+void			start(t_config *config, char **map);
 
 //start_utils
-void	init_player_struct(t_config *config);
-int		fri(t_config *config);
-void	my_pixel_put(t_img *img, int x, int y, unsigned int color);
-int		rgb_to_int(t_color c);
+void			init_player_struct(t_config *config);
+int				fri(t_config *config);
+void			my_pixel_put(t_img *img, int x, int y, unsigned int color);
+int				rgb_to_int(t_color c);
 
 //textures
-void	get_textures(t_config *config);
+void			get_textures(t_config *config);
 
 //move
-int		check(int keycode, t_config *config);
+int				check(int keycode, t_config *config);
 
 //minimap
-void	minimap(t_config *config, int j, int n);
+void			minimap(t_config *config, int j, int n);
+void			change_map(t_config *config, int next_x, int next_y);
 
 //motion
-int		mouse_motion(int x, int y, t_config *config);
-void	rotate_view(t_config *config, double angle);
-void	open_the_door(t_config *config);
+int				mouse_motion(int x, int y, t_config *config);
+void			rotate_view(t_config *config, double angle);
+void			open_the_door(t_config *config);
+void			spider_anim(t_config *config);
+
+//ray_casting
+void			get_ray_dir(t_ray *ray, t_player *player, int x);
+void			get_step_player(t_ray *ray, t_player *player);
+void			check_if_hit(t_ray *ray, t_player *player, char **map);
+void			get_wall_size(t_ray *ray, t_player *player, t_wall *wall);
+void			draw_wall(t_config *config, t_wall *wall, int x, int y);
 unsigned int	get_pixel(t_img *tex, int x, int y);
 
 //valid_utils
-char	*skip_ws(char *s);
-int		is_ws_only(char *s);
-int		check_filename(char *filename);
-int		characker_check(char c);
-char	**copy_map(t_config *data);
-
+char			*skip_ws(char *s);
+int				is_ws_only(char *s);
+int				check_filename(char *filename);
+int				characker_check(char c);
+char			**copy_map(t_config *data);
 
 // free functions
-void	free_lines(char **lines);
-void	free_map(t_config *data);
-void	free_config(t_config *data);
-void	free_map_copy(char ***map, int height);
+void			free_lines(char **lines);
+void			free_config(t_config *data);
+void			free_map_copy(char ***map, int height);
 
 // dfs
-int	is_spawn_or_walkable(char c);
-bool	dfs_outside(char **map, int row, int col, t_config *data);
-int	check_door(char **lines);
+int				is_spawn_or_walkable(char c);
+bool			dfs_outside(char **map, int row, int col, t_config *data);
+int				check_door(char **lines);
 
 // check_map
-bool	check_map(t_config *data);
-
-
-
+bool			check_map(t_config *data);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/22 17:14:30 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/23 18:32:55 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,35 @@ char	**read_map(const char *filename)
 	return (close(fd), lines);
 }
 
+int	texture_files(t_config *config)
+{
+	int	fd;
+
+	fd = open(config->no_path, O_RDONLY);
+	if (fd == -1)
+		return (0);
+	close(fd);
+	fd = open(config->so_path, O_RDONLY);
+	if (fd == -1)
+		return (0);
+	close(fd);
+	fd = open(config->we_path, O_RDONLY);
+	if (fd == -1)
+		return (0);
+	close(fd);
+	fd = open(config->ea_path, O_RDONLY);
+	if (fd == -1)
+		return (0);
+	close(fd);
+	return (1);
+}
+
 int	validation(t_config *config, char **map_lines, int map_start)
 {
 	if (!parse(config, map_lines, &map_start))
 		return (free_lines(map_lines), free_config(config), 0);
+	if (!texture_files(config))
+		return (free_lines(map_lines), free_config(config), ft_putendl_fd("Error", 2), 0);
 	if (!parse_map(config, map_lines, map_start))
 		return (free_lines(map_lines), free_config(config), 0);
 	if (!check_map(config))

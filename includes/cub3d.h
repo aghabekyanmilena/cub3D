@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miaghabe <miaghabe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/22 18:02:24 by miaghabe         ###   ########.fr       */
+/*   Updated: 2025/09/23 18:24:07 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ void			my_pixel_put(t_img *img, int x, int y, unsigned int color);
 int				rgb_to_int(t_color c);
 
 //textures
-void			get_textures(t_config *config);
+int				get_textures(t_config *config);
 
 //move
 int				check(int keycode, t_config *config);

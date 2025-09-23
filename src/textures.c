@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 18:15:04 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/22 15:05:07 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/23 18:25:23 by anush            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,25 +64,30 @@ void	get_door_textures(t_config *config)
 			&config->open.line_len, &config->open.endian);
 }
 
-void	get_textures_sharunak(t_config *config)
+int	get_textures_sharunak(t_config *config)
 {
-	config->west.img = mlx_xpm_file_to_image(config->data.mlx, config->we_path,
-			&config->west.wd, &config->west.ht);
 	config->west.ht = TEX_H;
 	config->west.wd = TEX_H;
+	config->west.img = mlx_xpm_file_to_image(config->data.mlx, config->we_path,
+			&config->west.wd, &config->west.ht);
+	if (!config->west.img)
+		return (1);
 	config->west.addr = mlx_get_data_addr(config->west.img,
 			&config->west.bits_per_pixel,
 			&config->west.line_len, &config->west.endian);
-	config->east.img = mlx_xpm_file_to_image(config->data.mlx, config->ea_path,
-			&config->east.wd, &config->east.ht);
 	config->east.ht = TEX_H;
 	config->east.wd = TEX_H;
+	config->east.img = mlx_xpm_file_to_image(config->data.mlx, config->ea_path,
+			&config->east.wd, &config->east.ht);
+	if (!config->east.img)
+		return (1);
 	config->east.addr = mlx_get_data_addr(config->east.img,
 			&config->east.bits_per_pixel,
 			&config->east.line_len, &config->east.endian);
+	return (0);
 }
 
-void	get_textures(t_config *config)
+int	get_textures(t_config *config)
 {
 	get_animation_textures(config);
 	get_door_textures(config);
@@ -90,15 +95,21 @@ void	get_textures(t_config *config)
 	config->south.wd = TEX_H;
 	config->south.img = mlx_xpm_file_to_image(config->data.mlx, config->so_path,
 			&config->south.wd, &config->south.ht);
+	if (!config->south.img)
+		return (1);
 	config->south.addr = mlx_get_data_addr(config->south.img,
 			&config->south.bits_per_pixel,
 			&config->south.line_len, &config->south.endian);
-	config->north.img = mlx_xpm_file_to_image(config->data.mlx, config->no_path,
-			&config->north.wd, &config->north.ht);
 	config->north.ht = TEX_H;
 	config->north.wd = TEX_H;
+	config->north.img = mlx_xpm_file_to_image(config->data.mlx, config->no_path,
+			&config->north.wd, &config->north.ht);
+	if (!config->north.img)
+		return (1);
 	config->north.addr = mlx_get_data_addr(config->north.img,
 			&config->north.bits_per_pixel,
 			&config->north.line_len, &config->north.endian);
-	get_textures_sharunak(config);
+	if (get_textures_sharunak(config))
+		return (1);
+	return (0);
 }

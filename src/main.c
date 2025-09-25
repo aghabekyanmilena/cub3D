@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:32:51 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/23 18:32:55 by anush            ###   ########.fr       */
+/*   Updated: 2025/09/25 17:26:23 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	validation(t_config *config, char **map_lines, int map_start)
 	if (!parse(config, map_lines, &map_start))
 		return (free_lines(map_lines), free_config(config), 0);
 	if (!texture_files(config))
-		return (free_lines(map_lines), free_config(config), ft_putendl_fd("Error", 2), 0);
+		return (free_lines(map_lines), free_config(config), 0);
 	if (!parse_map(config, map_lines, map_start))
 		return (free_lines(map_lines), free_config(config), 0);
 	if (!check_map(config))

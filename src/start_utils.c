@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anush <anush@student.42.fr>                +#+  +:+       +#+        */
+/*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 18:14:46 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/23 18:40:27 by anush            ###   ########.fr       */
+/*   Updated: 2025/09/22 15:00:02 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,17 @@ int	fri(t_config *config)
 	int	i;
 
 	i = 0;
-	if (config->south.img)
-		mlx_destroy_image(config->data.mlx, config->south.img);
-	if (config->east.img)
-		mlx_destroy_image(config->data.mlx, config->east.img);
-	if (config->west.img)
-		mlx_destroy_image(config->data.mlx, config->west.img);
-	if (config->north.img)
-		mlx_destroy_image(config->data.mlx, config->north.img);
+	mlx_destroy_image(config->data.mlx, config->south.img);
+	mlx_destroy_image(config->data.mlx, config->east.img);
+	mlx_destroy_image(config->data.mlx, config->west.img);
+	mlx_destroy_image(config->data.mlx, config->north.img);
 	mlx_destroy_image(config->data.mlx, config->open.img);
 	mlx_destroy_image(config->data.mlx, config->close.img);
 	while (i < 26)
 		mlx_destroy_image(config->data.mlx, config->up_down[i++].img);
-	free(config->up_down);
-	if (config->data.win)
-		mlx_destroy_window(config->data.mlx, config->data.win);
+	mlx_destroy_window(config->data.mlx, config->data.win);
 	mlx_destroy_display(config->data.mlx);
+	free(config->up_down);
 	free(config->data.mlx);
 	free_config(config);
 	free_lines(config->data.map);

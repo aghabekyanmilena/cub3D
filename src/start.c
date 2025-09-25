@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:29:20 by atseruny          #+#    #+#             */
-/*   Updated: 2025/09/21 18:06:35 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/25 17:33:36 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,11 @@ void	start(t_config *config, char **map)
 	if (!config->data.mlx)
 		return ;
 	config->data.map = map;
+	if (get_textures(config))
+	{
+		fri(config);
+		return ;
+	}
 	config->data.win = mlx_new_window(config->data.mlx, LENGTH, WIDTH, "Cub3D");
 	if (!config->data.win)
 	{
@@ -78,7 +83,6 @@ void	start(t_config *config, char **map)
 		free(config->data.mlx);
 		return ;
 	}
-	get_textures(config);
 	mlx_hook(config->data.win, 2, (1L << 0), check, config);
 	mlx_hook(config->data.win, 17, 0, fri, config);
 	mlx_hook(config->data.win, 6, (1L << 6), mouse_motion, config);

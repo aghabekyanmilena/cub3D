@@ -6,7 +6,7 @@
 /*   By: atseruny <atseruny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:31:35 by miaghabe          #+#    #+#             */
-/*   Updated: 2025/09/25 17:27:45 by atseruny         ###   ########.fr       */
+/*   Updated: 2025/09/25 17:32:46 by atseruny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ void			my_pixel_put(t_img *img, int x, int y, unsigned int color);
 int				rgb_to_int(t_color c);
 
 //textures
-void			get_textures(t_config *config);
+int				get_textures(t_config *config);
 
 //move
 int				check(int keycode, t_config *config);
